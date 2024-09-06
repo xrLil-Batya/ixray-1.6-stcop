@@ -18,8 +18,10 @@ struct IXrayMaterial
 	float Hemi;
 	float Sun;
 
-	float SSS;
-	float AO;
+    float SSS;
+    float AO;
+	
+	float SnowMask;
 };
 
 struct IXrayGbufferPack
@@ -53,6 +55,7 @@ struct IXrayGbuffer
 
 	float SSS;
 	float AO;
+	float SnowMask;
 };
 
 float3 NormalEncode(float3 Normal)
@@ -70,16 +73,14 @@ float3 NormalDecode(float3 Normal)
 
 void GbufferPack(inout IXrayGbufferPack O, inout IXrayMaterial M)
 {
-    O.Normal.xyz = NormalEncode(M.Normal.xyz);
-    O.Normal.w = M.Hemi;
+    O.Normal.xyz = NormalEncode(M.Normal.xyz); 
+    O.Normal.w = smoothstep(0.2f, 0.25f, M.Hemi) * smoothstep(0.7f, 0.8f, M.SnowMask);
 
     O.Color.xyz = M.Color.xyz;
-    O.Color.w = M.Roughness;
-
-    O.Material.y = M.SSS;
-
+    O.Color.w = M.SSS;
+    
 #ifdef USE_R2_STATIC_SUN
-    O.Material.y = M.Sun;
+    O.Color.w = M.Sun;
 #endif
 
     O.Material.x = M.Metalness;
@@ -90,6 +91,8 @@ void GbufferPack(inout IXrayGbufferPack O, inout IXrayMaterial M)
 #else
     O.Material.w = 1.0f;
 #endif
+
+    O.Material.zw = M.Hemi;
 }
 
 float4 GbufferGetPoint(in float2 HPos)
@@ -145,16 +148,18 @@ void GbufferUnpack(in float2 TexCoord, in float2 HPos, inout IXrayGbuffer O)
 	O.View = O.PointReal * rcp(O.ViewDist);
 
     O.Normal.xyz = NormalDecode(NormalHemi.xyz);
-    O.Hemi = NormalHemi.w;
+    O.Hemi = Material.w;
 
     O.Color.xyz = PushGamma(ColorSSS.xyz);
-    O.SSS = Material.y;
+    O.SSS = ColorSSS.y;
 
     O.Metalness = Material.x;
-    O.Roughness = ColorSSS.w;
+    O.Roughness = Material.y;
 	
 	O.AO = PushGamma(Material.z);
 	O.F0 = 0.002f + 0.018f * Material.w;
+
+	O.SnowMask = NormalHemi.w;
 }
 
 void GbufferUnpack(in float2 TexCoord, inout IXrayGbuffer O)

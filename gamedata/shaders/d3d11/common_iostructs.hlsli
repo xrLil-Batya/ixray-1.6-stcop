@@ -343,6 +343,7 @@ struct p_bumped_new
 	float3 lmap : TEXCOORD7;
 #endif
 #endif
+	float snow_mask : TEXCOORD7;
 };
 
 struct p_bilbord

@@ -745,6 +745,15 @@ void CRender::Render()
 		_RELEASE(res);
 	}
 
+	RCache.set_ColorWriteEnable(D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE);
+
+	RContext->CopyResource(Target->rt_NormalTemp->pSurface, Target->rt_Normal->pSurface);
+	Target->u_setrt(Target->rt_Normal, Target->rt_Color, Target->rt_Surface, NULL, NULL);
+	PIX_EVENT(PhaseWinter);
+	Target->PhaseWinter();
+
+	RCache.set_ColorWriteEnable();
+
 	// Wall marks
 	if(Wallmarks)	
 	{

@@ -93,6 +93,7 @@ void SloadNew(inout p_bumped_new I, inout IXrayMaterial M)
 #endif
 
     M.Color = s_base.Sample(smp_base, I.tcdh.xy);
+	M.SnowMask = I.snow_mask;
 
 #ifdef USE_BUMP
     float4 Bump = s_bump.Sample(smp_base, I.tcdh.xy);

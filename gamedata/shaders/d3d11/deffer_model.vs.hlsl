@@ -41,6 +41,8 @@ void skinned_main(in v_model I, out p_bumped_new O)
     O.hpos_old = mul(m_WVP_old, I.P_old);
 
     O.hpos.xy += m_taa_jitter.xy * O.hpos.w;
+	
+    O.snow_mask = 0.0f;
 }
 
 #if defined(SKIN_0)
