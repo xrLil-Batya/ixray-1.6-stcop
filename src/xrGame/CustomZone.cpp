@@ -1367,9 +1367,7 @@ void CCustomZone::ThrowOutArtefact(CArtefact* pArtefact)
 
 	if (*m_sArtefactSpawnParticles)
 	{
-		using namespace Particles::Details;
-		CParticlesObject* pParticles;
-		pParticles = CParticlesObject::Create(*m_sArtefactSpawnParticles, TRUE);
+		auto pParticles = Particles::Details::Create(*m_sArtefactSpawnParticles, TRUE);
 
 		pParticles->UpdateParent(pArtefact->XFORM(), zero_vel);
 		pParticles->Play(true);
