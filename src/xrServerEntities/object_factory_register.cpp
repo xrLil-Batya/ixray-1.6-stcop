@@ -31,6 +31,7 @@
 #	include "ai/monsters/dog/dog.h"
 #	include "ai/stalker/ai_stalker.h"
 #	include "ai/monsters/bloodsucker/bloodsucker.h"
+#	include "ai/monsters/bloodsuckerSoC/bloodsucker_soc.h"
 #	include "ai/monsters/boar/boar.h"
 #	include "ai/monsters/pseudodog/pseudodog.h"
 #	include "ai/monsters/pseudodog_psy/pseudodog_psy.h"
@@ -259,6 +260,7 @@ void CObjectFactory::register_classes	()
 	ADD(CDogBase					,CSE_ALifeMonsterBase			,CLSID_AI_DOG_RED				,"dog_red");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_STALKER				,"stalker");
 	ADD(CBloodsuckerBase			,CSE_ALifeMonsterBase			,CLSID_AI_BLOODSUCKER			,"bloodsucker");
+	ADD(CBloodsuckerSoC			,CSE_ALifeMonsterBase, CLSID_AI_BLOODSUCKER_SOC, "bloodsucker_soc");
 	ADD(CBoarBase				,CSE_ALifeMonsterBase			,CLSID_AI_BOAR					,"boar");
 	ADD(CPseudoDogBase			,CSE_ALifeMonsterBase			,CLSID_AI_DOG_BLACK				,"dog_black");
 	ADD(CPseudoPsyDogBase					,CSE_ALifeMonsterBase			,CLSID_AI_DOG_PSY				,"psy_dog");
