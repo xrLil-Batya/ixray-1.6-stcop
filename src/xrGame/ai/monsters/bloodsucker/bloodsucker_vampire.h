@@ -2,7 +2,7 @@
 #include "../state.h"
 #include "../../../../xrServerEntities/clsid_game.h"
 
-class	CustomBloodsuckerStateVampire : public CState
+class	CBloodsukerStateVampire : public CState
 {
 protected:
 	using inherited = CState;
@@ -12,8 +12,8 @@ protected:
     CBloodsuckerBase* pBloodsuckerBase;
 
 public:
-	CustomBloodsuckerStateVampire(CBloodsuckerBase*object);
-	virtual ~CustomBloodsuckerStateVampire() override;
+	CBloodsukerStateVampire(CBloodsuckerBase*object);
+	virtual ~CBloodsukerStateVampire() override;
 
 	virtual void		reinit							() override;
 	

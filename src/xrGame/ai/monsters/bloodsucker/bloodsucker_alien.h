@@ -1,24 +1,24 @@
 #pragma once
 
 class CBloodsuckerBase;
-class CustomBloodsuckerAlienEffector;
-class CustomBloodsuckerAlienEffectorPP;
+class CBloodsukerAlienEffector;
+class CBloodsukerAlienEffectorPP;
 
-class CustomBloodsuckerAlien
+class CBloodsukerAlien
 {
 protected:
 	CBloodsuckerBase			*m_object;
 	
 	bool						m_active;
 
-	CustomBloodsuckerAlienEffector*m_effector;
-	CustomBloodsuckerAlienEffectorPP*m_effector_pp;
+	CBloodsukerAlienEffector*m_effector;
+	CBloodsukerAlienEffectorPP*m_effector_pp;
 	
 	bool						m_crosshair_show;
 
 public:
-	CustomBloodsuckerAlien();
-	~CustomBloodsuckerAlien();
+	CBloodsukerAlien();
+	~CBloodsukerAlien();
 	
 	void	init_external		(CBloodsuckerBase* object);
 	void	reinit				();

@@ -5,18 +5,18 @@
 #include "../states/state_hide_from_point.h"
 #include "bloodsucker_predator.h"
 
-CustomBloodsuckerStateVampireHide::CustomBloodsuckerStateVampireHide(CBloodsuckerBase* object) : inherited(object)
+CBloodsukerStateVampireHide::CBloodsukerStateVampireHide(CBloodsuckerBase* object) : inherited(object)
 {
 	add_state(eStateVampire_RunAway, new CStateMonsterHideFromPoint (object));
-	add_state(eStatePredator, new CustomBloodsuckerStatePredator(object));
+	add_state(eStatePredator, new CBloodsukerStatePredator(object));
 }
 
-CustomBloodsuckerStateVampireHide::~CustomBloodsuckerStateVampireHide()
+CBloodsukerStateVampireHide::~CBloodsukerStateVampireHide()
 {
 
 }
 
-void CustomBloodsuckerStateVampireHide::reselect_state()
+void CBloodsukerStateVampireHide::reselect_state()
 {
 	if (prev_substate == eStateVampire_RunAway) {
 		if (get_state(eStatePredator)->check_start_conditions()) {
@@ -28,7 +28,7 @@ void CustomBloodsuckerStateVampireHide::reselect_state()
 	select_state(eStateVampire_RunAway);
 }
 
-void CustomBloodsuckerStateVampireHide::setup_substates()
+void CBloodsukerStateVampireHide::setup_substates()
 {
 	state_ptr state = get_state_current();
 
@@ -50,7 +50,7 @@ void CustomBloodsuckerStateVampireHide::setup_substates()
 	}
 }
 
-bool CustomBloodsuckerStateVampireHide::check_completion()
+bool CBloodsukerStateVampireHide::check_completion()
 {
 	if ((current_substate == eStatePredator) &&
 		get_state_current()->check_completion())	return true;

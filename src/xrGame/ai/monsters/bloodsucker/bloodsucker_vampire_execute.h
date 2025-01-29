@@ -1,7 +1,7 @@
 #pragma once
 #include "../state.h"
 
-class	CustomBloodsuckerStateVampireExecute : public CState 
+class	CBloodsukerStateVampireExecute : public CState 
 {
 protected:
 	using inherited = CState;
@@ -21,8 +21,8 @@ protected:
 	CBloodsuckerBase* pBloodsuckerBase;
 
 public:
-	CustomBloodsuckerStateVampireExecute(CBloodsuckerBase* object);
-	virtual ~CustomBloodsuckerStateVampireExecute();
+	CBloodsukerStateVampireExecute(CBloodsuckerBase* object);
+	virtual ~CBloodsukerStateVampireExecute();
 
 	virtual void		initialize() override;
 	virtual	void		execute() override;

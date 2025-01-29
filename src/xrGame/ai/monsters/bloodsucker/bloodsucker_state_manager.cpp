@@ -42,7 +42,7 @@ CBloodsuckerBaseStateManager::CBloodsuckerBaseStateManager(CBloodsuckerBase *obj
 	add_state(eStateHearInterestingSound,	new CStateMonsterHearInterestingSound	(object));
 	add_state(eStateHearDangerousSound,		new CStateMonsterHearDangerousSound	(object));
 	add_state(eStateHitted,					new CStateMonsterHitted				(object));
-	add_state(eStateVampire_Execute,		new CustomBloodsuckerStateVampireExecute	(object));
+	add_state(eStateVampire_Execute,		new CBloodsukerStateVampireExecute	(object));
 }
 
 CBloodsuckerBaseStateManager::~CBloodsuckerBaseStateManager()

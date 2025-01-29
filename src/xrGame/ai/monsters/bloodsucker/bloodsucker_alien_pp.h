@@ -1,6 +1,6 @@
 #pragma once
 
-class CustomBloodsuckerAlienEffectorPP : public CEffectorPP
+class CBloodsukerAlienEffectorPP : public CEffectorPP
 {
 protected:
 	using inherited = CEffectorPP;
@@ -10,8 +10,8 @@ protected:
 	float		target_factor;
 
 public:
-	CustomBloodsuckerAlienEffectorPP(const SPPInfo& ppi, EEffectorPPType type);
-	virtual			~CustomBloodsuckerAlienEffectorPP() override;
+	CBloodsukerAlienEffectorPP(const SPPInfo& ppi, EEffectorPPType type);
+	virtual			~CBloodsukerAlienEffectorPP() override;
 
 	void	Update(float new_factor) { factor = new_factor; }
 	void	Destroy();

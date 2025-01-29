@@ -14,7 +14,7 @@
 
 #include "bloodsucker_backstub_enemy.h"
 
-CustomBloodsuckerStateAttack::CustomBloodsuckerStateAttack(CBloodsuckerBase* object) : inherited_attack(object)
+CBloodsukerStateAttack::CBloodsukerStateAttack(CBloodsuckerBase* object) : inherited_attack(object)
 {
 	m_dir_point = {};
 	m_last_health = 0;
@@ -23,35 +23,35 @@ CustomBloodsuckerStateAttack::CustomBloodsuckerStateAttack(CBloodsuckerBase* obj
 
 	m_pBloodsucker = smart_cast<CBloodsuckerBase*>(object);
 
-	add_state(eStateAttack_Hide, new CustomBloodsuckerBackstubEnemy(object));
-	add_state(eStateVampire_Execute, new CustomBloodsuckerStateVampireExecute(object));
+	add_state(eStateAttack_Hide, new CBloodsukerBackstubEnemy(object));
+	add_state(eStateVampire_Execute, new CBloodsukerStateVampireExecute(object));
 }
 
-CustomBloodsuckerStateAttack::~CustomBloodsuckerStateAttack()
+CBloodsukerStateAttack::~CBloodsukerStateAttack()
 {
 
 }
 
-void CustomBloodsuckerStateAttack::initialize()
+void CBloodsukerStateAttack::initialize()
 {
 	inherited::initialize();
 	m_time_stop_invis = 0;
 	m_last_health = object->conditions().GetHealth();
 }
 
-void CustomBloodsuckerStateAttack::finalize()
+void CBloodsukerStateAttack::finalize()
 {
 	inherited::finalize();
 	m_pBloodsucker->start_invisible_predator();
 }
 
-void CustomBloodsuckerStateAttack::critical_finalize()
+void CBloodsukerStateAttack::critical_finalize()
 {
 	inherited::critical_finalize();
 	m_pBloodsucker->start_invisible_predator();
 }
 
-void CustomBloodsuckerStateAttack::execute()
+void CBloodsukerStateAttack::execute()
 {
 	if (check_home_point())				select_state(eStateAttack_MoveToHomePoint);
 	else if (check_vampire())				select_state(eStateVampire_Execute);
@@ -124,7 +124,7 @@ void CustomBloodsuckerStateAttack::execute()
 	}
 }
 
-bool CustomBloodsuckerStateAttack::check_vampire()
+bool CBloodsukerStateAttack::check_vampire()
 {
 	if (prev_substate != eStateVampire_Execute)
 	{
@@ -137,7 +137,7 @@ bool CustomBloodsuckerStateAttack::check_vampire()
 	return false;
 }
 
-bool CustomBloodsuckerStateAttack::check_hiding()
+bool CBloodsukerStateAttack::check_hiding()
 {
 	const bool health_step_lost = object->conditions().GetHealth() <
 		m_last_health - EntityDefinitions::CBloodsuckerBase::loose_health_diff;
@@ -168,13 +168,13 @@ bool CustomBloodsuckerStateAttack::check_hiding()
 	return get_state(eStateAttack_Hide)->check_start_conditions();
 }
 
-void CustomBloodsuckerStateAttack::setup_substates()
+void CBloodsukerStateAttack::setup_substates()
 {
 	auto state = get_state_current();
 
 	if (current_substate == eStateAttack_Hide)
 	{
-		typename CustomBloodsuckerBackstubEnemy::StateParams data{};
+		typename CBloodsukerBackstubEnemy::StateParams data{};
 
 		data.action.action = ACT_RUN;
 		data.action.time_out = 0;
@@ -187,7 +187,7 @@ void CustomBloodsuckerStateAttack::setup_substates()
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 		data.start_with_encircle = m_start_with_encircle;
 
-		state->fill_data_with(&data, sizeof(CustomBloodsuckerBackstubEnemy::StateParams));
+		state->fill_data_with(&data, sizeof(CBloodsukerBackstubEnemy::StateParams));
 		return;
 	}
 }

@@ -138,7 +138,7 @@ private:
 	// Alien
 	//--------------------------------------------------------------------
 public:
-	CustomBloodsuckerAlien	m_alien_control;
+	CBloodsukerAlien	m_alien_control;
 	u32						m_time_lunge;
 
 			void			set_alien_control		(bool val);

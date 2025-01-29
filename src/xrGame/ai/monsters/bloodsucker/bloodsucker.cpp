@@ -368,8 +368,8 @@ void CBloodsuckerBase::vfAssignBones()
 
 void CBloodsuckerBase::ActivateVampireEffector()
 {
-	Actor()->Cameras().AddCamEffector(new CustomBloodsuckerVampireCameraEffector(6.0f, get_head_position(this), get_head_position(Actor())));
-	Actor()->Cameras().AddPPEffector(new CustomBloodsuckerVampirePPEffector(pp_vampire_effector, 6.0f));
+	Actor()->Cameras().AddCamEffector(new CBloodsukerVampireCameraEffector(6.0f, get_head_position(this), get_head_position(Actor())));
+	Actor()->Cameras().AddPPEffector(new CBloodsukerVampirePPEffector(pp_vampire_effector, 6.0f));
 }
 
 bool CBloodsuckerBase::WantVampire()

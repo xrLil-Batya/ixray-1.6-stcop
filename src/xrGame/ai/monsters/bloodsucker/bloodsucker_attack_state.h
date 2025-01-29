@@ -1,7 +1,7 @@
 #pragma once
 #include "../states/monster_state_attack.h"
 
-class	CustomBloodsuckerStateAttack : public CStateMonsterAttack 
+class	CBloodsukerStateAttack : public CStateMonsterAttack 
 {
 protected:
 	using inherited_attack = CStateMonsterAttack;
@@ -14,8 +14,8 @@ protected:
 	CBloodsuckerBase* m_pBloodsucker;
 
 public:
-	CustomBloodsuckerStateAttack(CBloodsuckerBase* object);
-	virtual			~CustomBloodsuckerStateAttack() override;
+	CBloodsukerStateAttack(CBloodsuckerBase* object);
+	virtual			~CBloodsukerStateAttack() override;
 
 	virtual	void	initialize() override;
 	virtual	void	execute() override;

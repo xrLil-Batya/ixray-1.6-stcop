@@ -11,7 +11,7 @@
 #include "bloodsucker_alien.h"
 #include "bloodsucker_alien_effector.h"
 
-CustomBloodsuckerAlienEffector::CustomBloodsuckerAlienEffector(ECamEffectorType type, CBloodsuckerBase* object) :
+CBloodsukerAlienEffector::CBloodsukerAlienEffector(ECamEffectorType type, CBloodsuckerBase* object) :
 	inherited(type, flt_max)
 {
 	m_time_total = 0.f;
@@ -31,12 +31,12 @@ CustomBloodsuckerAlienEffector::CustomBloodsuckerAlienEffector(ECamEffectorType 
 	m_current_fov = EntityDefinitions::CBloodsuckerBase::MinFov;
 }
 
-CustomBloodsuckerAlienEffector::~CustomBloodsuckerAlienEffector()
+CBloodsukerAlienEffector::~CBloodsukerAlienEffector()
 {
 
 }
 
-BOOL CustomBloodsuckerAlienEffector::ProcessCam(SCamEffectorInfo& info)
+BOOL CBloodsukerAlienEffector::ProcessCam(SCamEffectorInfo& info)
 {
 	// Инициализация
 	Fmatrix	Mdef{};

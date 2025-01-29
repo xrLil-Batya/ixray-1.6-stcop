@@ -13,7 +13,7 @@
 
 #include "../../../HudManager.h"
 
-CustomBloodsuckerStateVampireExecute::CustomBloodsuckerStateVampireExecute(CBloodsuckerBase* object) : inherited(object)
+CBloodsukerStateVampireExecute::CBloodsukerStateVampireExecute(CBloodsuckerBase* object) : inherited(object)
 {
 	pBloodsuckerBase = smart_cast<CBloodsuckerBase*>(object);
 
@@ -23,12 +23,12 @@ CustomBloodsuckerStateVampireExecute::CustomBloodsuckerStateVampireExecute(CBloo
 	m_effector_activated = {};
 }
 
-CustomBloodsuckerStateVampireExecute::~CustomBloodsuckerStateVampireExecute()
+CBloodsukerStateVampireExecute::~CBloodsukerStateVampireExecute()
 {
 
 }
 
-void CustomBloodsuckerStateVampireExecute::initialize()
+void CBloodsukerStateVampireExecute::initialize()
 {
 	inherited::initialize();
 	CActor* actor = nullptr;
@@ -70,7 +70,7 @@ void CustomBloodsuckerStateVampireExecute::initialize()
 	m_effector_activated = false;
 }
 
-void CustomBloodsuckerStateVampireExecute::execute()
+void CBloodsukerStateVampireExecute::execute()
 {
 	if (!pBloodsuckerBase->is_turning() && !m_effector_activated) {
 		pBloodsuckerBase->ActivateVampireEffector();
@@ -130,7 +130,7 @@ void CustomBloodsuckerStateVampireExecute::execute()
 	}
 }
 
-void CustomBloodsuckerStateVampireExecute::show_hud()
+void CBloodsukerStateVampireExecute::show_hud()
 {
 	HUD().SetRenderable(true);
 	NET_Packet			P{};
@@ -141,7 +141,7 @@ void CustomBloodsuckerStateVampireExecute::show_hud()
 	Actor()->u_EventSend(P);
 }
 
-void CustomBloodsuckerStateVampireExecute::cleanup()
+void CBloodsukerStateVampireExecute::cleanup()
 {
 	if (IsGameTypeSingle())
 		Actor()->set_inventory_disabled(false);
@@ -157,19 +157,19 @@ void CustomBloodsuckerStateVampireExecute::cleanup()
 		show_hud();
 }
 
-void CustomBloodsuckerStateVampireExecute::finalize()
+void CBloodsukerStateVampireExecute::finalize()
 {
 	inherited::finalize();
 	cleanup();
 }
 
-void CustomBloodsuckerStateVampireExecute::critical_finalize()
+void CBloodsukerStateVampireExecute::critical_finalize()
 {
 	inherited::critical_finalize();
 	cleanup();
 }
 
-bool CustomBloodsuckerStateVampireExecute::check_start_conditions()
+bool CBloodsukerStateVampireExecute::check_start_conditions()
 {
 	const CEntityAlive* enemy = object->EnemyMan.get_enemy();
 
@@ -207,14 +207,14 @@ bool CustomBloodsuckerStateVampireExecute::check_start_conditions()
 	return true;
 }
 
-bool CustomBloodsuckerStateVampireExecute::check_completion()
+bool CBloodsukerStateVampireExecute::check_completion()
 {
 	return (m_action == eActionCompleted);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CustomBloodsuckerStateVampireExecute::execute_vampire_prepare()
+void CBloodsukerStateVampireExecute::execute_vampire_prepare()
 {
 	object->com_man().ta_activate(pBloodsuckerBase->anim_triple_vampire);
 	time_vampire_started = Device.dwTimeGlobal;
@@ -222,7 +222,7 @@ void CustomBloodsuckerStateVampireExecute::execute_vampire_prepare()
 	pBloodsuckerBase->sound().play(CBloodsuckerBase::eVampireGrasp);
 }
 
-void CustomBloodsuckerStateVampireExecute::execute_vampire_continue()
+void CBloodsukerStateVampireExecute::execute_vampire_continue()
 {
 	const CEntityAlive* enemy = object->EnemyMan.get_enemy();
 
@@ -239,7 +239,7 @@ void CustomBloodsuckerStateVampireExecute::execute_vampire_continue()
 	}
 }
 
-void CustomBloodsuckerStateVampireExecute::execute_vampire_hit()
+void CBloodsukerStateVampireExecute::execute_vampire_hit()
 {
 	object->com_man().ta_pointbreak();
 	object->sound().play(CBloodsuckerBase::eVampireHit);
@@ -248,7 +248,7 @@ void CustomBloodsuckerStateVampireExecute::execute_vampire_hit()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CustomBloodsuckerStateVampireExecute::look_head()
+void CBloodsukerStateVampireExecute::look_head()
 {
 	IKinematics* pK = smart_cast<IKinematics*>(object->Visual());
 	Fmatrix bone_transform{};

@@ -15,7 +15,7 @@
 
 #include "../states/state_move_to_point.h"
 
-CustomBloodsuckerBackstubEnemy::CustomBloodsuckerBackstubEnemy(CBloodsuckerBase* object) : inherited(object, &data)
+CBloodsukerBackstubEnemy::CBloodsukerBackstubEnemy(CBloodsuckerBase* object) : inherited(object, &data)
 {
 	m_last_health = {};
 	m_encircle = {};
@@ -23,12 +23,12 @@ CustomBloodsuckerBackstubEnemy::CustomBloodsuckerBackstubEnemy(CBloodsuckerBase*
 	m_next_change_behaviour_tick = {};
 };
 
-CustomBloodsuckerBackstubEnemy::~CustomBloodsuckerBackstubEnemy()
+CBloodsukerBackstubEnemy::~CBloodsukerBackstubEnemy()
 {
 
 }
 
-void   CustomBloodsuckerBackstubEnemy::initialize()
+void   CBloodsukerBackstubEnemy::initialize()
 {
 	inherited::initialize();
 	object->path().prepare_builder();
@@ -38,7 +38,7 @@ void   CustomBloodsuckerBackstubEnemy::initialize()
 	m_next_change_behaviour_tick = 0;
 }
 
-void   CustomBloodsuckerBackstubEnemy::execute()
+void   CBloodsukerBackstubEnemy::execute()
 {
 	// on hit, change behaviour
 	if (object->conditions().GetHealth() < m_last_health - EntityDefinitions::CBloodsuckerBase::loose_health_diff &&
@@ -104,7 +104,7 @@ void   CustomBloodsuckerBackstubEnemy::execute()
 	}
 }
 
-bool   CustomBloodsuckerBackstubEnemy::check_start_conditions()
+bool   CBloodsukerBackstubEnemy::check_start_conditions()
 {
 	if (!object->Home->at_home(object->EnemyMan.get_enemy_position()))
 	{
@@ -116,7 +116,7 @@ bool   CustomBloodsuckerBackstubEnemy::check_start_conditions()
 	return dist > object->MeleeChecker.get_min_distance();
 }
 
-bool   CustomBloodsuckerBackstubEnemy::check_completion()
+bool   CBloodsukerBackstubEnemy::check_completion()
 {
 	if (!object->Home->at_home(object->EnemyMan.get_enemy_position()))
 	{

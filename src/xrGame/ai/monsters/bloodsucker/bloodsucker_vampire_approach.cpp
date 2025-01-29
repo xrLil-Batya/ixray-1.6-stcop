@@ -8,23 +8,23 @@
 #include "bloodsucker.h"
 #include "bloodsucker_vampire_approach.h"
 
-CustomBloodsuckerVampireApproach::CustomBloodsuckerVampireApproach(CBloodsuckerBase* object) : inherited(object)
+CBloodsukerVampireApproach::CBloodsukerVampireApproach(CBloodsuckerBase* object) : inherited(object)
 {
 	
 }
 
-CustomBloodsuckerVampireApproach::~CustomBloodsuckerVampireApproach()
+CBloodsukerVampireApproach::~CBloodsukerVampireApproach()
 {
 
 }
 
-void CustomBloodsuckerVampireApproach::initialize()
+void CBloodsukerVampireApproach::initialize()
 {
 	inherited::initialize();
 	object->path().prepare_builder();
 }
 
-void CustomBloodsuckerVampireApproach::execute()
+void CBloodsukerVampireApproach::execute()
 {
 	object->set_action(ACT_RUN);
 	object->anim().accel_activate(eAT_Aggressive);

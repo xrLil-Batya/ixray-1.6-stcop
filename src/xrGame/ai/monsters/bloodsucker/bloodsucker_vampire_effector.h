@@ -4,7 +4,7 @@
 #include "../../../CameraEffector.h"
 #include "../../../../xrEngine/CameraManager.h"
 
-class CustomBloodsuckerVampirePPEffector : public CEffectorPP 
+class CBloodsukerVampirePPEffector : public CEffectorPP 
 {
 protected:
 	using inherited  = CEffectorPP;
@@ -13,8 +13,8 @@ protected:
 	float	m_total;		// total PP time
 
 public:
-	CustomBloodsuckerVampirePPEffector(const SPPInfo &ppi, float life_time);
-	virtual ~CustomBloodsuckerVampirePPEffector() override;
+	CBloodsukerVampirePPEffector(const SPPInfo &ppi, float life_time);
+	virtual ~CBloodsukerVampirePPEffector() override;
 
 	virtual	BOOL	Process					(SPPInfo& pp) override;
 };

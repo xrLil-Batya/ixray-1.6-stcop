@@ -9,7 +9,7 @@
 
 #include "bloodsucker_alien_pp.h"
 
-CustomBloodsuckerAlienEffectorPP::CustomBloodsuckerAlienEffectorPP(const SPPInfo& ppi, EEffectorPPType type) :
+CBloodsukerAlienEffectorPP::CBloodsukerAlienEffectorPP(const SPPInfo& ppi, EEffectorPPType type) :
 	CEffectorPP(type, flt_max, false)
 {
 	state = ppi;
@@ -17,12 +17,12 @@ CustomBloodsuckerAlienEffectorPP::CustomBloodsuckerAlienEffectorPP(const SPPInfo
 	target_factor = 1.f;
 }
 
-CustomBloodsuckerAlienEffectorPP::~CustomBloodsuckerAlienEffectorPP()
+CBloodsukerAlienEffectorPP::~CBloodsukerAlienEffectorPP()
 {
 
 }
 
-BOOL CustomBloodsuckerAlienEffectorPP::Process(SPPInfo& pp)
+BOOL CBloodsukerAlienEffectorPP::Process(SPPInfo& pp)
 {
 	inherited::Process(pp);
 
@@ -37,9 +37,9 @@ BOOL CustomBloodsuckerAlienEffectorPP::Process(SPPInfo& pp)
 	return TRUE;
 }
 
-void CustomBloodsuckerAlienEffectorPP::Destroy()
+void CBloodsukerAlienEffectorPP::Destroy()
 {
 	fLifeTime = 0.f;
-	CustomBloodsuckerAlienEffectorPP* self = this;
+	CBloodsukerAlienEffectorPP* self = this;
 	xr_delete(self);
 }

@@ -7,17 +7,17 @@
 
 #include "../states/state_custom_action.h"
 
-CustomBloodsuckerStateJump::CustomBloodsuckerStateJump(CBloodsuckerBase* object) : inherited(object)
+CBloodsukerStateJump::CBloodsukerStateJump(CBloodsuckerBase* object) : inherited(object)
 {
 	add_state(eStateCustom, new CStateMonsterCustomAction(object));
 }
 
-CustomBloodsuckerStateJump::~CustomBloodsuckerStateJump()
+CBloodsukerStateJump::~CBloodsukerStateJump()
 {
 
 }
 
-void CustomBloodsuckerStateJump::execute()
+void CBloodsukerStateJump::execute()
 {
 	select_state(eStateCustom);
 
@@ -25,7 +25,7 @@ void CustomBloodsuckerStateJump::execute()
 	prev_substate = current_substate;
 }
 
-void CustomBloodsuckerStateJump::setup_substates()
+void CBloodsukerStateJump::setup_substates()
 {
 	state_ptr state = get_state_current();
 	if (current_substate == eStateCustom) {

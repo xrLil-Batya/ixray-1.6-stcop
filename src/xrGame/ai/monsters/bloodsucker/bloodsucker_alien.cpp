@@ -15,7 +15,7 @@
 
 #define EFFECTOR_ID_GEN(type) (type( u32(u64(this) & u32(-1)) ))
 
-CustomBloodsuckerAlien::CustomBloodsuckerAlien()
+CBloodsukerAlien::CBloodsukerAlien()
 {
 	m_active = false;
 	m_crosshair_show = false;
@@ -24,23 +24,23 @@ CustomBloodsuckerAlien::CustomBloodsuckerAlien()
 	m_object	= nullptr;
 }
 
-CustomBloodsuckerAlien::~CustomBloodsuckerAlien()
+CBloodsukerAlien::~CBloodsukerAlien()
 {
 
 }
 
-void CustomBloodsuckerAlien::init_external(CBloodsuckerBase*object)
+void CBloodsukerAlien::init_external(CBloodsuckerBase*object)
 {
 	m_object	= object;
 }
 
-void CustomBloodsuckerAlien::reinit()
+void CBloodsukerAlien::reinit()
 {
 	m_active				= false;	
 	m_crosshair_show		= false;
 }
 
-void CustomBloodsuckerAlien::activate()
+void CBloodsukerAlien::activate()
 {
 	if (m_active) return;
 
@@ -58,10 +58,10 @@ void CustomBloodsuckerAlien::activate()
 	if (m_crosshair_show)		psHUD_Flags.set(HUD_CROSSHAIR_RT,FALSE);
 
 	// Start effector
-	m_effector_pp				= new CustomBloodsuckerAlienEffectorPP	(m_object->pp_vampire_effector, EFFECTOR_ID_GEN(EEffectorPPType));
+	m_effector_pp				= new CBloodsukerAlienEffectorPP	(m_object->pp_vampire_effector, EFFECTOR_ID_GEN(EEffectorPPType));
 	Actor()->Cameras().AddPPEffector	(m_effector_pp);
 	
-	m_effector					= new CustomBloodsuckerAlienEffector(EFFECTOR_ID_GEN(ECamEffectorType), m_object);
+	m_effector					= new CBloodsukerAlienEffector(EFFECTOR_ID_GEN(ECamEffectorType), m_object);
 	Actor()->Cameras().AddCamEffector	(m_effector);
 
 	// make invisible
@@ -71,7 +71,7 @@ void CustomBloodsuckerAlien::activate()
 	m_active					= true;
 }
 
-void CustomBloodsuckerAlien::deactivate()
+void CBloodsukerAlien::deactivate()
 {
 	if (!m_active) return;
 

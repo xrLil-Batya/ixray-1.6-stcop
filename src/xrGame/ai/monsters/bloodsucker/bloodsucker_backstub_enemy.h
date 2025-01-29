@@ -1,7 +1,7 @@
 #pragma once
 #include "../states/monster_state_attack.h"
 
-class CustomBloodsuckerBackstubEnemy : public CState
+class CBloodsukerBackstubEnemy : public CState
 {
 protected:
 	using inherited = CState;
@@ -20,8 +20,8 @@ protected:
 	TTime                   m_next_change_behaviour_tick;
 
 public:
-	CustomBloodsuckerBackstubEnemy(CBloodsuckerBase* object);
-	virtual				~CustomBloodsuckerBackstubEnemy() override;
+	CBloodsukerBackstubEnemy(CBloodsuckerBase* object);
+	virtual				~CBloodsukerBackstubEnemy() override;
 
 	virtual void		initialize() override;
 	virtual	void		execute() override;

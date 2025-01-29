@@ -4,7 +4,7 @@
 #include "../../../CameraEffector.h"
 #include "../../../../xrEngine/cameramanager.h"
 
-class CustomBloodsuckerVampireCameraEffector : public CEffectorCam
+class CBloodsukerVampireCameraEffector : public CEffectorCam
 {
 protected:
 	using inherited = CEffectorCam;
@@ -17,8 +17,8 @@ protected:
 	Fvector m_direction;
 
 public:
-	CustomBloodsuckerVampireCameraEffector(float time, const Fvector& src, const Fvector& tgt);
-	virtual				~CustomBloodsuckerVampireCameraEffector();
+	CBloodsukerVampireCameraEffector(float time, const Fvector& src, const Fvector& tgt);
+	virtual				~CBloodsukerVampireCameraEffector();
 
 	virtual BOOL	ProcessCam(SCamEffectorInfo& info) override;
 };

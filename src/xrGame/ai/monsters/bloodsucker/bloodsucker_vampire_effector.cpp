@@ -1,19 +1,19 @@
 #include "stdafx.h"
 #include "bloodsucker_vampire_effector.h"
 
-CustomBloodsuckerVampirePPEffector::CustomBloodsuckerVampirePPEffector(const SPPInfo &ppi, float life_time) :
+CBloodsukerVampirePPEffector::CBloodsukerVampirePPEffector(const SPPInfo &ppi, float life_time) :
 	inherited(EEffectorPPType(eCEHit), life_time)
 {
 	state		= ppi;
 	m_total		= life_time;
 }
 
-CustomBloodsuckerVampirePPEffector::~CustomBloodsuckerVampirePPEffector()
+CBloodsukerVampirePPEffector::~CBloodsukerVampirePPEffector()
 {
 
 }
 
-BOOL CustomBloodsuckerVampirePPEffector::Process(SPPInfo& pp)
+BOOL CBloodsukerVampirePPEffector::Process(SPPInfo& pp)
 {
     inherited::Process(pp);
 

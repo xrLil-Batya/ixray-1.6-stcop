@@ -1,6 +1,6 @@
 #pragma once
 
-class CustomBloodsuckerAlienEffector : public CEffectorCam
+class CBloodsukerAlienEffector : public CEffectorCam
 {
 protected:
 	using inherited = CEffectorCam;
@@ -16,8 +16,8 @@ protected:
 	float		m_inertion;
 
 public:
-	CustomBloodsuckerAlienEffector(ECamEffectorType type, CBloodsuckerBase* object);
-	virtual ~CustomBloodsuckerAlienEffector() override;
+	CBloodsukerAlienEffector(ECamEffectorType type, CBloodsuckerBase* object);
+	virtual ~CBloodsukerAlienEffector() override;
 
 	virtual BOOL	ProcessCam(SCamEffectorInfo& info) override;
 };

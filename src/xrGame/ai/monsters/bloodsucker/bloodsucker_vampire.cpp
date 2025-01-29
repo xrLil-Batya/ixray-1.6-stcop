@@ -10,29 +10,29 @@
 #include "bloodsucker_vampire_approach.h"
 #include "bloodsucker_vampire_hide.h"
 
-CustomBloodsuckerStateVampire::CustomBloodsuckerStateVampire(CBloodsuckerBase* object) : inherited(object)
+CBloodsukerStateVampire::CBloodsukerStateVampire(CBloodsuckerBase* object) : inherited(object)
 {
 	enemy = nullptr;
 
 	pBloodsuckerBase = smart_cast<CBloodsuckerBase*>(object);
 
-	add_state	(eStateVampire_ApproachEnemy,	new CustomBloodsuckerVampireApproach(object));
-	add_state	(eStateVampire_Execute,			new CustomBloodsuckerStateVampireExecute(object));
+	add_state	(eStateVampire_ApproachEnemy,	new CBloodsukerVampireApproach(object));
+	add_state	(eStateVampire_Execute,			new CBloodsukerStateVampireExecute(object));
 	add_state	(eStateVampire_RunAway,			new CStateMonsterHideFromPoint		(object));
-	add_state	(eStateVampire_Hide,			new CustomBloodsuckerStateVampireHide(object));
+	add_state	(eStateVampire_Hide,			new CBloodsukerStateVampireHide(object));
 }
 
-CustomBloodsuckerStateVampire::~CustomBloodsuckerStateVampire()
+CBloodsukerStateVampire::~CBloodsukerStateVampire()
 {
 
 }
 
-void CustomBloodsuckerStateVampire::reinit()
+void CBloodsukerStateVampire::reinit()
 {
 	inherited::reinit	();
 }
 
-void CustomBloodsuckerStateVampire::initialize()
+void CBloodsukerStateVampire::initialize()
 {
 	inherited::initialize						();
 	pBloodsuckerBase->set_visibility_state				(CBloodsuckerBase::partial_visibility);
@@ -42,7 +42,7 @@ void CustomBloodsuckerStateVampire::initialize()
 	pBloodsuckerBase->sound().play						(CBloodsuckerBase::eVampireStartHunt);
 }
 
-void CustomBloodsuckerStateVampire::reselect_state()
+void CBloodsukerStateVampire::reselect_state()
 {
 	u32 state_id = u32(-1);
 		
@@ -70,7 +70,7 @@ void CustomBloodsuckerStateVampire::reselect_state()
 	select_state(state_id);
 }
 
-void CustomBloodsuckerStateVampire::check_force_state()
+void CBloodsukerStateVampire::check_force_state()
 {
 	// check if we can start execute
 	if (prev_substate == eStateVampire_ApproachEnemy) {
@@ -79,7 +79,7 @@ void CustomBloodsuckerStateVampire::check_force_state()
 	}
 }
 
-void CustomBloodsuckerStateVampire::finalize()
+void CBloodsukerStateVampire::finalize()
 {
 	inherited::finalize();
 
@@ -87,7 +87,7 @@ void CustomBloodsuckerStateVampire::finalize()
 	CBloodsuckerBase::m_time_last_vampire				= Device.dwTimeGlobal;
 }
 
-void CustomBloodsuckerStateVampire::critical_finalize()
+void CBloodsukerStateVampire::critical_finalize()
 {
 	inherited::critical_finalize	();
 	
@@ -95,7 +95,7 @@ void CustomBloodsuckerStateVampire::critical_finalize()
 	CBloodsuckerBase::m_time_last_vampire				= Device.dwTimeGlobal;
 }
 
-bool CustomBloodsuckerStateVampire::check_start_conditions()
+bool CBloodsukerStateVampire::check_start_conditions()
 {
 	if (!pBloodsuckerBase->WantVampire()) return false;
 	if (object->berserk_always) return false;
@@ -115,7 +115,7 @@ bool CustomBloodsuckerStateVampire::check_start_conditions()
 	return true;
 }
 
-bool CustomBloodsuckerStateVampire::check_completion()
+bool CBloodsukerStateVampire::check_completion()
 {
 	// если убежал
 	if ((current_substate == eStateVampire_Hide) &&
@@ -131,7 +131,7 @@ bool CustomBloodsuckerStateVampire::check_completion()
 	return false;
 }
 
-void CustomBloodsuckerStateVampire::setup_substates()
+void CBloodsukerStateVampire::setup_substates()
 {
 	state_ptr state = get_state_current();
 
@@ -154,7 +154,7 @@ void CustomBloodsuckerStateVampire::setup_substates()
 	}
 }
 
-void CustomBloodsuckerStateVampire::remove_links	(CObject* object)
+void CBloodsukerStateVampire::remove_links	(CObject* object)
 {
 	if (enemy == object)
 		enemy					= nullptr;

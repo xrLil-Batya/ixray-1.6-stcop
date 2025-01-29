@@ -2,7 +2,7 @@
 #include "../../ai_entity_definitions.h"
 #include "bloodsucker_vampire_camera_effector.h"
 
-CustomBloodsuckerVampireCameraEffector::CustomBloodsuckerVampireCameraEffector(float time, const Fvector& src, const Fvector& tgt) :
+CBloodsukerVampireCameraEffector::CBloodsukerVampireCameraEffector(float time, const Fvector& src, const Fvector& tgt) :
 	inherited(eCEVampire, time)
 {
 	fLifeTime = time;
@@ -26,12 +26,12 @@ CustomBloodsuckerVampireCameraEffector::CustomBloodsuckerVampireCameraEffector(f
 	dangle_current.set(0.f, 0.f, 0.f);
 }
 
-CustomBloodsuckerVampireCameraEffector::~CustomBloodsuckerVampireCameraEffector()
+CBloodsukerVampireCameraEffector::~CBloodsukerVampireCameraEffector()
 {
 
 }
 
-BOOL CustomBloodsuckerVampireCameraEffector::ProcessCam(SCamEffectorInfo& info)
+BOOL CBloodsukerVampireCameraEffector::ProcessCam(SCamEffectorInfo& info)
 {
 	fLifeTime -= Device.fTimeDelta;
 	if (fLifeTime < 0)

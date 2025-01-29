@@ -20,7 +20,7 @@
 #include "../../../actor_memory.h"
 #include "../../../visual_memory_manager.h"
 
-CustomBloodsuckerStatePredator::CustomBloodsuckerStatePredator(CBloodsuckerBase* object) : inherited(object)
+CBloodsukerStatePredator::CBloodsukerStatePredator(CBloodsuckerBase* object) : inherited(object)
 {
 	m_target_node = 0;
 	m_time_start_camp = 0;
@@ -32,17 +32,17 @@ CustomBloodsuckerStatePredator::CustomBloodsuckerStatePredator(CBloodsuckerBase*
 	add_state	(eStatePredator_Camp, new CStateMonsterCustomAction(object));
 }
 
-CustomBloodsuckerStatePredator::~CustomBloodsuckerStatePredator()
+CBloodsukerStatePredator::~CBloodsukerStatePredator()
 {
 
 }
 
-void CustomBloodsuckerStatePredator::reinit()
+void CBloodsukerStatePredator::reinit()
 {
 	inherited::reinit	();
 }
 
-void CustomBloodsuckerStatePredator::initialize()
+void CBloodsukerStatePredator::initialize()
 {
 	inherited::initialize						();
 
@@ -51,7 +51,7 @@ void CustomBloodsuckerStatePredator::initialize()
 	select_camp_point							();
 }
 
-void CustomBloodsuckerStatePredator::reselect_state()
+void CBloodsukerStatePredator::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
 		select_state(eStatePredator_MoveToCover);
@@ -71,7 +71,7 @@ void CustomBloodsuckerStatePredator::reselect_state()
 	select_state(eStatePredator_Camp);
 }
 
-void CustomBloodsuckerStatePredator::finalize()
+void CBloodsukerStatePredator::finalize()
 {
 	inherited::finalize							();
 
@@ -82,7 +82,7 @@ void CustomBloodsuckerStatePredator::finalize()
 	squad->unlock_cover(m_target_node);
 }
 
-void CustomBloodsuckerStatePredator::critical_finalize()
+void CBloodsukerStatePredator::critical_finalize()
 {
 	inherited::critical_finalize				();
 
@@ -93,13 +93,13 @@ void CustomBloodsuckerStatePredator::critical_finalize()
 	squad->unlock_cover(m_target_node);
 }
 
-bool CustomBloodsuckerStatePredator::check_start_conditions()
+bool CBloodsukerStatePredator::check_start_conditions()
 {
 	if (Actor()->memory().visual().visible_now(object)) return false;
 	return true;
 }
 
-bool CustomBloodsuckerStatePredator::check_completion()
+bool CBloodsukerStatePredator::check_completion()
 {
 	if (object->HitMemory.get_last_hit_time() > time_state_started) return true;
 	if (object->EnemyMan.get_enemy() && object->EnemyMan.see_enemy_now() && (object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) return true;
@@ -107,7 +107,7 @@ bool CustomBloodsuckerStatePredator::check_completion()
 	return false;
 }
 
-void CustomBloodsuckerStatePredator::setup_substates()
+void CBloodsukerStatePredator::setup_substates()
 {
 	state_ptr state = get_state_current();
 	
@@ -171,7 +171,7 @@ void CustomBloodsuckerStatePredator::setup_substates()
 	}
 }
 
-void CustomBloodsuckerStatePredator::check_force_state()
+void CBloodsukerStatePredator::check_force_state()
 {
 	if ((current_substate == eStatePredator_Camp) && (m_time_start_camp + EntityDefinitions::CBloodsuckerBase::TIME_TO_RESELECT_CAMP < time())) {
 		if (current_substate != u32(-1))
@@ -187,7 +187,7 @@ void CustomBloodsuckerStatePredator::check_force_state()
 	}
 }
 
-void CustomBloodsuckerStatePredator::select_camp_point()
+void CBloodsukerStatePredator::select_camp_point()
 {
 	m_target_node = u32(-1);
 	if (object->Home->has_home()) {

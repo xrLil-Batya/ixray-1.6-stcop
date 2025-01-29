@@ -2,15 +2,15 @@
 
 #include "../state.h"
 
-class	CustomBloodsuckerStateJump : public CState 
+class	CBloodsukerStateJump : public CState 
 {
 protected:
 	using inherited = CState;
 	using state_ptr = CState*;
 
 public:
-	CustomBloodsuckerStateJump(CBloodsuckerBase* object);
-	virtual				~CustomBloodsuckerStateJump() override;
+	CBloodsukerStateJump(CBloodsuckerBase* object);
+	virtual				~CBloodsukerStateJump() override;
 
 	virtual	void		execute() override;
 	virtual void		setup_substates() override;
