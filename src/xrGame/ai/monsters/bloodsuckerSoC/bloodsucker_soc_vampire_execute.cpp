@@ -18,11 +18,24 @@
 #define VAMPIRE_MIN_DIST 0.5f
 #define VAMPIRE_MAX_DIST 1.f
 
+CStateBloodsuckerSoCVampireExecute::CStateBloodsuckerSoCVampireExecute(CBloodsuckerSoC* object) : inherited(object)
+{
+    pBloodsuckerBase = smart_cast<CBloodsuckerSoC*>(object);
+
+    m_action = {};
+    time_vampire_started = {};
+
+    m_effector_activated = {};
+}
+
+CStateBloodsuckerSoCVampireExecute::~CStateBloodsuckerSoCVampireExecute()
+{
+
+}
+
 void CStateBloodsuckerSoCVampireExecute::initialize()
 {
     inherited::initialize();
-
-    pBloodsuckerBase = smart_cast<CBloodsuckerSoC*>(object);
 
     pBloodsuckerBase->CControlledActor::install();
 

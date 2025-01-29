@@ -21,7 +21,9 @@ class CStateBloodsuckerSoCVampireExecute : public CState
     CBloodsuckerSoC* pBloodsuckerBase;
 
 public:
-    CStateBloodsuckerSoCVampireExecute(CBloodsuckerSoC* obj) : inherited(obj) {}
+    CStateBloodsuckerSoCVampireExecute(CBloodsuckerSoC* object);
+    virtual ~CStateBloodsuckerSoCVampireExecute();
+
     virtual void initialize();
     virtual void execute();
     virtual void finalize();
