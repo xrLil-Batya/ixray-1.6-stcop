@@ -4,15 +4,12 @@
 #include "xrEngine/CameraBase.h"
 #include "HUDManager.h"
 
-#define CStateBloodsuckerVampireExecuteAbstract CStateBloodsuckerVampireExecute<_Object>
-
 #define VAMPIRE_TIME_HOLD 4000
 #define VAMPIRE_HIT_IMPULSE 40.f
 #define VAMPIRE_MIN_DIST 0.5f
 #define VAMPIRE_MAX_DIST 1.f
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::initialize()
+void CStateBloodsuckerVampireExecute::initialize()
 {
     inherited::initialize();
 
@@ -38,8 +35,7 @@ void CStateBloodsuckerVampireExecuteAbstract::initialize()
     m_effector_activated = false;
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::execute()
+void CStateBloodsuckerVampireExecute::execute()
 {
     if (!this->object->CControlledActor::is_turning() && !m_effector_activated)
     {
@@ -98,8 +94,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
     }
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::show_hud()
+void CStateBloodsuckerVampireExecute::show_hud()
 {
     HUD().SetRenderable(true);
     NET_Packet P;
@@ -110,8 +105,7 @@ void CStateBloodsuckerVampireExecuteAbstract::show_hud()
     Actor()->u_EventSend(P);
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::cleanup()
+void CStateBloodsuckerVampireExecute::cleanup()
 {
     Actor()->set_inventory_disabled(false);
 
@@ -124,22 +118,19 @@ void CStateBloodsuckerVampireExecuteAbstract::cleanup()
     show_hud();
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::finalize()
+void CStateBloodsuckerVampireExecute::finalize()
 {
     inherited::finalize();
     cleanup();
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
+void CStateBloodsuckerVampireExecute::critical_finalize()
 {
     inherited::critical_finalize();
     cleanup();
 }
 
-template <typename _Object>
-bool CStateBloodsuckerVampireExecuteAbstract::check_start_conditions()
+bool CStateBloodsuckerVampireExecute::check_start_conditions()
 {
     const CEntityAlive* enemy = this->object->EnemyMan.get_enemy();
 
@@ -182,12 +173,10 @@ bool CStateBloodsuckerVampireExecuteAbstract::check_start_conditions()
     return true;
 }
 
-template <typename _Object>
-bool CStateBloodsuckerVampireExecuteAbstract::check_completion() { return (m_action == eActionCompleted); }
+bool CStateBloodsuckerVampireExecute::check_completion() { return (m_action == eActionCompleted); }
 //////////////////////////////////////////////////////////////////////////
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_prepare()
+void CStateBloodsuckerVampireExecute::execute_vampire_prepare()
 {
     this->object->com_man().ta_activate(this->object->anim_triple_vampire);
     time_vampire_started = Device.dwTimeGlobal;
@@ -195,8 +184,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_prepare()
     this->object->sound().play(CAI_Bloodsucker::eVampireGrasp);
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
+void CStateBloodsuckerVampireExecute::execute_vampire_continue()
 {
     const CEntityAlive* enemy = this->object->EnemyMan.get_enemy();
 
@@ -216,8 +204,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
     }
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
+void CStateBloodsuckerVampireExecute::execute_vampire_hit()
 {
     this->object->com_man().ta_pointbreak();
     this->object->sound().play(CAI_Bloodsucker::eVampireHit);
@@ -226,8 +213,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 
 //////////////////////////////////////////////////////////////////////////
 
-template <typename _Object>
-void CStateBloodsuckerVampireExecuteAbstract::look_head()
+void CStateBloodsuckerVampireExecute::look_head()
 {
     IKinematics* pK = smart_cast<IKinematics*>(this->object->Visual());
     Fmatrix bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));
@@ -237,5 +223,3 @@ void CStateBloodsuckerVampireExecuteAbstract::look_head()
 
     this->object->CControlledActor::look_point(global_transform.c);
 }
-
-#undef CStateBloodsuckerVampireExecuteAbstract

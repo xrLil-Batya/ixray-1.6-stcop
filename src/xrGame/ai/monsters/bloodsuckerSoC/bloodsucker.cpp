@@ -28,7 +28,7 @@ u32 CAI_Bloodsucker::m_time_last_vampire = 0;
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
-	StateMan						= xr_new<CStateManagerBloodsucker>(this);
+	StateMan						= new CStateManagerBloodsucker(this);
 	m_alien_control.init_external	(this);
 	
 	com_man().add_ability			(ControlCom::eControlRunAttack);
@@ -220,8 +220,8 @@ void CAI_Bloodsucker::LoadVampirePPEffector(LPCSTR section)
 void CAI_Bloodsucker::ActivateVampireEffector()
 {
 	Actor()->Cameras().AddCamEffector(
-		xr_new<CVampireCameraEffectorsoc>(6.0f, get_head_position(this), get_head_position(Actor())));
-	Actor()->Cameras().AddPPEffector(xr_new<CVampirePPEffectsocor>(pp_vampire_effector, 6.0f));
+		new CVampireCameraEffectorsoc(6.0f, get_head_position(this), get_head_position(Actor())));
+	Actor()->Cameras().AddPPEffector(new CVampirePPEffectsocor(pp_vampire_effector, 6.0f));
 }
 
 bool CAI_Bloodsucker::WantVampire() { return !!fsimilar(m_vampire_want_value, 1.f); }

@@ -3,9 +3,9 @@
 
 class CAI_Bloodsucker;
 
-class CStateManagerBloodsucker : public CMonsterStateManager<CAI_Bloodsucker> 
+class CStateManagerBloodsucker : public CMonsterStateManager
 {
-	typedef CMonsterStateManager<CAI_Bloodsucker> inherited;
+	typedef CMonsterStateManager inherited;
 
 public:
 					CStateManagerBloodsucker	(CAI_Bloodsucker *monster); 

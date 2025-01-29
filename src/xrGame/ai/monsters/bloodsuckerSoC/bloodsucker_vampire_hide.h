@@ -1,11 +1,10 @@
 #pragma once
 #include "../state.h"
 
-template <typename _Object>
-class CStateBloodsuckerVampireHide : public CState<_Object>
+class CStateBloodsuckerVampireHide : public CState
 {
-    typedef CState<_Object> inherited;
-    typedef CState<_Object>* state_ptr;
+    typedef CState inherited;
+    typedef CState* state_ptr;
 
 public:
     CStateBloodsuckerVampireHide(_Object* obj);

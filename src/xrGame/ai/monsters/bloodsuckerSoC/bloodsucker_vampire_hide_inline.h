@@ -2,17 +2,13 @@
 #include "../states/state_hide_from_point.h"
 #include "bloodsucker_predator.h"
 
-#define CStateBloodsuckerVampireHideAbstract CStateBloodsuckerVampireHide<_Object>
-
-template <typename _Object>
-CStateBloodsuckerVampireHideAbstract::CStateBloodsuckerVampireHide(_Object* obj) : inherited(obj)
+CStateBloodsuckerVampireHide::CStateBloodsuckerVampireHide(_Object* obj) : inherited(obj)
 {
-    add_state(eStateVampire_RunAway, xr_new<CStateMonsterHideFromPoint<_Object>>(obj));
-    add_state(eStatePredator, xr_new<CStateBloodsuckerPredator<_Object>>(obj));
+    add_state(eStateVampire_RunAway, new CStateMonsterHideFromPoint(obj));
+    add_state(eStatePredator, new CStateBloodsuckerPredator(obj));
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireHideAbstract::reselect_state()
+void CStateBloodsuckerVampireHide::reselect_state()
 {
     if (prev_substate == eStateVampire_RunAway)
     {
@@ -26,8 +22,7 @@ void CStateBloodsuckerVampireHideAbstract::reselect_state()
     select_state(eStateVampire_RunAway);
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireHideAbstract::setup_substates()
+void CStateBloodsuckerVampireHide::setup_substates()
 {
     state_ptr state = get_state_current();
 
@@ -50,13 +45,10 @@ void CStateBloodsuckerVampireHideAbstract::setup_substates()
     }
 }
 
-template <typename _Object>
-bool CStateBloodsuckerVampireHideAbstract::check_completion()
+bool CStateBloodsuckerVampireHide::check_completion()
 {
     if ((current_substate == eStatePredator) && get_state_current()->check_completion())
         return true;
 
     return false;
 }
-
-#undef CStateBloodsuckerVampireHideAbstract

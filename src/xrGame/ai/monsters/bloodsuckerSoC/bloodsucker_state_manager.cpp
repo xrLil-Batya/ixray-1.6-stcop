@@ -21,13 +21,13 @@
 
 CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : inherited(monster)
 {
-	add_state(eStateRest, xr_new<CStateMonsterRest<CAI_Bloodsucker>>(monster));
-	add_state(eStatePanic, xr_new <CStateMonsterPanic<CAI_Bloodsucker>>(monster));
-	add_state(eStateAttack, xr_new <CBloodsuckerStateAttack<CAI_Bloodsucker>>(monster));
-	add_state(eStateEat, xr_new <CStateMonsterEat<CAI_Bloodsucker>>(monster));
-	add_state(eStateHearInterestingSound, xr_new <CStateMonsterHearInterestingSound<CAI_Bloodsucker>>(monster));
-	add_state(eStateHitted, xr_new <CStateMonsterHitted<CAI_Bloodsucker>>(monster));
-	add_state(eStateVampire_Execute, xr_new <CStateBloodsuckerVampireExecute<CAI_Bloodsucker>>(monster));
+	add_state(eStateRest, new CStateMonsterRest(monster));
+	add_state(eStatePanic, new CStateMonsterPanic(monster));
+	add_state(eStateAttack, new CBloodsuckerStateAttack(monster));
+	add_state(eStateEat, new CStateMonsterEat(monster));
+	add_state(eStateHearInterestingSound, new CStateMonsterHearInterestingSound(monster));
+	add_state(eStateHitted, new CStateMonsterHitted(monster));
+	add_state(eStateVampire_Execute, new CStateBloodsuckerVampireExecute(monster));
 }
 
 bool CStateManagerBloodsucker::check_vampire()

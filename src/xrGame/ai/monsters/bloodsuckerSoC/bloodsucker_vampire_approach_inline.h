@@ -1,20 +1,16 @@
 #pragma once
 
-#define CStateBloodsuckerVampireApproachAbstract CStateBloodsuckerVampireApproach<_Object>
+CStateBloodsuckerVampireApproach::CStateBloodsuckerVampireApproach(_Object* obj) : inherited(obj) {}
 
-template <typename _Object>
-CStateBloodsuckerVampireApproachAbstract::CStateBloodsuckerVampireApproach(_Object* obj) : inherited(obj) {}
-template <typename _Object>
-CStateBloodsuckerVampireApproachAbstract::~CStateBloodsuckerVampireApproach() {}
-template <typename _Object>
-void CStateBloodsuckerVampireApproachAbstract::initialize()
+CStateBloodsuckerVampireApproach::~CStateBloodsuckerVampireApproach() {}
+
+void CStateBloodsuckerVampireApproach::initialize()
 {
     inherited::initialize();
     object->path().prepare_builder();
 }
 
-template <typename _Object>
-void CStateBloodsuckerVampireApproachAbstract::execute()
+void CStateBloodsuckerVampireApproach::execute()
 {
     // установка параметров функциональных блоков
     object->set_action(ACT_RUN);

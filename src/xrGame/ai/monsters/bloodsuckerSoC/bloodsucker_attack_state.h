@@ -1,9 +1,8 @@
 #pragma once
 #include "../states/monster_state_attack.h"
 
-template<typename _Object>
-class	CBloodsuckerStateAttack : public CStateMonsterAttack<_Object> {
-	typedef CStateMonsterAttack<_Object> inherited_attack;
+class	CBloodsuckerStateAttack : public CStateMonsterAttack {
+	typedef CStateMonsterAttack inherited_attack;
 
 	u32				m_time_stop_invis;
 	Fvector			m_dir_point;

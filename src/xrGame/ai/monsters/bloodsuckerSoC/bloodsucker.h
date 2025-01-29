@@ -54,9 +54,6 @@ private:
 	CBoneInstance			*bone_spine;
 	CBoneInstance			*bone_head;
 
-	//--------------------------------------------------------------------
-	// Invisibility
-	//--------------------------------------------------------------------
 private:
 	SMotionVel				invisible_vel;
 	LPCSTR					invisible_particle_name;
@@ -66,9 +63,6 @@ public:
 			void			stop_invisible_predator		();
 			u32				threaten_time				() {return m_threaten_time;}
 
-	//--------------------------------------------------------------------
-	// Vampire
-	//--------------------------------------------------------------------
 public:
 	u32 m_vampire_min_delay;
 	static u32 m_time_last_vampire;
@@ -85,27 +79,15 @@ private:
 	float m_vampire_gain_health;
 	float m_vampire_distance;
 	void LoadVampirePPEffector(LPCSTR section);
-	//--------------------------------------------------------------------
-	// Threaten
-	//--------------------------------------------------------------------
 
 	u32					m_threaten_time;	
 
-	//--------------------------------------------------------------------
-	// Alien
-	//--------------------------------------------------------------------
 public:
 	CBloodsuckerAlien		m_alien_control;
 	u32						m_time_lunge;
 	
-	
-
 			void			set_alien_control		(bool val);
 
-
-	//--------------------------------------------------------------------
-	// Predator
-	//--------------------------------------------------------------------
 public:
 	shared_str				m_visual_default;
 	LPCSTR					m_visual_predator;
@@ -116,9 +98,6 @@ public:
 			void			predator_freeze			();
 			void			predator_unfreeze		();
 	
-	//--------------------------------------------------------------------
-	// Sounds
-	//--------------------------------------------------------------------
 public:
 
 	enum EBloodsuckerSounds 
