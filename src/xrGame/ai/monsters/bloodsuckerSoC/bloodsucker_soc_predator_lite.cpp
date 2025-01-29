@@ -1,4 +1,10 @@
-#pragma once
+#include "stdafx.h"
+#include "bloodsucker_soc.h"
+#include "bloodsucker_soc_predator_lite.h"
+
+#include "ai_object_location.h"
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
 
 #include "../states/state_move_to_point.h"
 #include "../states/state_look_point.h"
@@ -11,8 +17,10 @@
 #include "../../../actor_memory.h"
 #include "../../../visual_memory_manager.h"
 
-CStateBloodsuckerSoCPredatorLite::CStateBloodsuckerSoCPredatorLite(_Object *obj) : inherited(obj)
+CStateBloodsuckerSoCPredatorLite::CStateBloodsuckerSoCPredatorLite(CBloodsuckerSoC* obj) : inherited(obj)
 {
+	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
+
 	add_state	(eStatePredator_Camp, new CStateMonsterCustomAction(obj));
 	add_state	(eStatePredator_MoveToCover, new CStateMonsterMoveToPointEx(obj));
 	add_state	(eStatePredator_LookOpenPlace, new CStateMonsterLookToPoint(obj));
@@ -27,7 +35,7 @@ void CStateBloodsuckerSoCPredatorLite::initialize()
 {
 	inherited::initialize						();
 
-	object->predator_start						();
+	m_pBloodsucker->predator_start						();
 
 	m_target_node								= u32(-1);
 	m_freezed									= false;
@@ -66,8 +74,8 @@ void CStateBloodsuckerSoCPredatorLite::reselect_state()
 void CStateBloodsuckerSoCPredatorLite::finalize()
 {
 	inherited::finalize							();
-	object->predator_stop						();
-	if (m_freezed)	object->predator_unfreeze	();
+	m_pBloodsucker->predator_stop						();
+	if (m_freezed)	m_pBloodsucker->predator_unfreeze	();
 
 	if (m_target_node != u32(-1)) 
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
@@ -76,8 +84,8 @@ void CStateBloodsuckerSoCPredatorLite::finalize()
 void CStateBloodsuckerSoCPredatorLite::critical_finalize()
 {
 	inherited::critical_finalize				();
-	object->predator_stop						();
-	if (m_freezed)	object->predator_unfreeze	();
+	m_pBloodsucker->predator_stop						();
+	if (m_freezed)	m_pBloodsucker->predator_unfreeze	();
 
 	if (m_target_node != u32(-1)) 
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
@@ -99,10 +107,10 @@ void CStateBloodsuckerSoCPredatorLite::setup_substates()
 	state_ptr state = get_state_current();
 
 	if (current_substate == eStatePredator_Camp) {
-		object->predator_freeze		();
+		m_pBloodsucker->predator_freeze		();
 		m_freezed					= true;
 	} else {
-		object->predator_unfreeze	();
+		m_pBloodsucker->predator_unfreeze	();
 		m_freezed					= false;
 	}
 

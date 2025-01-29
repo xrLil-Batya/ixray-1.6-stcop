@@ -4,8 +4,8 @@
 #include "../control_animation_base.h"
 #include "../control_direction_base.h"
 #include "ai_object_location.h"
-#include "bloodsucker.h"
-#include "bloodsucker_vampire_execute.h"
+#include "bloodsucker_soc.h"
+#include "bloodsucker_soc_vampire_execute.h"
 
 #include "../../../../Include/xrRender/KinematicsAnimated.h"
 #include "../../../actor.h"
@@ -22,15 +22,17 @@ void CStateBloodsuckerSoCVampireExecute::initialize()
 {
     inherited::initialize();
 
-    this->object->CControlledActor::install();
+    pBloodsuckerBase = smart_cast<CBloodsuckerSoC*>(object);
+
+    pBloodsuckerBase->CControlledActor::install();
 
     look_head();
 
     m_action = eActionPrepare;
     time_vampire_started = 0;
 
-    this->object->m_hits_before_vampire = 0;
-    this->object->m_sufficient_hits_before_vampire_random = -1 + (rand() % 3);
+    pBloodsuckerBase->m_hits_before_vampire = 0;
+    pBloodsuckerBase->m_sufficient_hits_before_vampire_random = -1 + (rand() % 3);
 
     HUD().SetRenderable(false);
     NET_Packet P;
@@ -46,9 +48,9 @@ void CStateBloodsuckerSoCVampireExecute::initialize()
 
 void CStateBloodsuckerSoCVampireExecute::execute()
 {
-    if (!this->object->CControlledActor::is_turning() && !m_effector_activated)
+    if (!pBloodsuckerBase->CControlledActor::is_turning() && !m_effector_activated)
     {
-        this->object->ActivateVampireEffector();
+        pBloodsuckerBase->ActivateVampireEffector();
         m_effector_activated = true;
     }
 
@@ -81,7 +83,7 @@ void CStateBloodsuckerSoCVampireExecute::execute()
 
     Fvector const enemy_to_self = this->object->EnemyMan.get_enemy()->Position() - this->object->Position();
     float const dist_to_enemy = magnitude(enemy_to_self);
-    float const vampire_dist = this->object->get_vampire_distance();
+    float const vampire_dist = pBloodsuckerBase->get_vampire_distance();
 
     if (angle_between_vectors(this->object->Direction(), enemy_to_self) < deg2rad(20.f) && dist_to_enemy > vampire_dist)
     {
@@ -121,8 +123,8 @@ void CStateBloodsuckerSoCVampireExecute::cleanup()
     if (this->object->com_man().ta_is_active())
         this->object->com_man().ta_deactivate();
 
-    if (this->object->CControlledActor::is_controlling())
-        this->object->CControlledActor::release();
+    if (pBloodsuckerBase->CControlledActor::is_controlling())
+        pBloodsuckerBase->CControlledActor::release();
 
     show_hud();
 }
@@ -147,7 +149,7 @@ bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
     // 	float dist		= object->MeleeChecker.distance_to_enemy	(enemy);
     // 	if ((dist > VAMPIRE_MAX_DIST) || (dist < VAMPIRE_MIN_DIST))	return false;
 
-    if (!this->object->done_enough_hits_before_vampire())
+    if (!pBloodsuckerBase->done_enough_hits_before_vampire())
         return false;
 
     u32 const vertex_id = ai().level_graph().check_position_in_direction(
@@ -162,14 +164,14 @@ bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
     if (!this->object->control().direction().is_face_target(enemy, PI_DIV_2))
         return false;
 
-    if (!this->object->WantVampire())
+    if (!pBloodsuckerBase->WantVampire())
         return false;
 
     // является ли враг актером
     if (!smart_cast<CActor const*>(enemy))
         return false;
 
-    if (this->object->CControlledActor::is_controlling())
+    if (pBloodsuckerBase->CControlledActor::is_controlling())
         return false;
 
     const CActor* actor = smart_cast<const CActor*>(enemy);
@@ -187,7 +189,7 @@ bool CStateBloodsuckerSoCVampireExecute::check_completion() { return (m_action =
 
 void CStateBloodsuckerSoCVampireExecute::execute_vampire_prepare()
 {
-    this->object->com_man().ta_activate(this->object->anim_triple_vampire);
+    this->object->com_man().ta_activate(pBloodsuckerBase->anim_triple_vampire);
     time_vampire_started = Device.dwTimeGlobal;
 
     this->object->sound().play(CBloodsuckerSoC::eVampireGrasp);
@@ -217,7 +219,7 @@ void CStateBloodsuckerSoCVampireExecute::execute_vampire_hit()
 {
     this->object->com_man().ta_pointbreak();
     this->object->sound().play(CBloodsuckerSoC::eVampireHit);
-    this->object->SatisfyVampire();
+    pBloodsuckerBase->SatisfyVampire();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -230,5 +232,5 @@ void CStateBloodsuckerSoCVampireExecute::look_head()
     Fmatrix global_transform;
     global_transform.mul_43(this->object->XFORM(), bone_transform);
 
-    this->object->CControlledActor::look_point(global_transform.c);
+    pBloodsuckerBase->CControlledActor::look_point(global_transform.c);
 }

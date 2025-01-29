@@ -7,9 +7,9 @@
 #include "../../../../xrEngine/CustomHUD.h"
 
 //#include "bloodsucker_alien_pp.h"
-#include "bloodsucker_alien.h"
+#include "bloodsucker_soc_alien.h"
 
-#include "bloodsucker.h"
+#include "bloodsucker_soc.h"
 
 //#include "bloodsucker_alien_effector.h"
 

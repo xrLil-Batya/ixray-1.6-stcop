@@ -5,8 +5,8 @@
 
 #include "ai_object_location.h"
 
-#include "bloodsucker.h"
-#include "bloodsucker_vampire_approach.h"
+#include "bloodsucker_soc.h"
+#include "bloodsucker_soc_vampire_approach.h"
 
 CStateBloodsuckerSoCVampireApproach::CStateBloodsuckerSoCVampireApproach(CBloodsuckerSoC* obj) : inherited(obj) {}
 

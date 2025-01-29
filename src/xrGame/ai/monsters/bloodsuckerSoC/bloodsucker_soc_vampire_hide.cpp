@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "bloodsucker.h"
-#include "bloodsucker_vampire_hide.h"
+#include "bloodsucker_soc.h"
+#include "bloodsucker_soc_vampire_hide.h"
 
 #include "../states/state_hide_from_point.h"
-#include "bloodsucker_predator.h"
+#include "bloodsucker_soc_predator.h"
 
 CStateBloodsuckerSoCVampireHide::CStateBloodsuckerSoCVampireHide(CBloodsuckerSoC* obj) : inherited(obj)
 {

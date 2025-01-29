@@ -1,4 +1,13 @@
-#pragma once
+#include "stdafx.h"
+#include "bloodsucker_soc.h"
+#include "bloodsucker_soc_predator.h"
+
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+
+#include "ai_object_location.h"
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
 
 #include "../states/state_move_to_point.h"
 #include "../states/state_look_point.h"
@@ -11,8 +20,10 @@
 #include "../../../actor_memory.h"
 #include "../../../visual_memory_manager.h"
 
-CStateBloodsuckerSoCPredator::CStateBloodsuckerPredator(_Object *obj) : inherited(obj)
+CStateBloodsuckerSoCPredator::CStateBloodsuckerSoCPredator(CBloodsuckerSoC* obj) : inherited(obj)
 {
+	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
+
 	add_state	(eStatePredator_MoveToCover, new CStateMonsterMoveToPointEx(obj));
 	add_state	(eStatePredator_LookOpenPlace, new CStateMonsterLookToPoint(obj));
 	add_state	(eStatePredator_Camp, new CStateMonsterCustomAction(obj));
@@ -27,7 +38,7 @@ void CStateBloodsuckerSoCPredator::initialize()
 {
 	inherited::initialize						();
 
-	object->predator_start						();
+	m_pBloodsucker->predator_start						();
 
 	select_camp_point							();
 }
@@ -56,8 +67,8 @@ void CStateBloodsuckerSoCPredator::finalize()
 {
 	inherited::finalize							();
 
-	object->predator_stop						();
-	object->predator_unfreeze					();
+	m_pBloodsucker->predator_stop						();
+	m_pBloodsucker->predator_unfreeze					();
 
 	CMonsterSquad *squad = monster_squad().get_squad(object);
 	squad->unlock_cover(m_target_node);
@@ -68,8 +79,8 @@ void CStateBloodsuckerSoCPredator::critical_finalize()
 {
 	inherited::critical_finalize				();
 
-	object->predator_stop						();
-	object->predator_unfreeze					();
+	m_pBloodsucker->predator_stop						();
+	m_pBloodsucker->predator_unfreeze					();
 
 	CMonsterSquad *squad = monster_squad().get_squad(object);
 	squad->unlock_cover(m_target_node);
@@ -94,11 +105,11 @@ void CStateBloodsuckerSoCPredator::setup_substates()
 	state_ptr state = get_state_current();
 	
 	if (current_substate == eStatePredator_Camp) {
-		object->predator_freeze	();
+		m_pBloodsucker->predator_freeze	();
 		m_time_start_camp		= time();
 
 	} else {
-		object->predator_unfreeze();
+		m_pBloodsucker->predator_unfreeze();
 	}
 
 	if (current_substate == eStatePredator_MoveToCover) {

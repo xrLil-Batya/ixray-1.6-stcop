@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "bloodsucker_state_manager.h"
-#include "bloodsucker.h"
+#include "bloodsucker_soc_state_manager.h"
+#include "bloodsucker_soc.h"
 
 #include "../control_animation_base.h"
 #include "../control_direction_base.h"
@@ -14,14 +14,16 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hitted.h"
 
-#include "bloodsucker_vampire.h"
-#include "bloodsucker_predator.h"
-#include "bloodsucker_vampire_execute.h"
+//#include "bloodsucker_soc_vampire.h"
+#include "bloodsucker_soc_predator.h"
+#include "bloodsucker_soc_vampire_execute.h"
 
-#include "bloodsucker_attack_state.h"
+#include "bloodsucker_soc_attack_state.h"
 
 CStateManagerBloodsuckerSoC::CStateManagerBloodsuckerSoC(CBloodsuckerSoC* monster) : inherited(monster)
 {
+	pBloodsuckerBase = smart_cast<CBloodsuckerSoC*>(object);
+
 	add_state(eStateRest, new CStateMonsterRest(monster));
 	add_state(eStatePanic, new CStateMonsterPanic(monster));
 	add_state(eStateAttack, new CBloodsuckerSoCStateAttack(monster));
@@ -88,11 +90,11 @@ void CStateManagerBloodsuckerSoC::execute()
 
 	// check if start interesting sound state
 	if ((prev_substate != eStateHearInterestingSound) && (state_id == eStateHearInterestingSound)){
-		object->predator_start();
+		pBloodsuckerBase->predator_start();
 	} else
 	// check if stop interesting sound state
 	if ((prev_substate == eStateHearInterestingSound) && (state_id != eStateHearInterestingSound)) {
-		object->predator_stop();
+		pBloodsuckerBase->predator_stop();
 	}
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -100,8 +102,8 @@ void CStateManagerBloodsuckerSoC::execute()
 	select_state(state_id); 
 
 	if ((current_substate == eStateAttack) && (current_substate != prev_substate)) {
-		object->predator_stop();
-		object->start_threaten = true;
+		pBloodsuckerBase->predator_stop();
+		pBloodsuckerBase->start_threaten = true;
 	}
 
 	// выполнить текущее состояние

@@ -16,21 +16,30 @@
 #include "../control_animation_base.h"
 #include "../control_direction_base.h"
 
+#include "ai_object_location.h"
+
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
 
-#include "bloodsucker.h"
-#include "bloodsucker_attack_state.h"
-#include "bloodsucker_vampire_execute.h"
-#include "bloodsucker_attack_state_hide.h"
-#include "bloodsucker_predator_lite.h"
+#include "bloodsucker_soc.h"
+#include "bloodsucker_soc_attack_state.h"
+#include "bloodsucker_soc_vampire_execute.h"
+#include "bloodsucker_soc_attack_state_hide.h"
 
 #include "../states/state_move_to_point.h"
+
+#include "bloodsucker_soc_predator_lite.h"
+
+#include "../../../cover_point.h"
+#include "../monster_cover_manager.h"
+#include "../monster_home.h"
 
 //#include "bloodsucker_backstub_enemy.h"
 
 CBloodsuckerSoCStateAttackHide::CBloodsuckerSoCStateAttackHide(CBloodsuckerSoC *obj) : inherited(obj)
 {
+	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
+
 	add_state	(eStateAttack_HideInCover, new CStateMonsterMoveToPointEx (obj));
 	add_state	(eStateAttack_CampInCover, new CStateBloodsuckerSoCPredatorLite(obj));
 }
@@ -46,7 +55,7 @@ void CBloodsuckerSoCStateAttackHide::initialize()
 
 	m_target_node			= u32(-1);
 
-	object->start_invisible_predator();
+	m_pBloodsucker->start_invisible_predator();
 }
 
 void CBloodsuckerSoCStateAttackHide::reselect_state()

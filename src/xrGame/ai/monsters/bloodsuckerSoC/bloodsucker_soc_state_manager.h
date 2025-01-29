@@ -7,6 +7,8 @@ class CStateManagerBloodsuckerSoC : public CMonsterStateManager
 {
 	typedef CMonsterStateManager inherited;
 
+	CBloodsuckerSoC* pBloodsuckerBase;
+
 public:
 					CStateManagerBloodsuckerSoC (CBloodsuckerSoC* monster);
 	virtual void	execute						();

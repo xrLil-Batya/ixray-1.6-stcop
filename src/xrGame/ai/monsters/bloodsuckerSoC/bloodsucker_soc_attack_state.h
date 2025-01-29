@@ -7,6 +7,8 @@ class	CBloodsuckerSoCStateAttack : public CStateMonsterAttack {
 	u32				m_time_stop_invis;
 	Fvector			m_dir_point;
 
+	CBloodsuckerSoC* m_pBloodsucker;
+
 public:
 	CBloodsuckerSoCStateAttack(CBloodsuckerSoC* obj);
 	virtual			~CBloodsuckerSoCStateAttack();

@@ -7,6 +7,8 @@ class	CBloodsuckerSoCStateAttackHide : public CState {
 
 	u32							m_target_node;
 
+	CBloodsuckerSoC* m_pBloodsucker;
+
 public:
 	CBloodsuckerSoCStateAttackHide(CBloodsuckerSoC* obj);
 

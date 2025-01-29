@@ -18,6 +18,8 @@ class CStateBloodsuckerSoCVampireExecute : public CState
 
     bool m_effector_activated;
 
+    CBloodsuckerSoC* pBloodsuckerBase;
+
 public:
     CStateBloodsuckerSoCVampireExecute(CBloodsuckerSoC* obj) : inherited(obj) {}
     virtual void initialize();

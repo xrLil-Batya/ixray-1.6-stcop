@@ -7,7 +7,7 @@
 #include "../controlled_actor.h"
 #include "../anim_triple.h"
 #include "../../../../xrScripts/script_export_space.h"
-#include "bloodsucker_alien.h"
+#include "bloodsucker_soc_alien.h"
 
 class CBloodsuckerSoC : public CBaseMonster,
 						public CControlledActor {

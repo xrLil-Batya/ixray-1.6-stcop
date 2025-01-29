@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "bloodsucker_vampire_effector.h"
+#include "bloodsucker_soc_vampire_effector.h"
 
 CVampirePPEffectsocor::CVampirePPEffectsocor(const SPPInfo& ppi, float life_time)
     : inherited(EEffectorPPType(eCEHit), life_time)

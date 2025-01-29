@@ -6,9 +6,9 @@
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
 
-#include "bloodsucker.h"
-#include "bloodsucker_attack_state.h"
-#include "bloodsucker_vampire_execute.h"
+#include "bloodsucker_soc.h"
+#include "bloodsucker_soc_attack_state.h"
+#include "bloodsucker_soc_vampire_execute.h"
 
 #include "../states/state_move_to_point.h"
 
@@ -16,6 +16,8 @@
 
 CBloodsuckerSoCStateAttack::CBloodsuckerSoCStateAttack(CBloodsuckerSoC* obj) : inherited_attack(obj)
 {
+	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
+
 	add_state	(eStateVampire_Execute, new CStateBloodsuckerSoCVampireExecute(obj));
 	add_state	(eStateAttack_Hide, new CStateMonsterMoveToPointEx(obj));
 }
@@ -33,13 +35,13 @@ void CBloodsuckerSoCStateAttack::initialize()
 void CBloodsuckerSoCStateAttack::finalize()
 {
 	inherited::finalize();
-	object->stop_invisible_predator();
+	m_pBloodsucker->stop_invisible_predator();
 }
 
 void CBloodsuckerSoCStateAttack::critical_finalize()
 {
 	inherited::critical_finalize();
-	object->stop_invisible_predator();
+	m_pBloodsucker->stop_invisible_predator();
 }
 
 #define	INVIS_ACTIVATE_DELAY	3000
@@ -149,26 +151,26 @@ bool CBloodsuckerSoCStateAttack::check_vampire()
 
 void CBloodsuckerSoCStateAttack::update_invisibility()
 {
-	if (object->threaten_time() > 0) 
+	if (m_pBloodsucker->threaten_time() > 0)
 	{
-		object->stop_invisible_predator	();
+		m_pBloodsucker->stop_invisible_predator	();
 		return;
 	}
 
 	if (object->state_invisible) {
 		// check conditions to stop invis
 		if (current_substate == eStateAttack_Melee) {
-			object->stop_invisible_predator	();
+			m_pBloodsucker->stop_invisible_predator	();
 			m_time_stop_invis				= time();		
 		}
 	} else {
 		// check conditions to start invis
 		if (current_substate == eStateAttack_Hide) {
-			object->start_invisible_predator();
+			m_pBloodsucker->start_invisible_predator();
 		} else 
 		if ((current_substate == eStateAttack_Run) && (object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) > INVIS_DIST_TO_ENEMY)) {
 			if (m_time_stop_invis + INVIS_ACTIVATE_DELAY < time()) 
-				object->start_invisible_predator();
+				m_pBloodsucker->start_invisible_predator();
 		}
 	}
 }
