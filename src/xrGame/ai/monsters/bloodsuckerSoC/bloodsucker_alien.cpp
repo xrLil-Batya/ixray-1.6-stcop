@@ -1,12 +1,17 @@
 #include "stdafx.h"
-#include "bloodsucker_alien.h"
-#include "bloodsucker.h"
-#include "../../../level.h"
-#include "../../../actor.h"
+#include "../../../Level.h"
+#include "../../../Actor.h"
 #include "../../../ActorEffector.h"
-#include "../../../inventory.h"
+#include "../../../Inventory.h"
 #include "../../../HudItem.h"
 #include "../../../../xrEngine/CustomHUD.h"
+
+//#include "bloodsucker_alien_pp.h"
+#include "bloodsucker_alien.h"
+
+#include "bloodsucker.h"
+
+//#include "bloodsucker_alien_effector.h"
 
 #define EFFECTOR_ID_GEN(type) (type( u32(u64(this) & u32(-1)) ))
 
@@ -77,14 +82,14 @@ class CAlienEffectsoc : public CEffectorCam {
 	Fvector	dangle_target;
 	Fvector dangle_current;
 
-	CAI_Bloodsucker *monster;
+	CBloodsuckerSoC* monster;
 
 	float		m_current_fov;
 	Fmatrix		m_prev_eye_matrix;
 	float		m_inertion;
 
 public:
-					CAlienEffectsoc (ECamEffectorType type, CAI_Bloodsucker *obj);
+					CAlienEffectsoc (ECamEffectorType type, CBloodsuckerSoC* obj);
 	virtual BOOL	ProcessCam		(SCamEffectorInfo& info);
 };
 
@@ -100,7 +105,7 @@ public:
 #define	MAX_CAMERA_DIST		3.5f
 
 
-CAlienEffectsoc::CAlienEffectsoc(ECamEffectorType type, CAI_Bloodsucker *obj) :
+CAlienEffectsoc::CAlienEffectsoc(ECamEffectorType type, CBloodsuckerSoC* obj) :
 	inherited(type, flt_max)
 {
 	dangle_target.set		(angle_normalize(Random.randFs(DELTA_ANGLE_X)),angle_normalize(Random.randFs(DELTA_ANGLE_Y)),angle_normalize(Random.randFs(DELTA_ANGLE_Z)));
@@ -186,27 +191,27 @@ BOOL CAlienEffectsoc::ProcessCam(SCamEffectorInfo& info)
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-CBloodsuckerAlien::CBloodsuckerAlien()
+CBloodsuckerSoCAlien::CBloodsuckerSoCAlien()
 {
 	m_object	= 0;
 }
 
-CBloodsuckerAlien::~CBloodsuckerAlien()
+CBloodsuckerSoCAlien::~CBloodsuckerSoCAlien()
 {
 }
 
-void CBloodsuckerAlien::init_external(CAI_Bloodsucker *obj)
+void CBloodsuckerSoCAlien::init_external(CBloodsuckerSoC* obj)
 {
 	m_object	= obj;
 }
 
-void CBloodsuckerAlien::reinit()
+void CBloodsuckerSoCAlien::reinit()
 {
 	m_active				= false;	
 	m_crosshair_show		= false;
 }
 
-void CBloodsuckerAlien::activate()
+void CBloodsuckerSoCAlien::activate()
 {
 	if (m_active) return;
 
@@ -236,7 +241,7 @@ void CBloodsuckerAlien::activate()
 	m_active					= true;
 }
 
-void CBloodsuckerAlien::deactivate()
+void CBloodsuckerSoCAlien::deactivate()
 {
 	if (!m_active) return;
 

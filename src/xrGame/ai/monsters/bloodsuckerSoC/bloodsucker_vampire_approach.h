@@ -1,17 +1,15 @@
 #pragma once
 #include "../state.h"
 
-class CStateBloodsuckerVampireApproach : public CState
+class CStateBloodsuckerSoCVampireApproach : public CState
 {
     typedef CState inherited;
 
 public:
-    CStateBloodsuckerVampireApproach(_Object* obj);
-    virtual ~CStateBloodsuckerVampireApproach();
+    CStateBloodsuckerSoCVampireApproach(CBloodsuckerSoC* obj);
+    virtual ~CStateBloodsuckerSoCVampireApproach();
 
     virtual void initialize();
     virtual void execute();
     virtual void remove_links(CObject* object) { inherited::remove_links(object); }
 };
-
-#include "bloodsucker_vampire_approach_inline.h"

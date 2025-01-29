@@ -1,14 +1,14 @@
 #pragma once
 #include "../state.h"
 
-class	CBloodsuckerStateAttackHide : public CState {
+class	CBloodsuckerSoCStateAttackHide : public CState {
 	typedef CState		inherited;
 	typedef CState*	state_ptr;
 
 	u32							m_target_node;
 
 public:
-						CBloodsuckerStateAttackHide			(_Object *obj);
+	CBloodsuckerSoCStateAttackHide(CBloodsuckerSoC* obj);
 
 	virtual void		reinit							();
 
@@ -24,5 +24,3 @@ public:
 private:
 	void		select_camp_point				();
 };
-
-#include "bloodsucker_attack_state_hide_inline.h"

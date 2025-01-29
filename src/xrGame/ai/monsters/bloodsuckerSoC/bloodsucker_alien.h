@@ -1,12 +1,12 @@
 #pragma once
 
-class CAI_Bloodsucker;
+class CBloodsuckerSoC;
 class CAlienEffectsoc;
 class CAlienEffectsocPP;
 
-class CBloodsuckerAlien {
+class CBloodsuckerSoCAlien {
 	
-	CAI_Bloodsucker			*m_object;
+	CBloodsuckerSoC*m_object;
 	
 	bool						m_active;
 
@@ -16,10 +16,10 @@ class CBloodsuckerAlien {
 	bool						m_crosshair_show;
 
 public:
-			CBloodsuckerAlien	();
-			~CBloodsuckerAlien	();
+	CBloodsuckerSoCAlien();
+			~CBloodsuckerSoCAlien();
 	
-	void	init_external		(CAI_Bloodsucker *obj);	
+	void	init_external		(CBloodsuckerSoC*obj);
 	void	reinit				();
 
 	void	activate			();

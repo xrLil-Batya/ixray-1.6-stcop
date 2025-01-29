@@ -16,21 +16,22 @@
 
 #include "bloodsucker_vampire.h"
 #include "bloodsucker_predator.h"
+#include "bloodsucker_vampire_execute.h"
 
 #include "bloodsucker_attack_state.h"
 
-CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : inherited(monster)
+CStateManagerBloodsuckerSoC::CStateManagerBloodsuckerSoC(CBloodsuckerSoC* monster) : inherited(monster)
 {
 	add_state(eStateRest, new CStateMonsterRest(monster));
 	add_state(eStatePanic, new CStateMonsterPanic(monster));
-	add_state(eStateAttack, new CBloodsuckerStateAttack(monster));
+	add_state(eStateAttack, new CBloodsuckerSoCStateAttack(monster));
 	add_state(eStateEat, new CStateMonsterEat(monster));
 	add_state(eStateHearInterestingSound, new CStateMonsterHearInterestingSound(monster));
 	add_state(eStateHitted, new CStateMonsterHitted(monster));
-	add_state(eStateVampire_Execute, new CStateBloodsuckerVampireExecute(monster));
+	add_state(eStateVampire_Execute, new CStateBloodsuckerSoCVampireExecute(monster));
 }
 
-bool CStateManagerBloodsucker::check_vampire()
+bool CStateManagerBloodsuckerSoC::check_vampire()
 {
 	if (prev_substate != eStateVampire_Execute)
 	{
@@ -45,7 +46,7 @@ bool CStateManagerBloodsucker::check_vampire()
 	return false;
 }
 
-void CStateManagerBloodsucker::execute()
+void CStateManagerBloodsuckerSoC::execute()
 {
 	u32 state_id = u32(-1);
 

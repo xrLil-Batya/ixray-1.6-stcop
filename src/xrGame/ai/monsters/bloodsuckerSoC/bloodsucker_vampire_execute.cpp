@@ -1,15 +1,24 @@
-#pragma once
-#include "Include/xrRender/KinematicsAnimated.h"
-#include "Actor.h"
-#include "xrEngine/CameraBase.h"
-#include "HUDManager.h"
+#include "stdafx.h"
+#include "../../../xrCore/_vector3d_ext.h"
+#include "sound_player.h"
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+#include "ai_object_location.h"
+#include "bloodsucker.h"
+#include "bloodsucker_vampire_execute.h"
+
+#include "../../../../Include/xrRender/KinematicsAnimated.h"
+#include "../../../actor.h"
+#include "../../../../xrEngine/CameraBase.h"
+
+#include "../../../HudManager.h"
 
 #define VAMPIRE_TIME_HOLD 4000
 #define VAMPIRE_HIT_IMPULSE 40.f
 #define VAMPIRE_MIN_DIST 0.5f
 #define VAMPIRE_MAX_DIST 1.f
 
-void CStateBloodsuckerVampireExecute::initialize()
+void CStateBloodsuckerSoCVampireExecute::initialize()
 {
     inherited::initialize();
 
@@ -35,7 +44,7 @@ void CStateBloodsuckerVampireExecute::initialize()
     m_effector_activated = false;
 }
 
-void CStateBloodsuckerVampireExecute::execute()
+void CStateBloodsuckerSoCVampireExecute::execute()
 {
     if (!this->object->CControlledActor::is_turning() && !m_effector_activated)
     {
@@ -94,7 +103,7 @@ void CStateBloodsuckerVampireExecute::execute()
     }
 }
 
-void CStateBloodsuckerVampireExecute::show_hud()
+void CStateBloodsuckerSoCVampireExecute::show_hud()
 {
     HUD().SetRenderable(true);
     NET_Packet P;
@@ -105,7 +114,7 @@ void CStateBloodsuckerVampireExecute::show_hud()
     Actor()->u_EventSend(P);
 }
 
-void CStateBloodsuckerVampireExecute::cleanup()
+void CStateBloodsuckerSoCVampireExecute::cleanup()
 {
     Actor()->set_inventory_disabled(false);
 
@@ -118,19 +127,19 @@ void CStateBloodsuckerVampireExecute::cleanup()
     show_hud();
 }
 
-void CStateBloodsuckerVampireExecute::finalize()
+void CStateBloodsuckerSoCVampireExecute::finalize()
 {
     inherited::finalize();
     cleanup();
 }
 
-void CStateBloodsuckerVampireExecute::critical_finalize()
+void CStateBloodsuckerSoCVampireExecute::critical_finalize()
 {
     inherited::critical_finalize();
     cleanup();
 }
 
-bool CStateBloodsuckerVampireExecute::check_start_conditions()
+bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
 {
     const CEntityAlive* enemy = this->object->EnemyMan.get_enemy();
 
@@ -173,18 +182,18 @@ bool CStateBloodsuckerVampireExecute::check_start_conditions()
     return true;
 }
 
-bool CStateBloodsuckerVampireExecute::check_completion() { return (m_action == eActionCompleted); }
+bool CStateBloodsuckerSoCVampireExecute::check_completion() { return (m_action == eActionCompleted); }
 //////////////////////////////////////////////////////////////////////////
 
-void CStateBloodsuckerVampireExecute::execute_vampire_prepare()
+void CStateBloodsuckerSoCVampireExecute::execute_vampire_prepare()
 {
     this->object->com_man().ta_activate(this->object->anim_triple_vampire);
     time_vampire_started = Device.dwTimeGlobal;
 
-    this->object->sound().play(CAI_Bloodsucker::eVampireGrasp);
+    this->object->sound().play(CBloodsuckerSoC::eVampireGrasp);
 }
 
-void CStateBloodsuckerVampireExecute::execute_vampire_continue()
+void CStateBloodsuckerSoCVampireExecute::execute_vampire_continue()
 {
     const CEntityAlive* enemy = this->object->EnemyMan.get_enemy();
 
@@ -195,7 +204,7 @@ void CStateBloodsuckerVampireExecute::execute_vampire_continue()
         return;
     }
 
-    this->object->sound().play(CAI_Bloodsucker::eVampireSucking);
+    this->object->sound().play(CBloodsuckerSoC::eVampireSucking);
 
     // проверить на грави удар
     if (time_vampire_started + VAMPIRE_TIME_HOLD < Device.dwTimeGlobal)
@@ -204,16 +213,16 @@ void CStateBloodsuckerVampireExecute::execute_vampire_continue()
     }
 }
 
-void CStateBloodsuckerVampireExecute::execute_vampire_hit()
+void CStateBloodsuckerSoCVampireExecute::execute_vampire_hit()
 {
     this->object->com_man().ta_pointbreak();
-    this->object->sound().play(CAI_Bloodsucker::eVampireHit);
+    this->object->sound().play(CBloodsuckerSoC::eVampireHit);
     this->object->SatisfyVampire();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CStateBloodsuckerVampireExecute::look_head()
+void CStateBloodsuckerSoCVampireExecute::look_head()
 {
     IKinematics* pK = smart_cast<IKinematics*>(this->object->Visual());
     Fmatrix bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));

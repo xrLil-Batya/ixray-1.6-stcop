@@ -11,19 +11,19 @@
 #include "../../../actor_memory.h"
 #include "../../../visual_memory_manager.h"
 
-CStateBloodsuckerPredatorLite::CStateBloodsuckerPredatorLite(_Object *obj) : inherited(obj)
+CStateBloodsuckerSoCPredatorLite::CStateBloodsuckerSoCPredatorLite(_Object *obj) : inherited(obj)
 {
 	add_state	(eStatePredator_Camp, new CStateMonsterCustomAction(obj));
 	add_state	(eStatePredator_MoveToCover, new CStateMonsterMoveToPointEx(obj));
 	add_state	(eStatePredator_LookOpenPlace, new CStateMonsterLookToPoint(obj));
 }
 
-void CStateBloodsuckerPredatorLite::reinit()
+void CStateBloodsuckerSoCPredatorLite::reinit()
 {
 	inherited::reinit	();
 }
 
-void CStateBloodsuckerPredatorLite::initialize()
+void CStateBloodsuckerSoCPredatorLite::initialize()
 {
 	inherited::initialize						();
 
@@ -33,7 +33,7 @@ void CStateBloodsuckerPredatorLite::initialize()
 	m_freezed									= false;
 }
 
-void CStateBloodsuckerPredatorLite::reselect_state()
+void CStateBloodsuckerSoCPredatorLite::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
 		if (enemy_see_me()) select_state(eStatePredator_MoveToCover);
@@ -63,7 +63,7 @@ void CStateBloodsuckerPredatorLite::reselect_state()
 	select_state(eStatePredator_MoveToCover);
 }
 
-void CStateBloodsuckerPredatorLite::finalize()
+void CStateBloodsuckerSoCPredatorLite::finalize()
 {
 	inherited::finalize							();
 	object->predator_stop						();
@@ -73,7 +73,7 @@ void CStateBloodsuckerPredatorLite::finalize()
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
 }
 
-void CStateBloodsuckerPredatorLite::critical_finalize()
+void CStateBloodsuckerSoCPredatorLite::critical_finalize()
 {
 	inherited::critical_finalize				();
 	object->predator_stop						();
@@ -83,7 +83,7 @@ void CStateBloodsuckerPredatorLite::critical_finalize()
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
 }
 
-bool CStateBloodsuckerPredatorLite::check_completion()
+bool CStateBloodsuckerSoCPredatorLite::check_completion()
 {
 	if (object->EnemyMan.see_enemy_now() && (object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) {
 		object->set_berserk();
@@ -94,7 +94,7 @@ bool CStateBloodsuckerPredatorLite::check_completion()
 	return false;
 }
 
-void CStateBloodsuckerPredatorLite::setup_substates()
+void CStateBloodsuckerSoCPredatorLite::setup_substates()
 {
 	state_ptr state = get_state_current();
 
@@ -161,7 +161,7 @@ void CStateBloodsuckerPredatorLite::setup_substates()
 
 #define TIME_TO_RESELECT_CAMP	15000
 
-void CStateBloodsuckerPredatorLite::check_force_state()
+void CStateBloodsuckerSoCPredatorLite::check_force_state()
 {
 	if (prev_substate == eStatePredator_Camp) {
 		if (object->HitMemory.get_last_hit_time() > time_state_started) {
@@ -176,7 +176,7 @@ void CStateBloodsuckerPredatorLite::check_force_state()
 	}
 }
 
-void CStateBloodsuckerPredatorLite::select_camp_point()
+void CStateBloodsuckerSoCPredatorLite::select_camp_point()
 {
 	if (m_target_node != u32(-1)) 
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
@@ -202,7 +202,7 @@ void CStateBloodsuckerPredatorLite::select_camp_point()
 	monster_squad().get_squad(object)->lock_cover(m_target_node);
 }
 
-bool CStateBloodsuckerPredatorLite::enemy_see_me()
+bool CStateBloodsuckerSoCPredatorLite::enemy_see_me()
 {
 	//if (object->EnemyMan.get_enemy() == Actor()) 
 	//	return (Actor()->memory().visual().visible_now(object));

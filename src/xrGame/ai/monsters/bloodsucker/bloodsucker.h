@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../ai_entity_definitions.h"
 #include "../basemonster/base_monster.h"
 #include "../ai_monster_bones.h"

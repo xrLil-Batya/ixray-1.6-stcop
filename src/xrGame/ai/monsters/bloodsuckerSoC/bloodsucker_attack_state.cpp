@@ -1,30 +1,42 @@
-#pragma once
+#include "stdafx.h"
+
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
+
+#include "bloodsucker.h"
+#include "bloodsucker_attack_state.h"
+#include "bloodsucker_vampire_execute.h"
 
 #include "../states/state_move_to_point.h"
 
-CBloodsuckerStateAttack::CBloodsuckerStateAttack(_Object *obj) : inherited_attack(obj)
+//#include "bloodsucker_backstub_enemy.h"
+
+CBloodsuckerSoCStateAttack::CBloodsuckerSoCStateAttack(CBloodsuckerSoC* obj) : inherited_attack(obj)
 {
-	add_state	(eStateVampire_Execute, new CStateBloodsuckerVampireExecute(obj));
+	add_state	(eStateVampire_Execute, new CStateBloodsuckerSoCVampireExecute(obj));
 	add_state	(eStateAttack_Hide, new CStateMonsterMoveToPointEx(obj));
 }
 
-CBloodsuckerStateAttack::~CBloodsuckerStateAttack()
+CBloodsuckerSoCStateAttack::~CBloodsuckerSoCStateAttack()
 {
 }
 
-void CBloodsuckerStateAttack::initialize()
+void CBloodsuckerSoCStateAttack::initialize()
 {
 	inherited::initialize	();
 	m_time_stop_invis		= 0;
 }
 
-void CBloodsuckerStateAttack::finalize()
+void CBloodsuckerSoCStateAttack::finalize()
 {
 	inherited::finalize();
 	object->stop_invisible_predator();
 }
 
-void CBloodsuckerStateAttack::critical_finalize()
+void CBloodsuckerSoCStateAttack::critical_finalize()
 {
 	inherited::critical_finalize();
 	object->stop_invisible_predator();
@@ -33,7 +45,7 @@ void CBloodsuckerStateAttack::critical_finalize()
 #define	INVIS_ACTIVATE_DELAY	3000
 #define INVIS_DIST_TO_ENEMY		5.f
 
-void CBloodsuckerStateAttack::execute()
+void CBloodsuckerSoCStateAttack::execute()
 {
 	bool selected = false;
 
@@ -120,7 +132,7 @@ void CBloodsuckerStateAttack::execute()
 	//////////////////////////////////////////////////////////////////////////
 }
 
-bool CBloodsuckerStateAttack::check_vampire()
+bool CBloodsuckerSoCStateAttack::check_vampire()
 {
 	if (prev_substate != eStateVampire_Execute)
 	{
@@ -135,7 +147,7 @@ bool CBloodsuckerStateAttack::check_vampire()
 	return false;
 }
 
-void CBloodsuckerStateAttack::update_invisibility()
+void CBloodsuckerSoCStateAttack::update_invisibility()
 {
 	if (object->threaten_time() > 0) 
 	{
@@ -161,7 +173,7 @@ void CBloodsuckerStateAttack::update_invisibility()
 	}
 }
 
-bool CBloodsuckerStateAttack::check_hiding()
+bool CBloodsuckerSoCStateAttack::check_hiding()
 {
 	if (current_substate == eStateAttack_Hide) 
 		if (!get_state(eStateAttack_Melee)->check_start_conditions()) 
@@ -192,7 +204,7 @@ bool CBloodsuckerStateAttack::check_hiding()
 	//return ret_value;
 }
 
-void CBloodsuckerStateAttack::setup_substates()
+void CBloodsuckerSoCStateAttack::setup_substates()
 {
 	state_ptr state = get_state_current();
 

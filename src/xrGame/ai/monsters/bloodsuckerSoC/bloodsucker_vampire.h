@@ -1,7 +1,7 @@
 #pragma once
 #include "../state.h"
 
-class CStateBloodsuckerVampire : public CState
+class CStateBloodsuckerSoCVampire : public CState
 {
     typedef CState inherited;
     typedef CState* state_ptr;
@@ -9,7 +9,7 @@ class CStateBloodsuckerVampire : public CState
     const CEntityAlive* enemy;
 
 public:
-    CStateBloodsuckerVampire(_Object* obj);
+    CStateBloodsuckerSoCVampire(CBloodsuckerSoC* obj);
 
     virtual void reinit();
 
@@ -24,5 +24,3 @@ public:
     virtual void setup_substates();
     virtual void check_force_state();
 };
-
-#include "bloodsucker_vampire_inline.h"

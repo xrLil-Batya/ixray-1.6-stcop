@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "../states/state_move_to_point.h"
 #include "bloodsucker_predator_lite.h"
@@ -9,20 +9,38 @@
 
 #include "../../../actor.h"
 #include "../../../actor_memory.h"
-#include "../../../visual_memory_manager.h"
+#include "../../../visual_memory_manager.h"*/
 
-CBloodsuckerStateAttackHide::CBloodsuckerStateAttackHide(_Object *obj) : inherited(obj)
+#include "stdafx.h"
+
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
+
+#include "bloodsucker.h"
+#include "bloodsucker_attack_state.h"
+#include "bloodsucker_vampire_execute.h"
+#include "bloodsucker_attack_state_hide.h"
+#include "bloodsucker_predator_lite.h"
+
+#include "../states/state_move_to_point.h"
+
+//#include "bloodsucker_backstub_enemy.h"
+
+CBloodsuckerSoCStateAttackHide::CBloodsuckerSoCStateAttackHide(CBloodsuckerSoC *obj) : inherited(obj)
 {
 	add_state	(eStateAttack_HideInCover, new CStateMonsterMoveToPointEx (obj));
-	add_state	(eStateAttack_CampInCover, new CStateBloodsuckerPredatorLite(obj));
+	add_state	(eStateAttack_CampInCover, new CStateBloodsuckerSoCPredatorLite(obj));
 }
 
-void CBloodsuckerStateAttackHide::reinit()
+void CBloodsuckerSoCStateAttackHide::reinit()
 {
 	inherited::reinit	();
 }
 
-void CBloodsuckerStateAttackHide::initialize()
+void CBloodsuckerSoCStateAttackHide::initialize()
 {
 	inherited::initialize	();
 
@@ -31,7 +49,7 @@ void CBloodsuckerStateAttackHide::initialize()
 	object->start_invisible_predator();
 }
 
-void CBloodsuckerStateAttackHide::reselect_state()
+void CBloodsuckerSoCStateAttackHide::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
 		select_state(eStateAttack_HideInCover);
@@ -41,7 +59,7 @@ void CBloodsuckerStateAttackHide::reselect_state()
 	select_state(eStateAttack_CampInCover);
 }
 
-void CBloodsuckerStateAttackHide::finalize()
+void CBloodsuckerSoCStateAttackHide::finalize()
 {
 	inherited::finalize							();
 
@@ -49,7 +67,7 @@ void CBloodsuckerStateAttackHide::finalize()
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
 }
 
-void CBloodsuckerStateAttackHide::critical_finalize()
+void CBloodsuckerSoCStateAttackHide::critical_finalize()
 {
 	inherited::critical_finalize				();
 
@@ -57,7 +75,7 @@ void CBloodsuckerStateAttackHide::critical_finalize()
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
 }
 
-bool CBloodsuckerStateAttackHide::check_completion()
+bool CBloodsuckerSoCStateAttackHide::check_completion()
 {
 	if (current_substate == eStateAttack_CampInCover)
 		return (get_state_current()->check_completion());
@@ -65,7 +83,7 @@ bool CBloodsuckerStateAttackHide::check_completion()
 	return false;
 }
 
-void CBloodsuckerStateAttackHide::setup_substates()
+void CBloodsuckerSoCStateAttackHide::setup_substates()
 {
 	state_ptr state = get_state_current();
 
@@ -92,11 +110,11 @@ void CBloodsuckerStateAttackHide::setup_substates()
 
 }
 
-void CBloodsuckerStateAttackHide::check_force_state()
+void CBloodsuckerSoCStateAttackHide::check_force_state()
 {
 }
 
-void CBloodsuckerStateAttackHide::select_camp_point()
+void CBloodsuckerSoCStateAttackHide::select_camp_point()
 {
 	if (m_target_node != u32(-1))
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);

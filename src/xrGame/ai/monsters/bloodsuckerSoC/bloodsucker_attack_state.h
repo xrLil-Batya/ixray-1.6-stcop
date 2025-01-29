@@ -1,15 +1,15 @@
 #pragma once
 #include "../states/monster_state_attack.h"
 
-class	CBloodsuckerStateAttack : public CStateMonsterAttack {
+class	CBloodsuckerSoCStateAttack : public CStateMonsterAttack {
 	typedef CStateMonsterAttack inherited_attack;
 
 	u32				m_time_stop_invis;
 	Fvector			m_dir_point;
 
 public:
-					CBloodsuckerStateAttack		(_Object *obj);
-	virtual			~CBloodsuckerStateAttack	();
+	CBloodsuckerSoCStateAttack(CBloodsuckerSoC* obj);
+	virtual			~CBloodsuckerSoCStateAttack();
 
 	virtual	void	initialize					();
 	virtual	void	execute						();
@@ -22,5 +22,3 @@ private:
 			bool	check_hiding				();
 			bool	check_vampire				();
 };
-
-#include "bloodsucker_attack_state_inline.h"

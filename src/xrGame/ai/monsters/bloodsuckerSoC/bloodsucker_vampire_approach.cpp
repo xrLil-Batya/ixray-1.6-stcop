@@ -1,16 +1,24 @@
-#pragma once
+#include "stdafx.h"
 
-CStateBloodsuckerVampireApproach::CStateBloodsuckerVampireApproach(_Object* obj) : inherited(obj) {}
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
 
-CStateBloodsuckerVampireApproach::~CStateBloodsuckerVampireApproach() {}
+#include "ai_object_location.h"
 
-void CStateBloodsuckerVampireApproach::initialize()
+#include "bloodsucker.h"
+#include "bloodsucker_vampire_approach.h"
+
+CStateBloodsuckerSoCVampireApproach::CStateBloodsuckerSoCVampireApproach(CBloodsuckerSoC* obj) : inherited(obj) {}
+
+CStateBloodsuckerSoCVampireApproach::~CStateBloodsuckerSoCVampireApproach() {}
+
+void CStateBloodsuckerSoCVampireApproach::initialize()
 {
     inherited::initialize();
     object->path().prepare_builder();
 }
 
-void CStateBloodsuckerVampireApproach::execute()
+void CStateBloodsuckerSoCVampireApproach::execute()
 {
     // установка параметров функциональных блоков
     object->set_action(ACT_RUN);

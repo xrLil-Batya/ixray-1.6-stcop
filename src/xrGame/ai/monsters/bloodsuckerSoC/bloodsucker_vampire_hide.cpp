@@ -1,14 +1,17 @@
-#pragma once
+#include "stdafx.h"
+#include "bloodsucker.h"
+#include "bloodsucker_vampire_hide.h"
+
 #include "../states/state_hide_from_point.h"
 #include "bloodsucker_predator.h"
 
-CStateBloodsuckerVampireHide::CStateBloodsuckerVampireHide(_Object* obj) : inherited(obj)
+CStateBloodsuckerSoCVampireHide::CStateBloodsuckerSoCVampireHide(CBloodsuckerSoC* obj) : inherited(obj)
 {
     add_state(eStateVampire_RunAway, new CStateMonsterHideFromPoint(obj));
-    add_state(eStatePredator, new CStateBloodsuckerPredator(obj));
+    add_state(eStatePredator, new CStateBloodsuckerSoCPredator(obj));
 }
 
-void CStateBloodsuckerVampireHide::reselect_state()
+void CStateBloodsuckerSoCVampireHide::reselect_state()
 {
     if (prev_substate == eStateVampire_RunAway)
     {
@@ -22,7 +25,7 @@ void CStateBloodsuckerVampireHide::reselect_state()
     select_state(eStateVampire_RunAway);
 }
 
-void CStateBloodsuckerVampireHide::setup_substates()
+void CStateBloodsuckerSoCVampireHide::setup_substates()
 {
     state_ptr state = get_state_current();
 
@@ -45,7 +48,7 @@ void CStateBloodsuckerVampireHide::setup_substates()
     }
 }
 
-bool CStateBloodsuckerVampireHide::check_completion()
+bool CStateBloodsuckerSoCVampireHide::check_completion()
 {
     if ((current_substate == eStatePredator) && get_state_current()->check_completion())
         return true;

@@ -1,20 +1,22 @@
 #pragma once
 
-#include "../BaseMonster/base_monster.h"
+//#include "../../ai_entity_definitions.h"
+#include "../basemonster/base_monster.h"
 #include "../ai_monster_bones.h"
 #include "../controlled_entity.h"
 #include "../controlled_actor.h"
 #include "../anim_triple.h"
+#include "../../../../xrScripts/script_export_space.h"
 #include "bloodsucker_alien.h"
 
-class CAI_Bloodsucker : public CBaseMonster, 
+class CBloodsuckerSoC : public CBaseMonster,
 						public CControlledActor {
 
 	typedef		CBaseMonster	inherited;
 	
 public:
-							CAI_Bloodsucker	();
-	virtual					~CAI_Bloodsucker();	
+	CBloodsuckerSoC();
+	virtual					~CBloodsuckerSoC();
 
 	virtual void			reinit					();
 	virtual	void			reload					(LPCSTR section);
@@ -83,7 +85,7 @@ private:
 	u32					m_threaten_time;	
 
 public:
-	CBloodsuckerAlien		m_alien_control;
+	CBloodsuckerSoCAlien		m_alien_control;
 	u32						m_time_lunge;
 	
 			void			set_alien_control		(bool val);
@@ -120,7 +122,7 @@ public:
 			void	manual_deactivate	();
 			bool	start_threaten;
 			float	get_vampire_distance() const { return m_vampire_distance; }
-			virtual	char* get_monster_class_name() { return "bloodsucker"; }
+			virtual	char* get_monster_class_name() { return const_cast<char*>("bloodsucker"); }
 			u32		m_hits_before_vampire;
 			u32		m_sufficient_hits_before_vampire;
 			int		m_sufficient_hits_before_vampire_random;
@@ -132,7 +134,3 @@ public:
 	virtual bool	can_be_seen				() const { return !state_invisible; }
 	
 };
-
-add_to_type_list(CAI_Bloodsucker)
-#undef script_type_list
-#define script_type_list save_type_list(CAI_Bloodsucker)
