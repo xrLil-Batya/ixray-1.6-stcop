@@ -40,7 +40,7 @@ public:
 
 	IStateManagerBase *create_state_manager();
 
-	virtual	char*	get_monster_class_name () override { return (char*)"pseudodog"; }
+	virtual	char*	get_monster_class_name () override { return const_cast<char*>("pseudodog"); }
 
 private:
 

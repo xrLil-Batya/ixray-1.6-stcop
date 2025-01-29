@@ -14,7 +14,7 @@ public:
 	virtual			~CTushkanoBase 			() override;
 
 	virtual void	Load				(LPCSTR section) override;
-	virtual	char*	get_monster_class_name () override { return (char*) "tushkano"; }
+	virtual	char*	get_monster_class_name () override { return const_cast<char*>("tushkano"); }
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

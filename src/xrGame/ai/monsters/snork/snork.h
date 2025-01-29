@@ -31,7 +31,7 @@ public:
 
 	virtual bool	check_start_conditions	(ControlCom::EControlType type) override;
 	virtual void	on_activate_control		(ControlCom::EControlType) override;
-	virtual	char*	get_monster_class_name () override { return (char*) "snork"; }
+	virtual	char*	get_monster_class_name () override { return const_cast<char*>("snork"); }
 
 	virtual bool	run_home_point_when_enemy_inaccessible () const override { return false; }
 

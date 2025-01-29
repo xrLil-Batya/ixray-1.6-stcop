@@ -57,7 +57,7 @@ public:
 
 	virtual void	HitEntityInJump		(const CEntity *pEntity) override;
 	virtual void	TranslateActionToPathParams	() override;
-	virtual	char*	get_monster_class_name () override { return (char*) "pseudogigant"; }
+	virtual	char*	get_monster_class_name () override { return const_cast<char*>("pseudogigant"); }
 
 	virtual void	OnEvent(NET_Packet& P, u16 type) override;
 
