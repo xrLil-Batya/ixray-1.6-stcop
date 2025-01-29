@@ -15,7 +15,7 @@ public:
 	virtual void	Load				(LPCSTR section) override;
 	virtual void	CheckSpecParams		(u32 spec_params) override;
 
-	virtual	char*	get_monster_class_name () override { return (char*)"fracture"; }
+	virtual	char*	get_monster_class_name () override { return const_cast<char*>("fracture"); }
 
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

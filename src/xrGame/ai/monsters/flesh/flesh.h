@@ -20,7 +20,7 @@ public:
 
 	virtual bool	ability_can_drag		() override { return true; }
 
-	virtual	char*	get_monster_class_name () override { return (char*)"flesh"; }
+	virtual	char*	get_monster_class_name () override { return const_cast<char*>("flesh"); }
 
 
 private:

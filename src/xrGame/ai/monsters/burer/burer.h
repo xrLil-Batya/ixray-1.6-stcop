@@ -161,7 +161,7 @@ public:
 			bool	need_shotmark () const { return !m_shield_active; }
 
 	virtual bool	ability_distant_feel() override {return true;}
-	virtual	char*	get_monster_class_name () override { return (char*) "burer"; }
+	virtual	char*	get_monster_class_name () override { return const_cast<char*>("burer"); }
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info() override;
