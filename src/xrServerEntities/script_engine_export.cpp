@@ -235,6 +235,7 @@ void export_classes	(lua_State *L)
 	CArtefact::script_register(L);
 	CAI_Crow::script_register(L);
 	CBloodsuckerBase::script_register(L);
+	CBloodsuckerSoC::script_register(L);
 	CBoarBase::script_register(L);
 	CBurerBase::script_register(L);
 	CCatBase::script_register(L);
