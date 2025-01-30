@@ -33,6 +33,8 @@ CStateBloodsuckerSoCVampireExecute::~CStateBloodsuckerSoCVampireExecute()
 
 }
 
+#define VAMPIRE_COOLDOWN_TIME 10000
+
 void CStateBloodsuckerSoCVampireExecute::initialize()
 {
     inherited::initialize();
@@ -44,8 +46,7 @@ void CStateBloodsuckerSoCVampireExecute::initialize()
     m_action = eActionPrepare;
     time_vampire_started = 0;
 
-    pBloodsuckerBase->m_hits_before_vampire = 0;
-    pBloodsuckerBase->m_sufficient_hits_before_vampire_random = -1 + (rand() % 3);
+    //b_controlling_value = true;
 
     HUD().SetRenderable(false);
     NET_Packet P;
@@ -57,6 +58,8 @@ void CStateBloodsuckerSoCVampireExecute::initialize()
     Actor()->set_inventory_disabled(true);
 
     m_effector_activated = false;
+
+    m_cooldown_time = Device.dwTimeGlobal + VAMPIRE_COOLDOWN_TIME;
 }
 
 void CStateBloodsuckerSoCVampireExecute::execute()
@@ -76,7 +79,9 @@ void CStateBloodsuckerSoCVampireExecute::execute()
         m_action = eActionContinue;
         break;
 
-    case eActionContinue: execute_vampire_continue(); break;
+    case eActionContinue: 
+        execute_vampire_continue();
+        break;
 
     case eActionFire:
         execute_vampire_hit();
@@ -89,7 +94,9 @@ void CStateBloodsuckerSoCVampireExecute::execute()
             m_action = eActionCompleted;
         }
 
-    case eActionCompleted: break;
+    case eActionCompleted: 
+        //b_controlling_value = false;
+        break;
     }
 
     this->object->dir().face_target(this->object->EnemyMan.get_enemy());
@@ -98,7 +105,8 @@ void CStateBloodsuckerSoCVampireExecute::execute()
     float const dist_to_enemy = magnitude(enemy_to_self);
     float const vampire_dist = pBloodsuckerBase->get_vampire_distance();
 
-    if (angle_between_vectors(this->object->Direction(), enemy_to_self) < deg2rad(20.f) && dist_to_enemy > vampire_dist)
+    if (angle_between_vectors(this->object->Direction(), enemy_to_self) < deg2rad(20.f) && 
+        dist_to_enemy > vampire_dist)
     {
         this->object->set_action(ACT_RUN);
         this->object->anim().accel_activate(eAT_Aggressive);
@@ -139,7 +147,8 @@ void CStateBloodsuckerSoCVampireExecute::cleanup()
     if (pBloodsuckerBase->CControlledActor::is_controlling())
         pBloodsuckerBase->CControlledActor::release();
 
-    show_hud();
+    if (IsGameTypeSingle())
+        show_hud();
 }
 
 void CStateBloodsuckerSoCVampireExecute::finalize()
@@ -154,37 +163,96 @@ void CStateBloodsuckerSoCVampireExecute::critical_finalize()
     cleanup();
 }
 
+//bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
+//{
+//    const CEntityAlive* enemy = object->EnemyMan.get_enemy();
+//
+//    float dist = object->MeleeChecker.distance_to_enemy(enemy);
+//
+//    if (Device.dwTimeGlobal < m_cooldown_time)
+//    {
+//        return false;
+//    }
+//
+//    if ((dist > VAMPIRE_MAX_DIST) || (dist < VAMPIRE_MIN_DIST))					
+//    {
+//        Msg("2");
+//        return false;
+//    }
+//
+//    if (pBloodsuckerBase->CControlledActor::is_controlling())
+//    {
+//        Msg("3");
+//        return false;
+//    }
+//
+//    if (current_substate == eStateAttack_RunAttack)							
+//    {
+//        Msg("4");
+//        return false;
+//    }
+//
+//    if (pBloodsuckerBase->threaten_time() > 0)
+//    {
+//        Msg("5");
+//        return false;
+//    }
+//
+//    const CActor* m_actor = smart_cast<const CActor*>(enemy);
+//
+//    VERIFY(m_actor);
+//
+//    if (m_actor->input_external_handler_installed())						
+//    {
+//        Msg("6");
+//        return false;
+//    }
+//
+//    //if (b_controlling_value)
+//    //{
+//    //    Msg("7");
+//    //    return false;
+//    //}
+//
+//    if (!object->control().direction().is_face_target(enemy, PI_DIV_6))				
+//    {
+//        Msg("8");
+//        return false;
+//    }
+//
+//    return true;
+//
+//    //return (rand() % 2 == 0) ? false : true;
+//}
+
 bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
 {
-    const CEntityAlive* enemy = this->object->EnemyMan.get_enemy();
+    const CEntityAlive* enemy = object->EnemyMan.get_enemy();
 
-    // проверить дистанцию
-    // 	float dist		= object->MeleeChecker.distance_to_enemy	(enemy);
-    // 	if ((dist > VAMPIRE_MAX_DIST) || (dist < VAMPIRE_MIN_DIST))	return false;
+    float dist = object->MeleeChecker.distance_to_enemy(enemy);
 
-    if (!pBloodsuckerBase->done_enough_hits_before_vampire())
+    if ((dist > VAMPIRE_MAX_DIST) || (dist < VAMPIRE_MIN_DIST))					
         return false;
 
-    u32 const vertex_id = ai().level_graph().check_position_in_direction(
-        this->object->ai_location().level_vertex_id(), this->object->Position(), enemy->Position());
+    u32 const vertex_id = ai().level_graph().check_position_in_direction(object->ai_location().level_vertex_id(),
+        object->Position(), enemy->Position());
+
     if (!ai().level_graph().valid_vertex_id(vertex_id))
         return false;
 
-    if (!this->object->MeleeChecker.can_start_melee(enemy))
+    if (!object->MeleeChecker.can_start_melee(enemy))
         return false;
 
-    // проверить направление на врага
-    if (!this->object->control().direction().is_face_target(enemy, PI_DIV_2))
+    if (!object->control().direction().is_face_target(enemy, PI_DIV_2))
         return false;
 
     if (!pBloodsuckerBase->WantVampire())
         return false;
 
-    // является ли враг актером
     if (!smart_cast<CActor const*>(enemy))
         return false;
 
-    if (pBloodsuckerBase->CControlledActor::is_controlling())
+    if (pBloodsuckerBase->is_controlling())
         return false;
 
     const CActor* actor = smart_cast<const CActor*>(enemy);
@@ -198,7 +266,6 @@ bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
 }
 
 bool CStateBloodsuckerSoCVampireExecute::check_completion() { return (m_action == eActionCompleted); }
-//////////////////////////////////////////////////////////////////////////
 
 void CStateBloodsuckerSoCVampireExecute::execute_vampire_prepare()
 {
@@ -221,7 +288,6 @@ void CStateBloodsuckerSoCVampireExecute::execute_vampire_continue()
 
     this->object->sound().play(CBloodsuckerSoC::eVampireSucking);
 
-    // проверить на грави удар
     if (time_vampire_started + VAMPIRE_TIME_HOLD < Device.dwTimeGlobal)
     {
         m_action = eActionFire;
@@ -234,8 +300,6 @@ void CStateBloodsuckerSoCVampireExecute::execute_vampire_hit()
     this->object->sound().play(CBloodsuckerSoC::eVampireHit);
     pBloodsuckerBase->SatisfyVampire();
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CStateBloodsuckerSoCVampireExecute::look_head()
 {

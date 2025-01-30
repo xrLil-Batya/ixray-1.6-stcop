@@ -123,11 +123,6 @@ public:
 			bool	start_threaten;
 			float	get_vampire_distance() const { return m_vampire_distance; }
 			virtual	char* get_monster_class_name() { return const_cast<char*>("bloodsucker_soc"); }
-			u32		m_hits_before_vampire;
-			u32		m_sufficient_hits_before_vampire;
-			int		m_sufficient_hits_before_vampire_random;
-			bool	done_enough_hits_before_vampire();
-			virtual void on_attack_on_run_hit();
 
 			DECLARE_SCRIPT_REGISTER_FUNCTION
 public:

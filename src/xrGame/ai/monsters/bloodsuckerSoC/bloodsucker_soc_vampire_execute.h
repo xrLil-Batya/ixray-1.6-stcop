@@ -14,8 +14,9 @@ class CStateBloodsuckerSoCVampireExecute : public CState
         eActionCompleted
     } m_action;
 
+    u32 m_cooldown_time;
     u32 time_vampire_started;
-
+    
     bool m_effector_activated;
 
     CBloodsuckerSoC* pBloodsuckerBase;

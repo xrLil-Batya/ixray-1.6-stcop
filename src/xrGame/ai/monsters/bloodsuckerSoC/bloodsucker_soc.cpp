@@ -130,8 +130,6 @@ void CBloodsuckerSoC::Load(LPCSTR section)
 	anim().LinkAction(ACT_STEAL,		eAnimSteal);
 	anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
 
-	m_hits_before_vampire = 0;
-
 	// load other misc stuff
 	invisible_vel.set				(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
 	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
@@ -145,9 +143,7 @@ void CBloodsuckerSoC::Load(LPCSTR section)
 	m_vampire_wound = pSettings->r_float(section, "Vampire_Wound");
 	m_vampire_gain_health = pSettings->r_float(section, "Vampire_GainHealth");
 	m_vampire_distance = pSettings->r_float(section, "Vampire_Distance");
-	m_sufficient_hits_before_vampire = pSettings->r_u32(section, "Vampire_Sufficient_Hits");
-	m_sufficient_hits_before_vampire_random = -1 + (rand() % 3);
-	
+
 	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
 }
 
@@ -311,14 +307,6 @@ void CBloodsuckerSoC::UpdateCL()
 		m_threaten_time = 0;
 }
 
-bool CBloodsuckerSoC::done_enough_hits_before_vampire()
-{
-	return (int)m_hits_before_vampire >=
-		(int)m_sufficient_hits_before_vampire + m_sufficient_hits_before_vampire_random;
-}
-
-void CBloodsuckerSoC::on_attack_on_run_hit() { ++m_hits_before_vampire; }
-
 void CBloodsuckerSoC::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
@@ -353,8 +341,8 @@ bool CBloodsuckerSoC::check_start_conditions(ControlCom::EControlType type)
 
 		m_threaten_time = Device.dwTimeGlobal;
 
-		if (Random.randI(100) < 70) return false;
-			
+		if (Random.randI(100) < 25) 
+			return false;
 	}
 
 	return true;

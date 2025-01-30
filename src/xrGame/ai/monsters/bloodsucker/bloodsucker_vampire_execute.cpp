@@ -176,9 +176,9 @@ bool CBloodsukerStateVampireExecute::check_start_conditions()
 	if (!pBloodsuckerBase->done_enough_hits_before_vampire())
 		return false;
 
-	u32 const vertex_id = ai().level_graph().check_position_in_direction(object->ai_location().level_vertex_id(),
-		object->Position(),
-		enemy->Position());
+	u32 const vertex_id = ai().level_graph().check_position_in_direction(object->ai_location().level_vertex_id(), 
+		object->Position(), enemy->Position());
+
 	if (!ai().level_graph().valid_vertex_id(vertex_id))
 		return false;
 
@@ -212,8 +212,6 @@ bool CBloodsukerStateVampireExecute::check_completion()
 	return (m_action == eActionCompleted);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CBloodsukerStateVampireExecute::execute_vampire_prepare()
 {
 	object->com_man().ta_activate(pBloodsuckerBase->anim_triple_vampire);
@@ -245,8 +243,6 @@ void CBloodsukerStateVampireExecute::execute_vampire_hit()
 	object->sound().play(CBloodsuckerBase::eVampireHit);
 	pBloodsuckerBase->SatisfyVampire();
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CBloodsukerStateVampireExecute::look_head()
 {
