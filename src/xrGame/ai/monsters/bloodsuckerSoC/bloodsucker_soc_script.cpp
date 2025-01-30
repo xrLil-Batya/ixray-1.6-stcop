@@ -8,8 +8,8 @@ using namespace luabind;
 void CBloodsuckerSoC::script_register(lua_State* L)
 {
 	module(L)
-		[
-			class_<CBloodsuckerSoC, CGameObject>("CBloodsuckerSoC")
-			.def(constructor<>())
-		];
+	[
+		class_<CBloodsuckerSoC, CGameObject>("CBloodsuckerSoC")
+		.def(constructor<>())
+	];
 }

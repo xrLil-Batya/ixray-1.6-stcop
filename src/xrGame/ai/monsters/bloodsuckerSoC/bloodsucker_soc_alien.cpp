@@ -6,12 +6,9 @@
 #include "../../../HudItem.h"
 #include "../../../../xrEngine/CustomHUD.h"
 
-//#include "bloodsucker_alien_pp.h"
 #include "bloodsucker_soc_alien.h"
 
 #include "bloodsucker_soc.h"
-
-//#include "bloodsucker_alien_effector.h"
 
 #define EFFECTOR_ID_GEN(type) (type( u32(u64(this) & u32(-1)) ))
 
@@ -69,12 +66,6 @@ void CAlienEffectsocPP::Destroy()
 	xr_delete			(self);
 }
 
-
-
-//////////////////////////////////////////////////////////////////////////
-// Alien Camera Effector
-//////////////////////////////////////////////////////////////////////////
-
 class CAlienEffectsoc : public CEffectorCam {
 	typedef CEffectorCam inherited;	
 
@@ -104,7 +95,6 @@ public:
 #define FOV_SPEED			80.f
 #define	MAX_CAMERA_DIST		3.5f
 
-
 CAlienEffectsoc::CAlienEffectsoc(ECamEffectorType type, CBloodsuckerSoC* obj) :
 	inherited(type, flt_max)
 {
@@ -122,7 +112,6 @@ CAlienEffectsoc::CAlienEffectsoc(ECamEffectorType type, CBloodsuckerSoC* obj) :
 
 BOOL CAlienEffectsoc::ProcessCam(SCamEffectorInfo& info)
 {
-	// Инициализация
 	Fmatrix	Mdef;
 	Mdef.identity		();
 	Mdef.j.set			(info.n);
@@ -130,8 +119,6 @@ BOOL CAlienEffectsoc::ProcessCam(SCamEffectorInfo& info)
 	Mdef.i.crossproduct	(info.n, info.d);
 	Mdef.c.set			(info.p);
 
-
-	// set angle 
 	if (angle_lerp(dangle_current.x, dangle_target.x, ANGLE_SPEED, Device.fTimeDelta)) {
 		dangle_target.x = angle_normalize(Random.randFs(DELTA_ANGLE_X));
 	}
@@ -144,7 +131,6 @@ BOOL CAlienEffectsoc::ProcessCam(SCamEffectorInfo& info)
 		dangle_target.z = angle_normalize(Random.randFs(DELTA_ANGLE_Z));
 	}
 
-	// update inertion
 	Fmatrix cur_matrix;
 	cur_matrix.k = monster->Direction();
 	cur_matrix.c = get_head_position(monster);
@@ -154,15 +140,12 @@ BOOL CAlienEffectsoc::ProcessCam(SCamEffectorInfo& info)
 
 	def_lerp(m_inertion, 1 - rel_dist, rel_dist, Device.fTimeDelta);
 
-	// set pos and dir with inertion
 	m_prev_eye_matrix.c.inertion(cur_matrix.c, m_inertion);
 	m_prev_eye_matrix.k.inertion(cur_matrix.k, m_inertion);
 	Fvector::generate_orthonormal_basis_normalized(m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_prev_eye_matrix.i);	
 
-	// apply position and direction
 	Mdef = m_prev_eye_matrix;
 
-	//set fov
 	float	rel_speed = monster->m_fCurSpeed / 15.f;
 	clamp	(rel_speed,0.f,1.f);
 
@@ -170,9 +153,7 @@ BOOL CAlienEffectsoc::ProcessCam(SCamEffectorInfo& info)
 	def_lerp(m_current_fov, m_target_fov, FOV_SPEED, Device.fTimeDelta);
 	
 	info.fFov = m_current_fov;
-	//////////////////////////////////////////////////////////////////////////
 
-	// Установить углы смещения
 	Fmatrix		R;
 	R.setHPB	(dangle_current.x,dangle_current.y,dangle_current.z);
 
@@ -185,11 +166,6 @@ BOOL CAlienEffectsoc::ProcessCam(SCamEffectorInfo& info)
 
 	return TRUE;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////
-//
-///////////////////////////////////////////////////////////////////////////////////////////
-
 
 CBloodsuckerSoCAlien::CBloodsuckerSoCAlien()
 {
@@ -223,18 +199,15 @@ void CBloodsuckerSoCAlien::activate()
 
 	Actor()->SetWeaponHideState(INV_STATE_BLOCK_ALL, true);
 
-	// hide crosshair
 	m_crosshair_show			= !!psHUD_Flags.is(HUD_CROSSHAIR_RT);
 	if (m_crosshair_show)		psHUD_Flags.set(HUD_CROSSHAIR_RT,FALSE);
 
-	// Start effector
 	m_effector_pp				= new CAlienEffectsocPP(m_object->pp_vampire_effector, EFFECTOR_ID_GEN(EEffectorPPType));
 	Actor()->Cameras().AddPPEffector(m_effector_pp);
 
 	m_effector					= new CAlienEffectsoc(EFFECTOR_ID_GEN(ECamEffectorType),m_object);
 	Actor()->Cameras().AddCamEffector	(m_effector);
 
-	// make invisible
 	m_object->state_invisible	= true;
 	m_object->setVisible		(false);
 
@@ -250,18 +223,15 @@ void CBloodsuckerSoCAlien::deactivate()
 	Actor()->SetWeaponHideState(INV_STATE_BLOCK_ALL, false);
 	if (m_crosshair_show)							psHUD_Flags.set(HUD_CROSSHAIR_RT,TRUE);
 
-	// Stop camera effector
 	Actor()->Cameras().RemoveCamEffector	(EFFECTOR_ID_GEN(ECamEffectorType));
 	m_effector						= 0;
 	
-	// Stop postprocess effector
 	Actor()->Cameras().RemovePPEffector	(EFFECTOR_ID_GEN(EEffectorPPType));
 	m_effector_pp->Destroy			();
 	m_effector_pp					= 0;
 
 	m_active						= false;
 
-	// make visible
 	m_object->state_invisible	= false;
 	m_object->setVisible		(true);
 }

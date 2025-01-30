@@ -8,17 +8,15 @@ class CVampirePPEffectsocor : public CEffectorPP
 {
     typedef CEffectorPP inherited;
 
-    SPPInfo state; // current state
-    float m_total; // total PP time
+    SPPInfo state;
+    float m_total;
 
 public:
     CVampirePPEffectsocor(const SPPInfo& ppi, float life_time);
+
     virtual BOOL Process(SPPInfo& pp);
 };
 
-//////////////////////////////////////////////////////////////////////////
-// Vampire Camera Effector
-//////////////////////////////////////////////////////////////////////////
 class CVampireCameraEffectorsoc : public CEffectorCam
 {
     typedef CEffectorCam inherited;
@@ -32,5 +30,6 @@ class CVampireCameraEffectorsoc : public CEffectorCam
 
 public:
     CVampireCameraEffectorsoc(float time, const Fvector& src, const Fvector& tgt);
+
     virtual BOOL ProcessCam(SCamEffectorInfo& info);
 };

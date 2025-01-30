@@ -14,7 +14,6 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hitted.h"
 
-//#include "bloodsucker_soc_vampire.h"
 #include "bloodsucker_soc_predator.h"
 #include "bloodsucker_soc_vampire_execute.h"
 
@@ -31,6 +30,11 @@ CStateManagerBloodsuckerSoC::CStateManagerBloodsuckerSoC(CBloodsuckerSoC* monste
 	add_state(eStateHearInterestingSound, new CStateMonsterHearInterestingSound(monster));
 	add_state(eStateHitted, new CStateMonsterHitted(monster));
 	add_state(eStateVampire_Execute, new CStateBloodsuckerSoCVampireExecute(monster));
+}
+
+CStateManagerBloodsuckerSoC::~CStateManagerBloodsuckerSoC()
+{
+
 }
 
 bool CStateManagerBloodsuckerSoC::check_vampire()
@@ -84,31 +88,24 @@ void CStateManagerBloodsuckerSoC::execute()
 		else			state_id = eStateRest;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////
-	// Additional
-	///////////////////////////////////////////////////////////////////////////////
-
-	// check if start interesting sound state
-	if ((prev_substate != eStateHearInterestingSound) && (state_id == eStateHearInterestingSound)){
+	if ((prev_substate != eStateHearInterestingSound) && (state_id == eStateHearInterestingSound))
+	{
 		pBloodsuckerBase->predator_start();
-	} else
-	// check if stop interesting sound state
-	if ((prev_substate == eStateHearInterestingSound) && (state_id != eStateHearInterestingSound)) {
+	} 
+	else if ((prev_substate == eStateHearInterestingSound) && (state_id != eStateHearInterestingSound)) 
+	{
 		pBloodsuckerBase->predator_stop();
 	}
-	///////////////////////////////////////////////////////////////////////////////
 
-	
 	select_state(state_id); 
 
-	if ((current_substate == eStateAttack) && (current_substate != prev_substate)) {
+	if ((current_substate == eStateAttack) && (current_substate != prev_substate)) 
+	{
 		pBloodsuckerBase->predator_stop();
 		pBloodsuckerBase->start_threaten = true;
 	}
 
-	// выполнить текущее состояние
 	get_state_current()->execute();
 
 	prev_substate = current_substate;
-
 }

@@ -11,6 +11,11 @@ CStateBloodsuckerSoCVampireHide::CStateBloodsuckerSoCVampireHide(CBloodsuckerSoC
     add_state(eStatePredator, new CStateBloodsuckerSoCPredator(obj));
 }
 
+CStateBloodsuckerSoCVampireHide::~CStateBloodsuckerSoCVampireHide()
+{
+
+}
+
 void CStateBloodsuckerSoCVampireHide::reselect_state()
 {
     if (prev_substate == eStateVampire_RunAway)

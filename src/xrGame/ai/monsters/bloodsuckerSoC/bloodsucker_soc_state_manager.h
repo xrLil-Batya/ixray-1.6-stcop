@@ -11,7 +11,9 @@ class CStateManagerBloodsuckerSoC : public CMonsterStateManager
 
 public:
 					CStateManagerBloodsuckerSoC (CBloodsuckerSoC* monster);
-	virtual void	execute						();
-	virtual void	remove_links				(CObject* object) { inherited::remove_links(object); }
+					virtual ~CStateManagerBloodsuckerSoC() override;
+
+	virtual void	execute						() override;
+	virtual void	remove_links				(CObject* object) override { inherited::remove_links(object); }
 	bool			check_vampire();
 };

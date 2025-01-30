@@ -29,6 +29,11 @@ CStateBloodsuckerSoCPredator::CStateBloodsuckerSoCPredator(CBloodsuckerSoC* obj)
 	add_state	(eStatePredator_Camp, new CStateMonsterCustomAction(obj));
 }
 
+CStateBloodsuckerSoCPredator::~CStateBloodsuckerSoCPredator()
+{
+
+}
+
 void CStateBloodsuckerSoCPredator::reinit()
 {
 	inherited::reinit	();

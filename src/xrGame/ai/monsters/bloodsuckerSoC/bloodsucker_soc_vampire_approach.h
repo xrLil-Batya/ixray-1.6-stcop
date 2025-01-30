@@ -7,9 +7,10 @@ class CStateBloodsuckerSoCVampireApproach : public CState
 
 public:
     CStateBloodsuckerSoCVampireApproach(CBloodsuckerSoC* obj);
-    virtual ~CStateBloodsuckerSoCVampireApproach();
+    virtual ~CStateBloodsuckerSoCVampireApproach() override;
 
-    virtual void initialize();
-    virtual void execute();
-    virtual void remove_links(CObject* object) { inherited::remove_links(object); }
+    virtual void initialize() override;
+    virtual void execute() override;
+
+    virtual void remove_links(CObject* object) override { inherited::remove_links(object); }
 };

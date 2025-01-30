@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "../../ai_entity_definitions.h"
 #include "../basemonster/base_monster.h"
 #include "../ai_monster_bones.h"
 #include "../controlled_entity.h"
@@ -10,47 +9,39 @@
 #include "bloodsucker_soc_alien.h"
 
 class CBloodsuckerSoC : public CBaseMonster,
-						public CControlledActor {
-
+						public CControlledActor 
+{
 	typedef		CBaseMonster	inherited;
 	
 public:
 	CBloodsuckerSoC();
-	virtual					~CBloodsuckerSoC();
+	virtual					~CBloodsuckerSoC() override;
 
-	virtual void			reinit					();
-	virtual	void			reload					(LPCSTR section);
+	virtual void			reinit					() override;
+	virtual	void			reload					(LPCSTR section) override;
 
-	virtual void			UpdateCL				();
-	virtual void			shedule_Update			(u32 dt);
-	virtual void			Die						(CObject* who);
-	virtual BOOL			net_Spawn				(CSE_Abstract* DC);
-	virtual	void			Load					(LPCSTR section);
+	virtual void			UpdateCL				() override;
+	virtual void			shedule_Update			(u32 dt) override;
+	virtual void			Die						(CObject* who) override;
+	virtual BOOL			net_Spawn				(CSE_Abstract* DC) override;
+	virtual	void			Load					(LPCSTR section) override;
 
-	virtual	void			CheckSpecParams			(u32 spec_params);
-	virtual bool			ability_invisibility	() {return true;}
-	virtual bool			ability_pitch_correction() {return false;}
-	virtual	void			post_fsm_update			();
+	virtual	void			CheckSpecParams			(u32 spec_params) override;
+	virtual bool			ability_invisibility	() override {return true;}
+	virtual bool			ability_pitch_correction() override {return false;}
+	virtual	void			post_fsm_update			() override;
 	
-	virtual bool			use_center_to_aim		() const {return true;}
-	virtual bool			check_start_conditions	(ControlCom::EControlType);
-	virtual void			on_activate_control		(ControlCom::EControlType);
-	virtual void			HitEntity				(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
+	virtual bool			use_center_to_aim		() const override {return true;}
+	virtual bool			check_start_conditions	(ControlCom::EControlType) override;
+	virtual void			on_activate_control		(ControlCom::EControlType) override;
+			void			HitEntity				(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
 	
-	//--------------------------------------------------------------------
-	// Utils
-	//--------------------------------------------------------------------
 			void			move_actor_cam			();
 
-	//--------------------------------------------------------------------
-	// Bones
-	//--------------------------------------------------------------------
 private:
 	static	void	    	BoneCallback			(CBoneInstance *B);
 			void			vfAssignBones			();
 			
-
-
 	bonesManipulation		Bones;
 
 	CBoneInstance			*bone_spine;
@@ -73,10 +64,10 @@ public:
 	void ActivateVampireEffector();
 	bool WantVampire();
 	void SatisfyVampire();
+
 private:
-	
 	float m_vampire_want_value;
-	float m_vampire_want_speed; // load from ltx
+	float m_vampire_want_speed;
 	float m_vampire_wound;
 	float m_vampire_gain_health;
 	float m_vampire_distance;
@@ -114,18 +105,15 @@ public:
 		eVampireStartHunt		= eAdditionalSounds | 7,
 	};
 
-	//--------------------------------------------------------------------
-
 public:
 			void	set_manual_control	(bool value) {}
 			void	manual_activate		();
 			void	manual_deactivate	();
 			bool	start_threaten;
 			float	get_vampire_distance() const { return m_vampire_distance; }
-			virtual	char* get_monster_class_name() { return const_cast<char*>("bloodsucker_soc"); }
+			virtual	char* get_monster_class_name() override { return const_cast<char*>("bloodsucker_soc"); }
 
 			DECLARE_SCRIPT_REGISTER_FUNCTION
 public:
-	virtual bool	can_be_seen				() const { return !state_invisible; }
-	
+	virtual bool	can_be_seen				() const override { return !state_invisible; }
 };

@@ -4,9 +4,9 @@ class CBloodsuckerSoC;
 class CAlienEffectsoc;
 class CAlienEffectsocPP;
 
-class CBloodsuckerSoCAlien {
-	
-	CBloodsuckerSoC*m_object;
+class CBloodsuckerSoCAlien 
+{
+	CBloodsuckerSoC* m_object;
 	
 	bool						m_active;
 
@@ -17,14 +17,13 @@ class CBloodsuckerSoCAlien {
 
 public:
 	CBloodsuckerSoCAlien();
-			~CBloodsuckerSoCAlien();
+	~CBloodsuckerSoCAlien();
 	
-	void	init_external		(CBloodsuckerSoC*obj);
+	void	init_external		(CBloodsuckerSoC* obj);
 	void	reinit				();
 
 	void	activate			();
 	void	deactivate			();
 
-	bool	active				() {return m_active;}
-
+	bool	active				() { return m_active; }
 };

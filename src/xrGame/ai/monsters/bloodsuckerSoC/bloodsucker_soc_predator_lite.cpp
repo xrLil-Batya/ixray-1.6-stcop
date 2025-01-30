@@ -26,6 +26,10 @@ CStateBloodsuckerSoCPredatorLite::CStateBloodsuckerSoCPredatorLite(CBloodsuckerS
 	add_state	(eStatePredator_LookOpenPlace, new CStateMonsterLookToPoint(obj));
 }
 
+CStateBloodsuckerSoCPredatorLite::~CStateBloodsuckerSoCPredatorLite()
+{
+}
+
 void CStateBloodsuckerSoCPredatorLite::reinit()
 {
 	inherited::reinit	();
@@ -121,9 +125,9 @@ void CStateBloodsuckerSoCPredatorLite::setup_substates()
 		data.vertex				= m_target_node;
 		data.point				= ai().level_graph().vertex_position(data.vertex);
 		data.action.action		= ACT_RUN;
-		data.action.time_out	= 0;		// do not use time out
-		data.completion_dist	= 0.f;		// get exactly to the point
-		data.time_to_rebuild	= 0;		// do not rebuild
+		data.action.time_out	= 0;
+		data.completion_dist	= 0.f;
+		data.time_to_rebuild	= 0;
 		data.accelerated		= true;
 		data.braking			= true;
 		data.accel_type 		= eAT_Aggressive;
@@ -157,7 +161,7 @@ void CStateBloodsuckerSoCPredatorLite::setup_substates()
 		SStateDataAction data;
 
 		data.action		= ACT_STAND_IDLE;
-		data.time_out	= 0;			// do not use time out
+		data.time_out	= 0;
 		data.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.sound_delay = object->db().m_dwIdleSndDelay;
 
@@ -167,8 +171,6 @@ void CStateBloodsuckerSoCPredatorLite::setup_substates()
 	}
 }
 
-#define TIME_TO_RESELECT_CAMP	15000
-
 void CStateBloodsuckerSoCPredatorLite::check_force_state()
 {
 	if (prev_substate == eStatePredator_Camp) {
@@ -177,9 +179,9 @@ void CStateBloodsuckerSoCPredatorLite::check_force_state()
 			if (object->EnemyMan.get_enemy() && 
 				(object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) < 10.f)) {
 				object->set_berserk	();
-			} else 
+			} 
+			else 
 				current_substate	= u32(-1);
-			
 		}
 	}
 }
@@ -212,10 +214,6 @@ void CStateBloodsuckerSoCPredatorLite::select_camp_point()
 
 bool CStateBloodsuckerSoCPredatorLite::enemy_see_me()
 {
-	//if (object->EnemyMan.get_enemy() == Actor()) 
-	//	return (Actor()->memory().visual().visible_now(object));
-
-	// if I see enemy then probably enemy see me :-)
 	return object->EnemyMan.enemy_see_me_now();
 }
 

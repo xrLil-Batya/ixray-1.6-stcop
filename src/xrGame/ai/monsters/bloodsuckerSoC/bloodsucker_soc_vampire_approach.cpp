@@ -20,7 +20,6 @@ void CStateBloodsuckerSoCVampireApproach::initialize()
 
 void CStateBloodsuckerSoCVampireApproach::execute()
 {
-    // установка параметров функциональных блоков
     object->set_action(ACT_RUN);
     object->anim().accel_activate(eAT_Aggressive);
     object->anim().accel_set_braking(false);

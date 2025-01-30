@@ -64,7 +64,6 @@ void CBloodsuckerSoC::Load(LPCSTR section)
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRunTurnRight);
 	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
-
 	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
 	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
 	SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
@@ -106,8 +105,6 @@ void CBloodsuckerSoC::Load(LPCSTR section)
 	anim().AddAnim(eAnimThreaten,		"stand_threaten_",		-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	anim().AddAnim(eAnimMiscAction_00,	"stand_to_aggressive_",	-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
 
-	// define transitions
-	//	anim().AddTransition(PS_STAND,			eAnimThreaten,	eAnimMiscAction_00,	false);
 	anim().AddTransition(eAnimStandSitDown,	eAnimSleep,		eAnimSitToSleep,	false);
 	anim().AddTransition(PS_STAND,			eAnimSleep,		eAnimStandSitDown,	true);
 	anim().AddTransition(PS_STAND,			PS_SIT,			eAnimStandSitDown,	false);
@@ -115,7 +112,6 @@ void CBloodsuckerSoC::Load(LPCSTR section)
 	anim().AddTransition(PS_SIT,			PS_STAND,		eAnimSitStandUp,	false);
 	anim().AddTransition(PS_LIE,			PS_STAND,		eAnimSitStandUp,	false);
 
-	// define links from Action to animations
 	anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	anim().LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 	anim().LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
@@ -130,7 +126,6 @@ void CBloodsuckerSoC::Load(LPCSTR section)
 	anim().LinkAction(ACT_STEAL,		eAnimSteal);
 	anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
 
-	// load other misc stuff
 	invisible_vel.set				(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
 	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
@@ -146,7 +141,6 @@ void CBloodsuckerSoC::Load(LPCSTR section)
 
 	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
 }
-
 
 void CBloodsuckerSoC::reinit()
 {
@@ -168,7 +162,6 @@ void CBloodsuckerSoC::reinit()
 
 	com_man().add_rotation_jump_data("run_turn_l_0","run_turn_l_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
 
-	// save visual	
 	m_visual_default			= cNameVisual();
 
 	m_vampire_want_value = 0.f;
@@ -244,17 +237,14 @@ void  CBloodsuckerSoC::BoneCallback(CBoneInstance *B)
 
 void CBloodsuckerSoC::vfAssignBones()
 {
-	// Установка callback на кости
-
 	bone_spine =	&smart_cast<IKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<IKinematics*>(Visual())->LL_BoneID("bip01_spine"));
 	bone_head =		&smart_cast<IKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<IKinematics*>(Visual())->LL_BoneID("bip01_head"));
-	if(!PPhysicsShell())//нельзя ставить колбеки, если создан физ шел - у него стоят свои колбеки!!!
+	if(!PPhysicsShell())
 	{
 		bone_spine->set_callback(bctCustom,BoneCallback,this);
 		bone_head->set_callback(bctCustom,BoneCallback,this);
 	}
 
-	// Bones settings
 	Bones.Reset();
 	Bones.AddBone(bone_spine, AXIS_X);	Bones.AddBone(bone_spine, AXIS_Y);
 	Bones.AddBone(bone_head, AXIS_X);	Bones.AddBone(bone_head, AXIS_Y);
@@ -298,7 +288,6 @@ void CBloodsuckerSoC::UpdateCL()
 	
 	if (g_Alive())
 	{
-		// update vampire need
 		m_vampire_want_value += m_vampire_want_speed * client_update_fdelta();
 		clamp(m_vampire_want_value, 0.f, 1.f);
 	}
@@ -341,7 +330,7 @@ bool CBloodsuckerSoC::check_start_conditions(ControlCom::EControlType type)
 
 		m_threaten_time = Device.dwTimeGlobal;
 
-		if (Random.randI(100) < 25) 
+		if (Random.randI(100) < 50) 
 			return false;
 	}
 
@@ -398,8 +387,8 @@ void CBloodsuckerSoC::move_actor_cam()
 {
 	float turn_angle = PI_DIV_3;
 	if (Actor()->cam_Active()) {
-		Actor()->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, turn_angle);	//Random.randF(turn_angle)); 
-		Actor()->cam_Active()->Move(Random.randI(2) ? kUP	 : kDOWN, turn_angle);	//Random.randF(turn_angle)); 
+		Actor()->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, turn_angle);
+		Actor()->cam_Active()->Move(Random.randI(2) ? kUP	 : kDOWN, turn_angle);
 	}
 }
 
@@ -415,6 +404,7 @@ void CBloodsuckerSoC::start_invisible_predator()
 	state_invisible				= true;
 	predator_start				();
 }
+
 void CBloodsuckerSoC::stop_invisible_predator()
 {
 	state_invisible				= false;

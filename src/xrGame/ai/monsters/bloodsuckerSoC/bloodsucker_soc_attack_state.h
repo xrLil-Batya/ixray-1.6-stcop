@@ -11,14 +11,15 @@ class	CBloodsuckerSoCStateAttack : public CStateMonsterAttack {
 
 public:
 	CBloodsuckerSoCStateAttack(CBloodsuckerSoC* obj);
-	virtual			~CBloodsuckerSoCStateAttack();
+	virtual			~CBloodsuckerSoCStateAttack() override;
 
-	virtual	void	initialize					();
-	virtual	void	execute						();
-	virtual	void	finalize					();
-	virtual	void	critical_finalize			();
+	virtual	void	initialize					() override;
+	virtual	void	execute						() override;
+	virtual	void	finalize					() override;
+	virtual	void	critical_finalize			() override;
 	
-	virtual void	setup_substates				();
+	virtual void	setup_substates				() override;
+
 private:
 			void	update_invisibility			();
 			bool	check_hiding				();

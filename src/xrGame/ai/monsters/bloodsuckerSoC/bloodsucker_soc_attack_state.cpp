@@ -12,8 +12,6 @@
 
 #include "../states/state_move_to_point.h"
 
-//#include "bloodsucker_backstub_enemy.h"
-
 CBloodsuckerSoCStateAttack::CBloodsuckerSoCStateAttack(CBloodsuckerSoC* obj) : inherited_attack(obj)
 {
 	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
@@ -158,13 +156,11 @@ void CBloodsuckerSoCStateAttack::update_invisibility()
 	}
 
 	if (object->state_invisible) {
-		// check conditions to stop invis
 		if (current_substate == eStateAttack_Melee) {
 			m_pBloodsucker->stop_invisible_predator	();
 			m_time_stop_invis				= time();		
 		}
 	} else {
-		// check conditions to start invis
 		if (current_substate == eStateAttack_Hide) {
 			m_pBloodsucker->start_invisible_predator();
 		} else 
@@ -180,30 +176,11 @@ bool CBloodsuckerSoCStateAttack::check_hiding()
 	if (current_substate == eStateAttack_Hide) 
 		if (!get_state(eStateAttack_Melee)->check_start_conditions()) 
 			if (!get_state_current()->check_completion()) {
-				//object->path().set_use_dest_orient	(true);
-				//object->path().set_dest_direction	(Fvector().sub(object->EnemyMan.get_enemy()->Position(),m_dir_point));
+
 				return true;
 			}
 
 	return false;
-
-
-	//if (current_substate == eStateAttack_Melee) {
-	//	if (prev_substate != eStateAttack_Melee) {
-	//		object->stop_invisible_predator	();
-	//		m_time_stop_invis				= time();
-	//	}
-	//	
-	//	if (get_state_current()->check_completion()) ret_value = true;
-	//} else 
-	//if (current_substate == eStateAttack_Run) {
-	//	if (object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) > INVIS_DIST_TO_ENEMY) {
-	//		if (!object->state_invisible && (m_time_stop_invis + INVIS_ACTIVATE_DELAY < time())) 
-	//			object->start_invisible_predator();
-	//	}
-	//} 
-	//		
-	//return ret_value;
 }
 
 void CBloodsuckerSoCStateAttack::setup_substates()

@@ -17,7 +17,6 @@ BOOL CVampirePPEffectsocor::Process(SPPInfo& pp)
 {
     inherited::Process(pp);
 
-    // amount of time passed in percents
     float time_past_perc = (m_total - fLifeTime) / m_total;
 
     float factor;
@@ -41,14 +40,12 @@ BOOL CVampirePPEffectsocor::Process(SPPInfo& pp)
     return TRUE;
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Vampire Camera Effector
-//////////////////////////////////////////////////////////////////////////
 #define DELTA_ANGLE_X 10 * PI / 180
 #define DELTA_ANGLE_Y DELTA_ANGLE_X
 #define DELTA_ANGLE_Z DELTA_ANGLE_X
 #define ANGLE_SPEED 0.2f
 #define BEST_DISTANCE 0.3f
+
 CVampireCameraEffectorsoc::CVampireCameraEffectorsoc(float time, const Fvector& src, const Fvector& tgt)
     : inherited(eCEVampire, time)
 {
@@ -80,10 +77,8 @@ BOOL CVampireCameraEffectorsoc::ProcessCam(SCamEffectorInfo& info)
     if (fLifeTime < 0)
         return FALSE;
 
-    // процент оставшегося времени
     float time_left_perc = fLifeTime / m_time_total;
 
-    // Инициализация
     Fmatrix Mdef;
     Mdef.identity();
     Mdef.j.set(info.n);
@@ -91,15 +86,11 @@ BOOL CVampireCameraEffectorsoc::ProcessCam(SCamEffectorInfo& info)
     Mdef.i.crossproduct(info.n, info.d);
     Mdef.c.set(info.p);
 
-    //////////////////////////////////////////////////////////////////////////
-    // using formula: y = k - 2*k*abs(x-1/2)   k - max distance
-    // float	cur_dist = m_dist * (1 - 2*_abs((1-time_left_perc) - 0.5f));
     float time_passed = 1 - time_left_perc;
     float cur_dist = m_dist * (_sqrt(0.5f * 0.5f - (time_passed - 0.5f) * (time_passed - 0.5f)));
 
     Mdef.c.mad(m_direction, cur_dist);
 
-    // check the time to return
     if (time_left_perc < 0.2f)
     {
         dangle_target.x = 0.f;
@@ -128,9 +119,6 @@ BOOL CVampireCameraEffectorsoc::ProcessCam(SCamEffectorInfo& info)
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-
-    // Установить углы смещения
     Fmatrix R;
     R.setHPB(dangle_current.x, dangle_current.y, dangle_current.z);
 

@@ -11,17 +11,18 @@ class	CBloodsuckerSoCStateAttackHide : public CState {
 
 public:
 	CBloodsuckerSoCStateAttackHide(CBloodsuckerSoC* obj);
+	virtual ~CBloodsuckerSoCStateAttackHide() override;
 
-	virtual void		reinit							();
+	virtual void		reinit							() override;
 
-	virtual void		initialize						();
-	virtual	void		reselect_state					();
-	virtual	void		finalize						();
-	virtual	void		critical_finalize				();
-	virtual bool		check_completion				();
+	virtual void		initialize						() override;
+	virtual	void		reselect_state					() override;
+	virtual	void		finalize						() override;
+	virtual	void		critical_finalize				() override;
+	virtual bool		check_completion				() override;
 
-	virtual void		setup_substates					();
-	virtual void		check_force_state				();
+	virtual void		setup_substates					() override;
+	virtual void		check_force_state				() override;
 
 private:
 	void		select_camp_point				();

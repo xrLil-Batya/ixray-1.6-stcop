@@ -1,16 +1,3 @@
-/*#pragma once
-
-#include "../states/state_move_to_point.h"
-#include "bloodsucker_predator_lite.h"
-
-#include "../../../cover_point.h"
-#include "../monster_cover_manager.h"
-#include "../monster_home.h"
-
-#include "../../../actor.h"
-#include "../../../actor_memory.h"
-#include "../../../visual_memory_manager.h"*/
-
 #include "stdafx.h"
 
 #include "../control_animation_base.h"
@@ -34,14 +21,17 @@
 #include "../monster_cover_manager.h"
 #include "../monster_home.h"
 
-//#include "bloodsucker_backstub_enemy.h"
-
 CBloodsuckerSoCStateAttackHide::CBloodsuckerSoCStateAttackHide(CBloodsuckerSoC *obj) : inherited(obj)
 {
 	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
 
 	add_state	(eStateAttack_HideInCover, new CStateMonsterMoveToPointEx (obj));
 	add_state	(eStateAttack_CampInCover, new CStateBloodsuckerSoCPredatorLite(obj));
+}
+
+CBloodsuckerSoCStateAttackHide::~CBloodsuckerSoCStateAttackHide()
+{
+
 }
 
 void CBloodsuckerSoCStateAttackHide::reinit()
