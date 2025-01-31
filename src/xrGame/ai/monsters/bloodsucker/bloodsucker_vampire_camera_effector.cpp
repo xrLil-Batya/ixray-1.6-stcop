@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "../../ai_entity_definitions.h"
 #include "bloodsucker_vampire_camera_effector.h"
 

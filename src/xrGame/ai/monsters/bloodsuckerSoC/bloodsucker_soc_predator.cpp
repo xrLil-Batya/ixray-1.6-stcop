@@ -1,4 +1,10 @@
 #include "stdafx.h"
+
+#include "../basemonster/base_monster.h"
+
+#include "../../../Actor.h"
+#include "../bloodsucker/IBloodsucker.h"
+
 #include "bloodsucker_soc.h"
 #include "bloodsucker_soc_predator.h"
 

@@ -1,5 +1,10 @@
 #include "stdafx.h"
 
+#include "../basemonster/base_monster.h"
+
+#include "../../../Actor.h"
+#include "../bloodsucker/IBloodsucker.h"
+
 #include "../control_animation_base.h"
 #include "../control_direction_base.h"
 

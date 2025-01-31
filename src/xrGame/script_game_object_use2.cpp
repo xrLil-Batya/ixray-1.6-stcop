@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "pch_script.h"
 #include "script_game_object.h"
+#include "ai/monsters/bloodsucker/IBloodsucker.h"
 #include "ai/monsters/bloodsucker/bloodsucker.h"
 #include "ai/monsters/poltergeist/poltergeist.h"
 #include "ai/monsters/burer/burer.h"

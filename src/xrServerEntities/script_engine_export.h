@@ -81,6 +81,7 @@
 #	include "script_zone.h"
 #	include "ef_storage.h"
 #	include "ai/stalker/ai_stalker.h"
+#	include "ai/monsters/bloodsucker/IBloodsucker.h"
 #	include "ai/monsters/bloodsucker/bloodsucker.h"
 #	include "ai/monsters/bloodsuckerSoC/bloodsucker_soc.h"
 #	include "ai/monsters/boar/boar.h"

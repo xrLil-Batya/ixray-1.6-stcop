@@ -1,5 +1,10 @@
 #include "stdafx.h"
 
+#include "../basemonster/base_monster.h"
+
+#include "../../../Actor.h"
+#include "IBloodsucker.h"
+
 #include "bloodsucker.h"
 #include "bloodsucker_state_manager.h"
 

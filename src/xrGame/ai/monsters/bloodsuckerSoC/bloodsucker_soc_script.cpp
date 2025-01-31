@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "pch_script.h"
+
+#include "../../../Actor.h"
+#include "../bloodsucker/IBloodsucker.h"
+
 #include "bloodsucker_soc.h"
 
 using namespace luabind;
