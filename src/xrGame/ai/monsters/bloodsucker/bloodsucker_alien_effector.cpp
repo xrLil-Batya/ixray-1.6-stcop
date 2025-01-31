@@ -1,7 +1,9 @@
 #include "stdafx.h"
+
+#include "../../../Actor.h"
+#include "IBloodsucker.h"
 #include "bloodsucker.h"
 #include "../../../level.h"
-#include "../../../Actor.h"
 #include "../../../ActorEffector.h"
 #include "../../../inventory.h"
 #include "../../../HudItem.h"
@@ -11,7 +13,8 @@
 #include "bloodsucker_alien.h"
 #include "bloodsucker_alien_effector.h"
 
-CBloodsukerAlienEffector::CBloodsukerAlienEffector(ECamEffectorType type, CBloodsuckerBase* object) :
+
+CBloodsukerAlienEffector::CBloodsukerAlienEffector(ECamEffectorType type, IBloodsucker* object) :
 	inherited(type, flt_max)
 {
 	m_time_total = 0.f;
@@ -22,11 +25,13 @@ CBloodsukerAlienEffector::CBloodsukerAlienEffector(ECamEffectorType type, CBlood
 
 	dangle_current.set(0.f, 0.f, 0.f);
 
-	object = object;
+	CObject* obj = smart_cast<CObject*>(object);
 
-	m_prev_eye_matrix.c = get_head_position(object);
-	m_prev_eye_matrix.k = object->Direction();
+	m_prev_eye_matrix.k = obj->Direction();
+	m_prev_eye_matrix.c = get_head_position(obj);
+
 	Fvector::generate_orthonormal_basis(m_prev_eye_matrix.k, m_prev_eye_matrix.j, m_prev_eye_matrix.i);
+
 	m_inertion = 1.f;
 	m_current_fov = EntityDefinitions::CBloodsuckerBase::MinFov;
 }
@@ -61,24 +66,25 @@ BOOL CBloodsukerAlienEffector::ProcessCam(SCamEffectorInfo& info)
 
 	// update inertion
 	Fmatrix cur_matrix{};
-	cur_matrix.k = object->Direction();
-	cur_matrix.c = get_head_position(object);
+
+	CObject* obj = smart_cast<CObject*>(object);
+
+	cur_matrix.k = obj->Direction();
+	cur_matrix.c = get_head_position(obj);
 
 	float	rel_dist = m_prev_eye_matrix.c.distance_to(cur_matrix.c) / EntityDefinitions::CBloodsuckerBase::MaxCameraDist;
 	clamp(rel_dist, 0.f, 1.f);
 
 	def_lerp(m_inertion, 1 - rel_dist, rel_dist, Device.fTimeDelta);
 
-	// set pos and dir with inertion
 	m_prev_eye_matrix.c.inertion(cur_matrix.c, m_inertion);
 	m_prev_eye_matrix.k.inertion(cur_matrix.k, m_inertion);
 	Fvector::generate_orthonormal_basis_normalized(m_prev_eye_matrix.k, m_prev_eye_matrix.j, m_prev_eye_matrix.i);
 
-	// apply position and direction
 	Mdef = m_prev_eye_matrix;
 
 	//set fov
-	float	rel_speed = object->m_fCurSpeed / 15.f;
+	float	rel_speed = object->get_cur_speed() / 15.f;
 	clamp(rel_speed, 0.f, 1.f);
 
 	float	m_target_fov = EntityDefinitions::CBloodsuckerBase::MinFov +
@@ -87,9 +93,7 @@ BOOL CBloodsukerAlienEffector::ProcessCam(SCamEffectorInfo& info)
 	def_lerp(m_current_fov, m_target_fov, EntityDefinitions::CBloodsuckerBase::FovSpeed, Device.fTimeDelta);
 
 	info.fFov = m_current_fov;
-	//////////////////////////////////////////////////////////////////////////
 
-	// Установить углы смещения
 	Fmatrix		R{};
 	R.setHPB(dangle_current.x, dangle_current.y, dangle_current.z);
 

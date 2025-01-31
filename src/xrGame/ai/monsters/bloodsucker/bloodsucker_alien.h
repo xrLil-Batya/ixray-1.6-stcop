@@ -1,13 +1,13 @@
 #pragma once
 
-class CBloodsuckerBase;
+class IBloodsucker;
 class CBloodsukerAlienEffector;
 class CBloodsukerAlienEffectorPP;
 
-class CBloodsukerAlien
+class CBloodsuckerAlien
 {
 protected:
-	CBloodsuckerBase			*m_object;
+	IBloodsucker*				m_object;
 	
 	bool						m_active;
 
@@ -17,14 +17,14 @@ protected:
 	bool						m_crosshair_show;
 
 public:
-	CBloodsukerAlien();
-	~CBloodsukerAlien();
+	CBloodsuckerAlien();
+	~CBloodsuckerAlien();
 	
-	void	init_external		(CBloodsuckerBase* object);
+	void	init_external		(IBloodsucker* object);
 	void	reinit				();
 
 	void	activate			();
 	void	deactivate			();
 
-	bool	active				() {return m_active;}
+	bool	active				() { return m_active; }
 };

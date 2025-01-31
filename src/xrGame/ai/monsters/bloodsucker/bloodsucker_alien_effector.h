@@ -9,14 +9,14 @@ protected:
 	Fvector	dangle_target;
 	Fvector dangle_current;
 
-	CBloodsuckerBase* object;
+	IBloodsucker* object;
 
 	float		m_current_fov;
 	Fmatrix		m_prev_eye_matrix;
 	float		m_inertion;
 
 public:
-	CBloodsukerAlienEffector(ECamEffectorType type, CBloodsuckerBase* object);
+	CBloodsukerAlienEffector(ECamEffectorType type, IBloodsucker* object);
 	virtual ~CBloodsukerAlienEffector() override;
 
 	virtual BOOL	ProcessCam(SCamEffectorInfo& info) override;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../ai_entity_definitions.h"
-#include "../basemonster/base_monster.h"
 #include "../ai_monster_bones.h"
 #include "../controlled_entity.h"
 #include "../controlled_actor.h"
@@ -10,7 +9,7 @@
 #include "bloodsucker_alien.h"
 
 class CBloodsuckerBase : public CBaseMonster, 
-						public CControlledActor 
+						public CControlledActor, public IBloodsucker
 {
 protected:
 	using		inherited = CBaseMonster;
@@ -78,13 +77,7 @@ public:
 
 			virtual bool    in_solid_state           ();
 
-
-	//--------------------------------------------------------------------
-	// Invisibility sync
-	//--------------------------------------------------------------------
-
 private:
-	//  enum visibility_t { unset = -1, no_visibility = 0, partial_visibility = 1, full_visibility = 2 };
 	enum sync_visibility_flags {
 		f_unset = (1 << 0),
 		f_no_visibility = (1 << 1),
@@ -97,10 +90,6 @@ public:
 	virtual u8				GetCustomSyncFlag() const;
 	virtual void			ProcessCustomSyncFlag_CL(u8 flags);
 
-
-	//--------------------------------------------------------------------
-	// Vampire
-	//--------------------------------------------------------------------
 public:
 	u32						m_vampire_min_delay;
 	static u32				m_time_last_vampire;
@@ -135,19 +124,78 @@ private:
 
 			void			LoadVampirePPEffector	(LPCSTR section);	
 
-	//--------------------------------------------------------------------
-	// Alien
-	//--------------------------------------------------------------------
 public:
-	CBloodsukerAlien	m_alien_control;
+	CBloodsuckerAlien		m_alien_control;
 	u32						m_time_lunge;
+
+	CBloodsuckerBase* pBloodsuckerBase;
 
 			void			set_alien_control		(bool val);
 
+			virtual bool get_state_invisible() override {
+				return this->state_invisible
+					;
+			};
 
-	//--------------------------------------------------------------------
-	// Predator
-	//--------------------------------------------------------------------
+			virtual void set_state_invisible(bool val) override
+			{
+				this->state_invisible = val;
+			};
+
+			
+			virtual void set_visible(bool val) override 
+			{
+				this->setVisible(val);
+			};
+
+			virtual void exe_release() override
+			{
+				this->release();
+			}
+
+			virtual void exe_install(xr_any_type actor) override
+			{
+				if (actor.has_value())
+				{
+					if (auto* pActor = std::any_cast<CActor*>(actor))
+					{
+						this->install(pActor);
+					}
+				}
+			};
+
+			virtual void exe_dont_need_turn() override
+			{
+				this->dont_need_turn();
+			}
+
+			virtual bool has_enemy() override { return this->EnemyMan.get_enemy(); }
+
+			virtual void add_enemy(xr_any_type actor) override
+			{
+				if (actor.has_value())
+				{
+					if (auto* pEnemy = any_cast<CEntityAlive*>(actor))
+					{
+						this->EnemyMan.add_enemy(pEnemy);
+					}
+				}
+			};
+
+			virtual xr_any_type get_spp_info() const override { return pp_vampire_effector; }
+
+			virtual IBloodsucker* get_class_object() {
+				return pBloodsuckerBase
+					;
+			};
+
+			virtual Fvector exe_get_head_position(CObject* object) { return get_head_position(object); };
+
+			virtual float get_cur_speed() override {
+				return this->m_fCurSpeed
+					;
+			}
+
 public:
 	shared_str				m_visual_default;
 	LPCSTR					m_visual_predator;
@@ -246,7 +294,6 @@ public:
 	virtual bool    should_wait_to_use_corspe_visual () { return false; }
 
 public:
-
 	u32				m_hits_before_vampire;
 	u32				m_sufficient_hits_before_vampire;
 	int				m_sufficient_hits_before_vampire_random;
@@ -255,6 +302,6 @@ public:
 
 	void			sendToStartVampire(CActor* pA);
 	void			sendToStopVampire();
-
+	
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

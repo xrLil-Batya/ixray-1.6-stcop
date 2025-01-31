@@ -1,4 +1,10 @@
 #include "stdafx.h"
+
+#include "../basemonster/base_monster.h"
+
+#include "../../../Actor.h"
+#include "../bloodsucker/IBloodsucker.h"
+
 #include "bloodsucker_soc.h"
 #include "bloodsucker_soc_state_manager.h"
 #include "../../../Actor.h"
@@ -6,8 +12,8 @@
 #include "../../../../Include/xrRender/KinematicsAnimated.h"
 #include "../../../Level.h"
 #include "../../../material_manager.h"
-#include "bloodsucker_soc_vampire_effector.h"
-//#include "bloodsucker_vampire_camera_effector.h"
+#include "../bloodsucker/bloodsucker_vampire_effector.h"
+#include "../bloodsucker/bloodsucker_vampire_camera_effector.h"
 #include "../../../detail_path_manager.h"
 #include "../../../level_debug.h"
 #include "../monster_velocity_space.h"
@@ -30,6 +36,8 @@ u32 CBloodsuckerSoC::m_time_last_vampire = 0;
 
 CBloodsuckerSoC::CBloodsuckerSoC()
 {
+	pBloodsuckerSoC = this;
+
 	pStateManagerBase = new CStateManagerBloodsuckerSoC(this);
 	m_alien_control.init_external	(this);
 	
@@ -210,9 +218,10 @@ void CBloodsuckerSoC::LoadVampirePPEffector(LPCSTR section)
 
 void CBloodsuckerSoC::ActivateVampireEffector()
 {
-	Actor()->Cameras().AddCamEffector(
-		new CVampireCameraEffectorsoc(6.0f, get_head_position(this), get_head_position(Actor())));
-	Actor()->Cameras().AddPPEffector(new CVampirePPEffectsocor(pp_vampire_effector, 6.0f));
+	Actor()->Cameras().AddCamEffector(new CBloodsukerVampireCameraEffector(6.0f,
+		get_head_position(this), get_head_position(Actor())));
+
+	Actor()->Cameras().AddPPEffector(new CBloodsukerVampirePPEffector(pp_vampire_effector, 6.0f));
 }
 
 bool CBloodsuckerSoC::WantVampire() { return !!fsimilar(m_vampire_want_value, 1.f); }

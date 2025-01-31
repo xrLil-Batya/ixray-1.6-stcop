@@ -1,7 +1,10 @@
 #include "stdafx.h"
+
+#include "../basemonster/base_monster.h"
+#include "../../../Actor.h"
+#include "IBloodsucker.h"
 #include "bloodsucker.h"
 #include "bloodsucker_state_manager.h"
-#include "../../../Actor.h"
 #include "../../../ActorEffector.h"
 #include "../../../../Include/xrRender/KinematicsAnimated.h"
 #include "../../../Level.h"
@@ -30,6 +33,8 @@ u32	CBloodsuckerBase::m_time_last_vampire = 0;
 
 CBloodsuckerBase::CBloodsuckerBase()
 {
+	pBloodsuckerBase = this;
+
 	pStateManagerBase = new CBloodsuckerBaseStateManager(this);
 
 	m_alien_control.init_external(this);
@@ -368,7 +373,9 @@ void CBloodsuckerBase::vfAssignBones()
 
 void CBloodsuckerBase::ActivateVampireEffector()
 {
-	Actor()->Cameras().AddCamEffector(new CBloodsukerVampireCameraEffector(6.0f, get_head_position(this), get_head_position(Actor())));
+	Actor()->Cameras().AddCamEffector(new CBloodsukerVampireCameraEffector(6.0f, 
+		get_head_position(this), get_head_position(Actor())));
+
 	Actor()->Cameras().AddPPEffector(new CBloodsukerVampirePPEffector(pp_vampire_effector, 6.0f));
 }
 
