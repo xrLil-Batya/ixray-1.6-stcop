@@ -78,6 +78,9 @@ void clear_and_reserve(xr_vector<T> &vector_object) {
     }
 }
 
+// any
+using xr_any_type = std::any;
+
 // deque
 template <typename T, typename allocator = xalloc<T>>
 using xr_deque = std::deque<T, allocator>;
@@ -194,7 +197,6 @@ using LPFloatIt = LPFloatVec::iterator;
 
 using LPIntVec = xr_vector<int*>;
 using LPIntIt = LPIntVec::iterator;
-
 
 using boolVec = xr_vector<bool>;
 using boolIt = boolVec::iterator;
