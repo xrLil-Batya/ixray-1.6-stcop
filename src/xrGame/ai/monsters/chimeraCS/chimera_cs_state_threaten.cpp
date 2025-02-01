@@ -1,39 +1,33 @@
-#pragma once
+#include "StdAfx.h"
+#include "chimera_cs_state_threaten.h"
 
 #include "chimera_cs_state_threaten_steal.h"
 #include "chimera_cs_state_threaten_walk.h"
 #include "chimera_cs_state_threaten_roar.h"
 
-#define CStateChimecsThreatenAbstract CStateChimecsThreaten<_Object>
-
-template <typename _Object>
-CStateChimecsThreatenAbstract::CStateChimecsThreaten(_Object *obj) : inherited(obj)
+CStateChimeraCSThreaten::CStateChimeraCSThreaten(CChimeraCS *obj) : inherited(obj)
 {
-	add_state(eStateWalk,		xr_new<CStateChimecsThreatenWalk<_Object>> 	(obj));
-	add_state(eStateThreaten,	xr_new<CStateChimecsThreatenRoar<_Object>> 	(obj));
-	add_state(eStateSteal,		xr_new<CStateChimecsThreatenSteal<_Object>> (obj));
+	add_state(eStateWalk,		new CStateChimecsThreatenWalk	(obj));
+	add_state(eStateThreaten,	new CStateChimecsThreatenRoar	(obj));
+	add_state(eStateSteal,		new CStateChimecsThreatenSteal (obj));
 }
 
-template <typename _Object>
-CStateChimecsThreatenAbstract::~CStateChimecsThreaten()
+CStateChimeraCSThreaten::~CStateChimeraCSThreaten()
 {
 }
 
-template <typename _Object>
-void CStateChimecsThreatenAbstract::reinit()
+void CStateChimeraCSThreaten::reinit()
 {
 	inherited::reinit	();
 
 	m_last_time_threaten = 0;
 }
 
-
 #define MIN_DIST_TO_ENEMY	3.f
 #define MORALE_THRESHOLD	0.8f
 #define THREATEN_DELAY		10000
 
-template <typename _Object>
-bool CStateChimecsThreatenAbstract::check_start_conditions()
+bool CStateChimeraCSThreaten::check_start_conditions()
 {
 	if (object->tfGetRelationType(object->EnemyMan.get_enemy()) == ALife::eRelationTypeWorstEnemy) return false;
 	if (object->Position().distance_to(object->EnemyMan.get_enemy_position()) < MIN_DIST_TO_ENEMY) return false;
@@ -44,8 +38,7 @@ bool CStateChimecsThreatenAbstract::check_start_conditions()
 	return true;
 }
 
-template <typename _Object>
-bool CStateChimecsThreatenAbstract::check_completion()
+bool CStateChimeraCSThreaten::check_completion()
 {
 	if (object->Position().distance_to(object->EnemyMan.get_enemy_position()) < MIN_DIST_TO_ENEMY) return true;
 	if (object->HitMemory.is_hit()) return true;
@@ -54,15 +47,13 @@ bool CStateChimecsThreatenAbstract::check_completion()
 	return false;
 }
 
-template <typename _Object>
-void CStateChimecsThreatenAbstract::initialize()
+void CStateChimeraCSThreaten::initialize()
 {
 	inherited::initialize	();
 	object->SetUpperState	();
 }
 
-template <typename _Object>
-void CStateChimecsThreatenAbstract::reselect_state()
+void CStateChimeraCSThreaten::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
 		select_state(eStateThreaten);
@@ -87,23 +78,16 @@ void CStateChimecsThreatenAbstract::reselect_state()
 	select_state(eStateThreaten);
 }
 
-template <typename _Object>
-void CStateChimecsThreatenAbstract::finalize()
+void CStateChimeraCSThreaten::finalize()
 {
 	inherited::finalize		();
 	object->SetUpperState	(false);
 	m_last_time_threaten	 = Device.dwTimeGlobal;
 }
 
-template <typename _Object>
-void CStateChimecsThreatenAbstract::critical_finalize()
+void CStateChimeraCSThreaten::critical_finalize()
 {
 	inherited::critical_finalize();
 	object->SetUpperState	(false);
 	m_last_time_threaten	 = Device.dwTimeGlobal;
 }
-
-
-
-#undef CStateChimecsThreatenAbstract
-

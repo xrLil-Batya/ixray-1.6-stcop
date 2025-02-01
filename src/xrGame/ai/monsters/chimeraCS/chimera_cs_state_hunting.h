@@ -2,11 +2,10 @@
 
 #include "../state.h"
 
-template<typename _Object>
-class	CStateChimecsHunting : public CState<_Object> {
+class	CStateChimeraCSHunting : public CState {
 protected:
-	typedef CState<_Object> inherited;
-	typedef CState<_Object>* state_ptr;
+	typedef CState inherited;
+	typedef CState* state_ptr;
 
 	enum {
 		eStateMoveToCover,
@@ -14,12 +13,10 @@ protected:
 	};
 
 public:
-						CStateChimecsHunting	(_Object *obj);
+	CStateChimeraCSHunting(CChimeraCS*obj);
 
 	virtual	void		reselect_state			();
 	virtual bool 		check_start_conditions	();	
 	virtual bool 		check_completion		();	
 
 };
-
-#include "Chimecs_state_hunting_inline.h"

@@ -1,9 +1,7 @@
-#pragma once
+#include "StdAfx.h"
+#include "chimera_cs_state_threaten_steal.h"
 
-#define CStateChimecsThreatenStealAbstract CStateChimecsThreatenSteal<_Object>
-
-template <typename _Object>
-void CStateChimecsThreatenStealAbstract::initialize()
+void CStateChimeraCSThreatenSteal::initialize()
 {
 	inherited::initialize();
 	
@@ -20,16 +18,13 @@ void CStateChimecsThreatenStealAbstract::initialize()
 	data.action.sound_delay = object->db().m_dwIdleSndDelay;
 }
 
-template <typename _Object>
-void CStateChimecsThreatenStealAbstract::finalize()
+void CStateChimeraCSThreatenSteal::finalize()
 {
 	inherited::finalize();
 	object->SetUpperState	();
 }
 
-
-template <typename _Object>
-void CStateChimecsThreatenStealAbstract::execute()
+void CStateChimeraCSThreatenSteal::execute()
 {
 	data.point				= object->EnemyMan.get_enemy_position	();
 	data.vertex				= object->EnemyMan.get_enemy_vertex		();
@@ -40,8 +35,7 @@ void CStateChimecsThreatenStealAbstract::execute()
 
 #define MIN_DISTANCE_TO_ENEMY	8.f
 
-template <typename _Object>
-bool CStateChimecsThreatenStealAbstract::check_completion()
+bool CStateChimeraCSThreatenSteal::check_completion()
 {	
 	if (inherited::check_completion()) return true;
 	
@@ -51,14 +45,9 @@ bool CStateChimecsThreatenStealAbstract::check_completion()
 	return false;
 }
 
-template <typename _Object>
-bool CStateChimecsThreatenStealAbstract::check_start_conditions()
+bool CStateChimeraCSThreatenSteal::check_start_conditions()
 {
 	float dist_to_enemy = object->EnemyMan.get_enemy_position().distance_to(object->Position());
 	if (dist_to_enemy > MIN_DISTANCE_TO_ENEMY) return true;
 	return false;
 }
-
-
-#undef CStateChimecsThreatenStealAbstract
-#undef MIN_DISTANCE_TO_ENEMY

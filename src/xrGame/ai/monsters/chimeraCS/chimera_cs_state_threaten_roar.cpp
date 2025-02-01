@@ -1,18 +1,14 @@
-#pragma once
+#include "StdAfx.h"
+#include "chimera_cs_state_threaten_roar.h"
 
-#define CStateChimecsThreatenRoarAbstract CStateChimecsThreatenRoar<_Object>
-
-template <typename _Object>
-void CStateChimecsThreatenRoarAbstract::initialize()
+void CStateChimeraCSThreatenRoar::initialize()
 {
 	inherited::initialize	();
 
 }
 
-template <typename _Object>
-void CStateChimecsThreatenRoarAbstract::execute()
+void CStateChimeraCSThreatenRoar::execute()
 {
-
 	object->set_action				(ACT_STAND_IDLE);
 	object->anim().SetSpecParams	(ASP_THREATEN);
 	object->set_state_sound			(MonsterSound::eMonsterSoundThreaten);
@@ -21,13 +17,8 @@ void CStateChimecsThreatenRoarAbstract::execute()
 
 #define STATE_TIME_OUT	4000
 
-template <typename _Object>
-bool CStateChimecsThreatenRoarAbstract::check_completion()
+bool CStateChimeraCSThreatenRoar::check_completion()
 {	
 	if (time_state_started + STATE_TIME_OUT < Device.dwTimeGlobal) return true;
 	return false;
 }
-
-
-#undef CStateChimecsThreatenRoarAbstract
-

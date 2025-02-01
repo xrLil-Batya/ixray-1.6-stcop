@@ -13,31 +13,27 @@
 #include "../control_path_builder_base.h"
 
 
-CChimecs::CChimecs()
+CChimeraCS::CChimeraCS()
 {
 	StateMan = xr_new<CStateManagerChimecs>(this);
 	com_man().add_ability(ControlCom::eControlJump);
 }
 
-CChimecs::~CChimecs()
+CChimeraCS::~CChimeraCS()
 {
 	xr_delete		(StateMan);
 }
 
-void CChimecs::Load(LPCSTR section)
+void CChimeraCS::Load(LPCSTR section)
 {
 	inherited::Load			(section);
 
 	anim().accel_load			(section);
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
-//	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRunTurnLeft);
-//	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRunTurnRight);
-	
+
 	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
-//	anim().AddReplacedAnim					(&m_bRunTurnLeft,	eAnimRun,		eAnimRunTurnLeft);
-//	anim().AddReplacedAnim					(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
 
 	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
 	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
@@ -90,7 +86,7 @@ void CChimecs::Load(LPCSTR section)
 	m_fsVelocityWalkUpper.Load	(section, "Velocity_Walk_Upper");
 }
 
-void CChimecs::reinit()
+void CChimeraCS::reinit()
 {
 	inherited::reinit();
 	b_upper_state					= false;
@@ -101,7 +97,7 @@ void CChimecs::reinit()
 	com_man().load_jump_data("jump_attack_0",0, "jump_attack_1", "jump_attack_2", u32(-1), MonsterMovement::eChimecsVelocityParameterJumpGround,0);
 }
 
-void CChimecs::SetTurnAnimation(bool turn_left)
+void CChimeraCS::SetTurnAnimation(bool turn_left)
 {
 	if (b_upper_state) 
 		(turn_left) ? anim().SetCurAnim(eAnimUpperStandTurnLeft) : anim().SetCurAnim(eAnimUpperStandTurnRight);
@@ -109,7 +105,7 @@ void CChimecs::SetTurnAnimation(bool turn_left)
 		(turn_left) ? anim().SetCurAnim(eAnimStandTurnLeft)		: anim().SetCurAnim(eAnimStandTurnRight);
 }
 
-void CChimecs::CheckSpecParams(u32 spec_params)
+void CChimeraCS::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
 		if (b_upper_state)
@@ -131,7 +127,7 @@ void CChimecs::CheckSpecParams(u32 spec_params)
 	}
 }
 
-EAction CChimecs::CustomVelocityIndex2Action(u32 velocity_index) 
+EAction CChimeraCS::CustomVelocityIndex2Action(u32 velocity_index)
 {
 	switch (velocity_index) {
 		case MonsterMovement::eChimecsVelocityParameterUpperWalkFwd: return ACT_WALK_FWD;
@@ -140,7 +136,7 @@ EAction CChimecs::CustomVelocityIndex2Action(u32 velocity_index)
 	return ACT_STAND_IDLE;
 }
 
-void CChimecs::TranslateActionToPathParams()
+void CChimeraCS::TranslateActionToPathParams()
 {
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
@@ -211,13 +207,13 @@ void CChimecs::TranslateActionToPathParams()
 	}
 }
 
-void CChimecs::HitEntityInJump(const CEntity *pEntity)
+void CChimeraCS::HitEntityInJump(const CEntity *pEntity)
 {
 	SAAParam &params	= anim().AA_GetParams("jump_attack_1");
 	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 
-void CChimecs::UpdateCL()
+void CChimeraCS::UpdateCL()
 {
 	inherited::UpdateCL				();
 }

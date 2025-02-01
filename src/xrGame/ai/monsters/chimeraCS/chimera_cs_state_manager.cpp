@@ -18,10 +18,9 @@
 #include "../states/monster_state_attack_melee.h"
 #include "../states/monster_state_attack_run.h"
 #include "chimera_cs_state_threaten.h"
-#include "../states/state_test_state.h"
 #include "chimera_cs_state_attack_run.h"
 
-CStateManagerChimecs::CStateManagerChimecs(CChimecs* obj) : inherited(obj)
+CStateManagerChimeraCS::CStateManagerChimeraCS(CChimecs* obj) : inherited(obj)
 {
 	add_state(eStateRest, xr_new<CStateMonsterRest<CChimecs>>(obj));
 	add_state(eStatePanic, xr_new<CStateMonsterPanic<CChimecs> 		>(obj));
@@ -34,11 +33,11 @@ CStateManagerChimecs::CStateManagerChimecs(CChimecs* obj) : inherited(obj)
 	add_state(eStateCustom, xr_new <CStateMonsterTestState<CChimecs> 	>(obj));
 }
 
-CStateManagerChimecs::~CStateManagerChimecs()
+CStateManagerChimeraCS::~CStateManagerChimeraCS()
 {
 }
 
-void CStateManagerChimecs::execute()
+void CStateManagerChimeraCS::execute()
 {
 	u32 state_id = u32(-1);
 

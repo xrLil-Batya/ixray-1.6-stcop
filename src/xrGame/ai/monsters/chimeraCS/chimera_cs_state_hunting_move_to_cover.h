@@ -2,18 +2,15 @@
 
 #include "../state.h"
 
-template<typename _Object>
-class	CStateChimecsHuntingMoveToCover : public CState<_Object> {
+class	CStateChimeraCSHuntingMoveToCover : public CState {
 protected:
-	typedef CState<_Object> inherited;
+	typedef CState inherited;
 
 public:
-						CStateChimecsHuntingMoveToCover	(_Object *obj);
+	CStateChimeraCSHuntingMoveToCover(CChimeraCS *obj);
 
 	virtual void		initialize						();
 	virtual	void		execute							();
 	virtual bool 		check_start_conditions			();
 	virtual bool 		check_completion				();
 };
-
-#include "Chimecs_state_hunting_move_to_cover_inline.h"

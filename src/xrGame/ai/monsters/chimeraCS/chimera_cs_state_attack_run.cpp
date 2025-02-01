@@ -1,22 +1,18 @@
-#pragma once
+#include "StdAfx.h"
+#include "chimera_cs_state_attack_run.h"
 
-#define CStateChimecsAttackRunAbstract CStateChimecsAttackRun<_Object>
-
-template <typename _Object>
-CStateChimecsAttackRunAbstract::CStateChimecsAttackRun(_Object *obj) : inherited(obj)
+CStateChimeraCSAttackRun::CStateChimeraCSAttackRun(CChimeraCS* obj) : inherited(obj)
 {
-	add_state(eStateAttack_MoveToHomePoint,	xr_new<CStateMonsterAttackMoveToHomePoint<CChimecs>>(obj));	
- 	add_state(eStateAttack_Run_chimera,				xr_new<CStateMonsterAttackRun<CChimecs> >			(obj));
- 	add_state(eStateAttack_Melee_chimera,			xr_new<CStateMonsterAttackMelee<CChimecs> >			(obj));	
+	add_state(eStateAttack_MoveToHomePoint,	new CStateMonsterAttackMoveToHomePoint(obj));	
+ 	add_state(eStateAttack_Run_chimera,				new CStateMonsterAttackRun			(obj));
+ 	add_state(eStateAttack_Melee_chimera,			new CStateMonsterAttackMelee			(obj));	
 }
 
-template <typename _Object>
-CStateChimecsAttackRunAbstract::~CStateChimecsAttackRun()
+CStateChimeraCSAttackRun::~CStateChimeraCSAttackRun()
 {
 }
 
-template <typename _Object>
-bool CStateChimecsAttackRunAbstract::check_home_point_cs()
+bool CStateChimeraCSAttackRun::check_home_point_cs()
 {
 	if (prev_substate != eStateAttack_MoveToHomePoint) {
 		if (get_state(eStateAttack_MoveToHomePoint)->check_start_conditions())	return true;
@@ -27,15 +23,12 @@ bool CStateChimecsAttackRunAbstract::check_home_point_cs()
 	return false;
 }
 
-
-template <typename _Object>
-void CStateChimecsAttackRunAbstract::initialize()
+void CStateChimeraCSAttackRun::initialize()
 {
 	inherited::initialize			();
 }
 
-template <typename _Object>
-void CStateChimecsAttackRunAbstract::execute()
+void CStateChimeraCSAttackRun::execute()
 {
 	object->anim().clear_override_animation	();
 	
@@ -71,23 +64,16 @@ void CStateChimecsAttackRunAbstract::execute()
 	
 }
 
-template <typename _Object>
-void CStateChimecsAttackRunAbstract::choose_action()
+void CStateChimeraCSAttackRun::choose_action()
 {
 }
 
-template <typename _Object>
-void CStateChimecsAttackRunAbstract::finalize_cs()
+void CStateChimeraCSAttackRun::finalize_cs()
 {
 	inherited::finalize();
 }
 
-template <typename _Object>
-void CStateChimecsAttackRunAbstract::critical_finalize_cs()
+void CStateChimeraCSAttackRun::critical_finalize_cs()
 {
 	inherited::critical_finalize();
 }
-
-#undef CStateChimecsAttackRunAbstract
-
-

@@ -1,9 +1,7 @@
-#pragma once
+#include "StdAfx.h"
+#include "chimera_cs_state_threaten_walk.h"
 
-#define CStateChimecsThreatenWalkAbstract CStateChimecsThreatenWalk<_Object>
-
-template <typename _Object>
-void CStateChimecsThreatenWalkAbstract::initialize()
+void CStateChimeraCSThreatenWalk::initialize()
 {
 	inherited::initialize();
 
@@ -25,8 +23,7 @@ void CStateChimecsThreatenWalkAbstract::initialize()
 }
 
 
-template <typename _Object>
-void CStateChimecsThreatenWalkAbstract::execute()
+void CStateChimeraCSThreatenWalk::execute()
 {
 	data.point				= object->EnemyMan.get_enemy_position	();
 	data.vertex				= object->EnemyMan.get_enemy_vertex		();
@@ -36,8 +33,7 @@ void CStateChimecsThreatenWalkAbstract::execute()
 
 #define DISTANCE_TO_ENEMY		5.f
 
-template <typename _Object>
-bool CStateChimecsThreatenWalkAbstract::check_completion()
+bool CStateChimeraCSThreatenWalk::check_completion()
 {	
 	if (inherited::check_completion()) return true;
 
@@ -49,14 +45,9 @@ bool CStateChimecsThreatenWalkAbstract::check_completion()
 
 #define MAX_DISTANCE_TO_ENEMY	8.f
 
-template <typename _Object>
-bool CStateChimecsThreatenWalkAbstract::check_start_conditions()
+bool CStateChimeraCSThreatenWalk::check_start_conditions()
 {
 	float dist_to_enemy = object->EnemyMan.get_enemy_position().distance_to(object->Position());
 	if (dist_to_enemy < MAX_DISTANCE_TO_ENEMY) return true;
 	return false;
 }
-
-
-#undef CStateChimecsThreatenWalkAbstract
-

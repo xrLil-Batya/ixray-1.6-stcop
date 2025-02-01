@@ -2,7 +2,7 @@
 
 #include "../BaseMonster/base_monster.h"
 
-class CChimecs : public CBaseMonster {
+class CChimeraCS : public CBaseMonster {
 	typedef		CBaseMonster	inherited;
 
 	bool		b_upper_state;
@@ -13,8 +13,8 @@ class CChimecs : public CBaseMonster {
 	SVelocityParam		m_fsVelocityRunAttack;
 
 public:
-					CChimecs			();
-	virtual			~CChimecs			();	
+	CChimeraCS();
+	virtual			~CChimeraCS();
 
 	virtual void	Load				(LPCSTR section);
 	virtual void	reinit				();
@@ -33,7 +33,3 @@ public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 	
 };
-
-add_to_type_list(CChimecs)
-#undef script_type_list
-#define script_type_list save_type_list(CChimecs)

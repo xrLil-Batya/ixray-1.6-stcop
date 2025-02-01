@@ -1,30 +1,21 @@
-#pragma once
+#include "StdAfx.h"
+#include "chimera_cs_state_hunting_move_to_cover.h"
 
-#define CStateChimecsHuntingMoveToCoverAbstract CStateChimecsHuntingMoveToCover<_Object>
-
-template <typename _Object>
-CStateChimecsHuntingMoveToCoverAbstract::CStateChimecsHuntingMoveToCover(_Object *obj) : inherited(obj)
+CStateChimeraCSHuntingMoveToCover::CStateChimeraCSHuntingMoveToCover(CChimeraCS *obj) : inherited(obj)
 {
 }
 
-template <typename _Object>
-void CStateChimecsHuntingMoveToCoverAbstract::initialize()
+void CStateChimeraCSHuntingMoveToCover::initialize()
 {
 	inherited::initialize();
-	
-	
 }
 
-template <typename _Object>
-bool CStateChimecsHuntingMoveToCoverAbstract::check_completion()
+bool CStateChimeraCSHuntingMoveToCover::check_completion()
 {
 	return false;
 }
 
-template <typename _Object>
-void CStateChimecsHuntingMoveToCoverAbstract::execute()
+void CStateChimeraCSHuntingMoveToCover::execute()
 {
 	
 }
-
-#undef CStateChimecsHuntingMoveToCoverAbstract

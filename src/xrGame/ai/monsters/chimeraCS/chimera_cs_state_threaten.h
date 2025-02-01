@@ -2,11 +2,10 @@
 
 #include "../state.h"
 
-template<typename _Object>
-class	CStateChimecsThreaten : public CState<_Object> {
+class	CStateChimeraCSThreaten : public CState {
 protected:
-	typedef CState<_Object> inherited;
-	typedef CState<_Object>* state_ptr;
+	typedef CState inherited;
+	typedef CState* state_ptr;
 
 	enum {
 		eStateWalk			= u32(0),
@@ -18,8 +17,8 @@ protected:
 	u32					m_last_time_threaten;
 
 public:
-						CStateChimecsThreaten	(_Object *obj);
-	virtual				~CStateChimecsThreaten	();
+	CStateChimeraCSThreaten(CChimeraCS *obj);
+	virtual				~CStateChimeraCSThreaten();
 
 	virtual void		reinit					();
 
@@ -32,6 +31,3 @@ public:
 	virtual bool 		check_completion		();	
 	virtual void        remove_links(CObject* object) { inherited::remove_links(object); }
 };
-
-#include "chimera_cs_state_threaten_inline.h"
-
