@@ -162,68 +162,6 @@ void CStateBloodsuckerSoCVampireExecute::critical_finalize()
     cleanup();
 }
 
-//bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
-//{
-//    const CEntityAlive* enemy = object->EnemyMan.get_enemy();
-//
-//    float dist = object->MeleeChecker.distance_to_enemy(enemy);
-//
-//    if (Device.dwTimeGlobal < m_cooldown_time)
-//    {
-//        return false;
-//    }
-//
-//    if ((dist > VAMPIRE_MAX_DIST) || (dist < VAMPIRE_MIN_DIST))					
-//    {
-//        Msg("2");
-//        return false;
-//    }
-//
-//    if (pBloodsuckerBase->CControlledActor::is_controlling())
-//    {
-//        Msg("3");
-//        return false;
-//    }
-//
-//    if (current_substate == eStateAttack_RunAttack)							
-//    {
-//        Msg("4");
-//        return false;
-//    }
-//
-//    if (pBloodsuckerBase->threaten_time() > 0)
-//    {
-//        Msg("5");
-//        return false;
-//    }
-//
-//    const CActor* m_actor = smart_cast<const CActor*>(enemy);
-//
-//    VERIFY(m_actor);
-//
-//    if (m_actor->input_external_handler_installed())						
-//    {
-//        Msg("6");
-//        return false;
-//    }
-//
-//    //if (b_controlling_value)
-//    //{
-//    //    Msg("7");
-//    //    return false;
-//    //}
-//
-//    if (!object->control().direction().is_face_target(enemy, PI_DIV_6))				
-//    {
-//        Msg("8");
-//        return false;
-//    }
-//
-//    return true;
-//
-//    //return (rand() % 2 == 0) ? false : true;
-//}
-
 bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
 {
     const CEntityAlive* enemy = object->EnemyMan.get_enemy();
