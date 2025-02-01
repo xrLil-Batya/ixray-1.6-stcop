@@ -60,6 +60,11 @@ namespace MonsterMovement {
 		eGiantVelocityParameterJumpGround		= eVelocityParameterCustom << 2,
 	};
 
+	enum EMovementParametersChimeraCS {
+		eChimeraCSVelocityParameterUpperWalkFwd = eVelocityParameterCustom << 1,
+		eChimeraCSVelocityParameterJumpGround = eVelocityParameterCustom << 2,
+		eChimeraCSVelocityParamsUpperWalkFwd = eVelocityParameterStand | eChimeraCSVelocityParameterUpperWalkFwd,
+	};
 };
 
 

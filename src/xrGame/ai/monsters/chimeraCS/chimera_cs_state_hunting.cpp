@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-
+#include "chimera_cs.h"
 #include "chimera_cs_state_hunting.h"
 
 #include "chimera_cs_state_hunting_move_to_cover.h"
@@ -7,8 +7,8 @@
 
 CStateChimeraCSHunting::CStateChimeraCSHunting(CChimeraCS *obj) : inherited(obj)
 {
-	add_state(eStateMoveToCover,	new CStateChimecsHuntingMoveToCover	(obj));
-	add_state(eStateComeOut,		new CStateChimecsHuntingComeOut		(obj));
+	add_state(eStateMoveToCover,	new CStateChimeraCSHuntingMoveToCover	(obj));
+	add_state(eStateComeOut,		new CStateChimeraCSHuntingComeOut		(obj));
 }
 
 bool CStateChimeraCSHunting::check_start_conditions()

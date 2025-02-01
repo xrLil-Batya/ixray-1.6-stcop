@@ -1,4 +1,8 @@
 #include "StdAfx.h"
+
+#include "../states/state_move_to_point.h"
+
+#include "chimera_cs.h"
 #include "chimera_cs_state_threaten.h"
 
 #include "chimera_cs_state_threaten_steal.h"
@@ -7,9 +11,11 @@
 
 CStateChimeraCSThreaten::CStateChimeraCSThreaten(CChimeraCS *obj) : inherited(obj)
 {
-	add_state(eStateWalk,		new CStateChimecsThreatenWalk	(obj));
-	add_state(eStateThreaten,	new CStateChimecsThreatenRoar	(obj));
-	add_state(eStateSteal,		new CStateChimecsThreatenSteal (obj));
+	pChimeraCS = smart_cast<CChimeraCS*>(obj);
+
+	add_state(eStateWalk,		new CStateChimeraCSThreatenWalk	(obj));
+	add_state(eStateThreaten,	new CStateChimeraCSThreatenRoar	(obj));
+	add_state(eStateSteal,		new CStateChimeraCSThreatenSteal (obj));
 }
 
 CStateChimeraCSThreaten::~CStateChimeraCSThreaten()
@@ -50,7 +56,7 @@ bool CStateChimeraCSThreaten::check_completion()
 void CStateChimeraCSThreaten::initialize()
 {
 	inherited::initialize	();
-	object->SetUpperState	();
+	pChimeraCS->SetUpperState	();
 }
 
 void CStateChimeraCSThreaten::reselect_state()
@@ -81,13 +87,13 @@ void CStateChimeraCSThreaten::reselect_state()
 void CStateChimeraCSThreaten::finalize()
 {
 	inherited::finalize		();
-	object->SetUpperState	(false);
+	pChimeraCS->SetUpperState	(false);
 	m_last_time_threaten	 = Device.dwTimeGlobal;
 }
 
 void CStateChimeraCSThreaten::critical_finalize()
 {
 	inherited::critical_finalize();
-	object->SetUpperState	(false);
+	pChimeraCS->SetUpperState	(false);
 	m_last_time_threaten	 = Device.dwTimeGlobal;
 }

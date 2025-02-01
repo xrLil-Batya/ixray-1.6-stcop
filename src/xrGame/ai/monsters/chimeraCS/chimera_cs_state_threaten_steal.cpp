@@ -1,11 +1,25 @@
 #include "StdAfx.h"
+#include "chimera_cs.h"
+
+#include "../states/state_move_to_point.h"
+
 #include "chimera_cs_state_threaten_steal.h"
+
+CStateChimeraCSThreatenSteal::CStateChimeraCSThreatenSteal(CChimeraCS* obj) : inherited(obj)
+{
+	pChimeraCS = smart_cast<CChimeraCS*>(obj);
+}
+
+CStateChimeraCSThreatenSteal::~CStateChimeraCSThreatenSteal()
+{
+
+}
 
 void CStateChimeraCSThreatenSteal::initialize()
 {
 	inherited::initialize();
 	
-	object->SetUpperState	(false);
+	pChimeraCS->SetUpperState	(false);
 
 	data.action.action		= ACT_STEAL;
 	
@@ -21,7 +35,7 @@ void CStateChimeraCSThreatenSteal::initialize()
 void CStateChimeraCSThreatenSteal::finalize()
 {
 	inherited::finalize();
-	object->SetUpperState	();
+	pChimeraCS->SetUpperState	();
 }
 
 void CStateChimeraCSThreatenSteal::execute()

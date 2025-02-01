@@ -5,8 +5,12 @@
 class CStateChimeraCSThreatenWalk : public CStateMonsterMoveToPointEx {
 	typedef CStateMonsterMoveToPointEx		inherited;
 
+	CChimeraCS* pChimeraCS;
+
 public:
-	IC					CStateChimeraCSThreatenWalk(_Object *obj) : inherited(obj){}
+						CStateChimeraCSThreatenWalk(CChimeraCS* obj);
+						virtual ~CStateChimeraCSThreatenWalk() override;
+
 	virtual	void		initialize					();	
 	virtual	void		execute						();
 	virtual bool		check_completion			();

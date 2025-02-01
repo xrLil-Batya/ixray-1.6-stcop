@@ -1,4 +1,6 @@
 #include "StdAfx.h"
+#include "chimera_cs.h"
+#include "chimera_cs_state_hunting.h"
 #include "chimera_cs_state_hunting_come_out.h"
 
 CStateChimeraCSHuntingComeOut::CStateChimeraCSHuntingComeOut(CChimeraCS*obj) : inherited(obj)

@@ -4,9 +4,9 @@
 
 class CChimeraCS;
 
-class CStateManagerChimeraCS : public CMonsterStateManager<CChimeraCS> {
+class CStateManagerChimeraCS : public CMonsterStateManager {
 	
-	typedef CMonsterStateManager<CChimeraCS> inherited;
+	typedef CMonsterStateManager inherited;
 
 public:
 	CStateManagerChimeraCS(CChimeraCS*obj);

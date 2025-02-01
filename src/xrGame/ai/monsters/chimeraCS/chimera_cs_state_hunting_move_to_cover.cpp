@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "chimera_cs.h"
 #include "chimera_cs_state_hunting_move_to_cover.h"
 
 CStateChimeraCSHuntingMoveToCover::CStateChimeraCSHuntingMoveToCover(CChimeraCS *obj) : inherited(obj)

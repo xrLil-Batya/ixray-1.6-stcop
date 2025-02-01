@@ -16,6 +16,8 @@ protected:
 
 	u32					m_last_time_threaten;
 
+	CChimeraCS* pChimeraCS;
+
 public:
 	CStateChimeraCSThreaten(CChimeraCS *obj);
 	virtual				~CStateChimeraCSThreaten();

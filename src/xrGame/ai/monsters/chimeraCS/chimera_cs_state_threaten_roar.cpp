@@ -1,10 +1,13 @@
 #include "StdAfx.h"
+#include "chimera_cs.h"
+
+#include "../states/state_move_to_point.h"
+
 #include "chimera_cs_state_threaten_roar.h"
 
 void CStateChimeraCSThreatenRoar::initialize()
 {
 	inherited::initialize	();
-
 }
 
 void CStateChimeraCSThreatenRoar::execute()

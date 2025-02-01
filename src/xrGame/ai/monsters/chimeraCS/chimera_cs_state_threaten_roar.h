@@ -6,7 +6,7 @@ class CStateChimeraCSThreatenRoar : public CState {
 	typedef CState		inherited;
 
 public:
-	IC					CStateChimeraCSThreatenRoar(_Object *obj) : inherited(obj){}
+	IC					CStateChimeraCSThreatenRoar(CChimeraCS *obj) : inherited(obj){}
 	
 	virtual	void		initialize					();	
 	virtual	void		execute						();

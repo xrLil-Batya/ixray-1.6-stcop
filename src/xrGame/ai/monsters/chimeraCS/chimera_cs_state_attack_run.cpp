@@ -1,11 +1,16 @@
 #include "StdAfx.h"
+#include "chimera_cs.h"
 #include "chimera_cs_state_attack_run.h"
+
+#include "../states/monster_state_attack_run.h"
+#include "../states/monster_state_home_point_attack.h"
+#include "../states/monster_state_attack_melee.h"
 
 CStateChimeraCSAttackRun::CStateChimeraCSAttackRun(CChimeraCS* obj) : inherited(obj)
 {
 	add_state(eStateAttack_MoveToHomePoint,	new CStateMonsterAttackMoveToHomePoint(obj));	
- 	add_state(eStateAttack_Run_chimera,				new CStateMonsterAttackRun			(obj));
- 	add_state(eStateAttack_Melee_chimera,			new CStateMonsterAttackMelee			(obj));	
+ 	add_state(eStateAttack_Run,				new CStateMonsterAttackRun			(obj));
+ 	add_state(eStateAttack_Melee,			new CStateMonsterAttackMelee			(obj));	
 }
 
 CStateChimeraCSAttackRun::~CStateChimeraCSAttackRun()
@@ -43,19 +48,19 @@ void CStateChimeraCSAttackRun::execute()
 	EMonsterState		state_id	=	eStateUnknown;
 	const CEntityAlive* enemy		=	object->EnemyMan.get_enemy();
 
-	if (current_substate == eStateAttack_Melee_chimera)
+	if (current_substate == eStateAttack_Melee)
 	{
-		if (get_state(eStateAttack_Melee_chimera)->check_completion())
-			state_id = eStateAttack_Run_chimera;
+		if (get_state(eStateAttack_Melee)->check_completion())
+			state_id = eStateAttack_Run;
 		else
-			state_id = eStateAttack_Melee_chimera;
+			state_id = eStateAttack_Melee;
 	}
 	else
 	{
-		if ( get_state(eStateAttack_Melee_chimera)->check_start_conditions() )
-			state_id = eStateAttack_Melee_chimera;
+		if ( get_state(eStateAttack_Melee)->check_start_conditions() )
+			state_id = eStateAttack_Melee;
 		else
-			state_id = eStateAttack_Run_chimera;
+			state_id = eStateAttack_Run;
 	}
 	
 	select_state						(state_id);

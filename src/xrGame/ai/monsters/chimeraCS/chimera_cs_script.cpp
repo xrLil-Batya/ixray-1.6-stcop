@@ -1,3 +1,4 @@
+#include "StdAfx.h"
 #include "pch_script.h"
 #include "chimera_cs.h"
 

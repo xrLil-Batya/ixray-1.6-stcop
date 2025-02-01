@@ -1,11 +1,25 @@
 #include "StdAfx.h"
+#include "chimera_cs.h"
+
+#include "../states/state_move_to_point.h"
+
 #include "chimera_cs_state_threaten_walk.h"
+
+CStateChimeraCSThreatenWalk::CStateChimeraCSThreatenWalk(CChimeraCS* obj) : inherited(obj)
+{
+	pChimeraCS = smart_cast<CChimeraCS*>(obj);
+}
+
+CStateChimeraCSThreatenWalk::~CStateChimeraCSThreatenWalk()
+{
+
+}
 
 void CStateChimeraCSThreatenWalk::initialize()
 {
 	inherited::initialize();
 
-	object->SetUpperState	();
+	pChimeraCS->SetUpperState	();
 
 	data.point				= object->EnemyMan.get_enemy_position	();
 	data.vertex				= object->EnemyMan.get_enemy_vertex		();

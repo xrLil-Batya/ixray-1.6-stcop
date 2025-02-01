@@ -20,17 +20,16 @@
 #include "chimera_cs_state_threaten.h"
 #include "chimera_cs_state_attack_run.h"
 
-CStateManagerChimeraCS::CStateManagerChimeraCS(CChimecs* obj) : inherited(obj)
+CStateManagerChimeraCS::CStateManagerChimeraCS(CChimeraCS* obj) : inherited(obj)
 {
-	add_state(eStateRest, xr_new<CStateMonsterRest<CChimecs>>(obj));
-	add_state(eStatePanic, xr_new<CStateMonsterPanic<CChimecs> 		>(obj));
-	add_state(eStateAttack, xr_new <CStateChimecsAttackRun<CChimecs> >(obj));
-	add_state(eStateEat, xr_new <CStateMonsterEat<CChimecs>>(obj));
-	add_state(eStateHearInterestingSound, xr_new <CStateMonsterHearInterestingSound<CChimecs> >(obj));
-	add_state(eStateHearDangerousSound, xr_new <CStateMonsterHearDangerousSound<CChimecs> 	>(obj));
-	add_state(eStateHitted, xr_new <CStateMonsterHitted<CChimecs> 		>(obj));
-	add_state(eStateThreaten, xr_new <CStateChimecsThreaten<CChimecs> 	>(obj));
-	add_state(eStateCustom, xr_new <CStateMonsterTestState<CChimecs> 	>(obj));
+	add_state(eStateRest, new CStateMonsterRest(obj));
+	add_state(eStatePanic, new CStateMonsterPanic(obj));
+	add_state(eStateAttack, new CStateChimeraCSAttackRun(obj));
+	add_state(eStateEat, new CStateMonsterEat(obj));
+	add_state(eStateHearInterestingSound, new CStateMonsterHearInterestingSound(obj));
+	add_state(eStateHearDangerousSound, new CStateMonsterHearDangerousSound(obj));
+	add_state(eStateHitted, new CStateMonsterHitted(obj));
+	add_state(eStateThreaten, new CStateChimeraCSThreaten(obj));
 }
 
 CStateManagerChimeraCS::~CStateManagerChimeraCS()
