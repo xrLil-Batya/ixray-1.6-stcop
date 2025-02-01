@@ -7,7 +7,6 @@ class CChimeraCS : public CBaseMonster {
 
 	bool		b_upper_state;
 
-	
 	SVelocityParam		m_fsVelocityWalkUpper;
 	SVelocityParam		m_fsVelocityJumpGround;
 	SVelocityParam		m_fsVelocityRunAttack;
@@ -26,7 +25,7 @@ public:
 	virtual	void	TranslateActionToPathParams ();
 	virtual void	HitEntityInJump				(const CEntity *pEntity);
 
-	virtual	char* get_monster_class_name()		{ return "Chimecs"; }
+	virtual	char* get_monster_class_name()		{ return const_cast<char*>("chimera_cs"); }
 
 	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
 	
