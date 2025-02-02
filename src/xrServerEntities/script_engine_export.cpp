@@ -240,6 +240,7 @@ void export_classes	(lua_State *L)
 	CBurerBase::script_register(L);
 	CCatBase::script_register(L);
 	CChimeraBase::script_register(L);
+	CChimeraCS::script_register(L);
 	CControllerBase::script_register(L);
 	CDogBase::script_register(L);
 	CFleshBase::script_register(L);
