@@ -11,7 +11,7 @@
 class CBloodsuckerSoC : public CBaseMonster,
 						public CControlledActor, public IBloodsucker
 {
-	typedef		CBaseMonster	inherited;
+	using inherited =		CBaseMonster	;
 	
 public:
 	CBloodsuckerSoC();
@@ -79,74 +79,82 @@ public:
 	CBloodsuckerAlien		m_alien_control;
 	u32						m_time_lunge;
 	
-			//void			set_alien_control		(bool val);
+	CBloodsuckerSoC* pBloodsuckerSoC;
 
-			CBloodsuckerSoC* pBloodsuckerSoC;
+	void set_alien_control(bool val);
 
-			void			set_alien_control(bool val);
+	virtual bool get_state_invisible() override 
+	{
+		return this->state_invisible
+			;
+	};
 
-			virtual bool get_state_invisible() override {
-				return this->state_invisible
-					;
-			};
+	virtual void set_state_invisible(bool val) override 
+	{
+		this->state_invisible = val;
+	};
 
-			virtual void set_state_invisible(bool val) override
+	virtual void set_visible(bool val) override 
+	{
+		this->setVisible(val);
+	};
+
+	virtual void exe_release() override 
+	{
+		this->release();
+	}
+
+	virtual void exe_install(xr_any_type actor) override 
+	{
+		if (actor.has_value()) 
+		{
+			if (auto* pActor = any_cast<CActor*>(actor)) 
 			{
-				this->state_invisible = val;
-			};
-
-
-			virtual void set_visible(bool val) override
-			{
-				this->setVisible(val);
-			};
-
-			virtual void exe_release() override
-			{
-				this->release();
+				this->install(pActor);
 			}
+		}
+	};
 
-			virtual void exe_install(xr_any_type actor) override
-			{
-				if (actor.has_value())
-				{
-					if (auto* pActor = any_cast<CActor*>(actor))
-					{
-						this->install(pActor);
-					}
-				}
-			};
+	virtual void exe_dont_need_turn() override
+	{
+		this->dont_need_turn();
+	}
 
-			virtual void exe_dont_need_turn() override
+	virtual bool has_enemy() override 
+	{ 
+		return this->EnemyMan.get_enemy(); 
+	}
+
+	virtual void add_enemy(xr_any_type actor) override
+	{
+		if (actor.has_value())
+		{
+			if (auto* pEnemy = any_cast<CEntityAlive*>(actor))
 			{
-				this->dont_need_turn();
+				this->EnemyMan.add_enemy(pEnemy);
 			}
+		}
+	};
 
-			virtual bool has_enemy() override { return this->EnemyMan.get_enemy(); }
-			virtual void add_enemy(xr_any_type actor) override
-			{
-				if (actor.has_value())
-				{
-					if (auto* pEnemy = any_cast<CEntityAlive*>(actor))
-					{
-						this->EnemyMan.add_enemy(pEnemy);
-					}
-				}
-			};
+	virtual xr_any_type get_spp_info() const override 
+	{ 
+		return pp_vampire_effector; 
+	}
 
-			virtual xr_any_type get_spp_info() const override { return pp_vampire_effector; }
+	virtual IBloodsucker* get_class_object() 
+	{
+		return pBloodsuckerSoC;
+	};
 
-			virtual IBloodsucker* get_class_object() {
-				return pBloodsuckerSoC
-					;
-			};
+	virtual Fvector exe_get_head_position(CObject* object) 
+	{ 
+		return get_head_position(object); 
+	};
 
-			virtual Fvector exe_get_head_position(CObject* object) { return get_head_position(object); };
-
-			virtual float get_cur_speed() override {
-				return this->m_fCurSpeed
-					;
-			}
+	virtual float get_cur_speed() override 
+	{
+		return this->m_fCurSpeed;
+	}
 
 public:
 	shared_str				m_visual_default;

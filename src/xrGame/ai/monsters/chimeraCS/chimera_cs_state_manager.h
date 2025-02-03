@@ -2,17 +2,15 @@
 
 #include "../monster_state_manager.h"
 
-class CChimeraCS;
-
-class CStateManagerChimeraCS : public CMonsterStateManager {
-	
-	typedef CMonsterStateManager inherited;
+class CStateManagerChimeraCS : public CMonsterStateManager 
+{
+	using inherited = CMonsterStateManager;
 
 public:
 	CStateManagerChimeraCS(CChimeraCS*obj);
-	virtual				~CStateManagerChimeraCS();
+	virtual				~CStateManagerChimeraCS() override;
 
-	virtual	void		execute					();
-    virtual void		remove_links(CObject* object) { inherited::remove_links(object); }
+	virtual	void		execute					() override;
+    virtual void		remove_links(CObject* object) override { inherited::remove_links(object); }
 };
 

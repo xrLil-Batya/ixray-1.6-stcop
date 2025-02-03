@@ -1,9 +1,10 @@
 #pragma once
 #include "../state.h"
 
-class	CBloodsuckerSoCStateAttackHide : public CState {
-	typedef CState		inherited;
-	typedef CState*	state_ptr;
+class	CBloodsuckerSoCStateAttackHide : public CState 
+{
+	using inherited = CState	;
+	using state_ptr = CState*;
 
 	u32							m_target_node;
 

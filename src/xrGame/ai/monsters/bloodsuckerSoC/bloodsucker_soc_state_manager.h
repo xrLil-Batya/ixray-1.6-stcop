@@ -5,7 +5,7 @@ class CBloodsuckerSoC;
 
 class CStateManagerBloodsuckerSoC : public CMonsterStateManager
 {
-	typedef CMonsterStateManager inherited;
+	using inherited = CMonsterStateManager;
 
 	CBloodsuckerSoC* pBloodsuckerBase;
 
@@ -15,5 +15,6 @@ public:
 
 	virtual void	execute						() override;
 	virtual void	remove_links				(CObject* object) override { inherited::remove_links(object); }
+
 	bool			check_vampire();
 };

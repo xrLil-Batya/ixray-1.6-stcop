@@ -2,18 +2,18 @@
 
 #include "../state.h"
 
-class CStateChimeraCSThreatenWalk : public CStateMonsterMoveToPointEx {
-	typedef CStateMonsterMoveToPointEx		inherited;
+class CStateChimeraCSThreatenWalk : public CStateMonsterMoveToPointEx 
+{
+	using inherited = CStateMonsterMoveToPointEx;
 
 	CChimeraCS* pChimeraCS;
 
 public:
-						CStateChimeraCSThreatenWalk(CChimeraCS* obj);
-						virtual ~CStateChimeraCSThreatenWalk() override;
+	CStateChimeraCSThreatenWalk(CChimeraCS* obj);
+	virtual ~CStateChimeraCSThreatenWalk() override;
 
-	virtual	void		initialize					();	
-	virtual	void		execute						();
-	virtual bool		check_completion			();
-	virtual bool		check_start_conditions		();
-	
+	virtual	void		initialize					() override;
+	virtual	void		execute						() override;
+	virtual bool		check_completion			() override;
+	virtual bool		check_start_conditions		() override;
 };

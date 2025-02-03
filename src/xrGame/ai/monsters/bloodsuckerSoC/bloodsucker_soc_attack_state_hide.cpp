@@ -29,6 +29,8 @@
 CBloodsuckerSoCStateAttackHide::CBloodsuckerSoCStateAttackHide(CBloodsuckerSoC *obj) : inherited(obj)
 {
 	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
+	
+	m_target_node = {};
 
 	add_state	(eStateAttack_HideInCover, new CStateMonsterMoveToPointEx (obj));
 	add_state	(eStateAttack_CampInCover, new CStateBloodsuckerSoCPredatorLite(obj));
@@ -55,7 +57,8 @@ void CBloodsuckerSoCStateAttackHide::initialize()
 
 void CBloodsuckerSoCStateAttackHide::reselect_state()
 {
-	if (prev_substate == u32(-1)) {
+	if (prev_substate == u32(-1)) 
+	{
 		select_state(eStateAttack_HideInCover);
 		return;
 	}
@@ -91,7 +94,8 @@ void CBloodsuckerSoCStateAttackHide::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateAttack_HideInCover) {
+	if (current_substate == eStateAttack_HideInCover) 
+	{
 		select_camp_point();
 
 		SStateDataMoveToPointEx data;
@@ -99,9 +103,9 @@ void CBloodsuckerSoCStateAttackHide::setup_substates()
 		data.vertex				= m_target_node;
 		data.point				= ai().level_graph().vertex_position(data.vertex);
 		data.action.action		= ACT_RUN;
-		data.action.time_out	= 0;		// do not use time out
-		data.completion_dist	= 0.f;		// get exactly to the point
-		data.time_to_rebuild	= 0;		// do not rebuild
+		data.action.time_out	= 0;
+		data.completion_dist	= 0.f;
+		data.time_to_rebuild	= 0;
 		data.accelerated		= true;
 		data.braking			= true;
 		data.accel_type 		= eAT_Aggressive;
@@ -111,11 +115,11 @@ void CBloodsuckerSoCStateAttackHide::setup_substates()
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
 		return;
 	}
-
 }
 
 void CBloodsuckerSoCStateAttackHide::check_force_state()
 {
+
 }
 
 void CBloodsuckerSoCStateAttackHide::select_camp_point()
@@ -124,23 +128,29 @@ void CBloodsuckerSoCStateAttackHide::select_camp_point()
 		monster_squad().get_squad(object)->unlock_cover(m_target_node);
 
 	m_target_node = u32(-1);
-	if (object->Home->has_home()) {
+
+	if (object->Home->has_home()) 
+	{
 		m_target_node							= object->Home->get_place_in_cover();
-		if (m_target_node == u32(-1)) {
+
+		if (m_target_node == u32(-1)) 
+		{
 			m_target_node						= object->Home->get_place();
 		}
 	} 
 
-	if (m_target_node == u32(-1)) {
+	if (m_target_node == u32(-1)) 
+	{
 		const CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
-		if (point) {
+
+		if (point) 
+		{
 			m_target_node				= point->level_vertex_id	();
 		} 
 	}
 
 	if (m_target_node == u32(-1)) 
 		m_target_node = object->ai_location().level_vertex_id();
-
 
 	monster_squad().get_squad(object)->lock_cover(m_target_node);
 }

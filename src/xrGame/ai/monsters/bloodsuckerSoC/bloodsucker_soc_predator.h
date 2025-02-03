@@ -3,8 +3,8 @@
 
 class	CStateBloodsuckerSoCPredator : public CState 
 {
-	typedef CState		inherited;
-	typedef CState*	state_ptr;
+	using inherited = CState		;
+	using state_ptr = CState*	;
 
 	u32							m_target_node;
 	u32							m_time_start_camp;

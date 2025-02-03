@@ -30,6 +30,9 @@ CStateBloodsuckerSoCPredator::CStateBloodsuckerSoCPredator(CBloodsuckerSoC* obj)
 {
 	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
 
+	m_target_node = {};
+	m_time_start_camp = {};
+
 	add_state	(eStatePredator_MoveToCover, new CStateMonsterMoveToPointEx(obj));
 	add_state	(eStatePredator_LookOpenPlace, new CStateMonsterLookToPoint(obj));
 	add_state	(eStatePredator_Camp, new CStateMonsterCustomAction(obj));
@@ -56,17 +59,20 @@ void CStateBloodsuckerSoCPredator::initialize()
 
 void CStateBloodsuckerSoCPredator::reselect_state()
 {
-	if (prev_substate == u32(-1)) {
+	if (prev_substate == u32(-1)) 
+	{
 		select_state(eStatePredator_MoveToCover);
 		return;
 	}
 	
-	if (prev_substate == eStatePredator_MoveToCover) {
+	if (prev_substate == eStatePredator_MoveToCover) 
+	{
 		select_state(eStatePredator_LookOpenPlace);
 		return;
 	}
 
-	if (prev_substate == eStatePredator_LookOpenPlace) {
+	if (prev_substate == eStatePredator_LookOpenPlace) 
+	{
 		select_state(eStatePredator_Camp);
 		return;
 	}
@@ -83,7 +89,6 @@ void CStateBloodsuckerSoCPredator::finalize()
 
 	CMonsterSquad *squad = monster_squad().get_squad(object);
 	squad->unlock_cover(m_target_node);
-
 }
 
 void CStateBloodsuckerSoCPredator::critical_finalize()
@@ -105,8 +110,12 @@ bool CStateBloodsuckerSoCPredator::check_start_conditions()
 
 bool CStateBloodsuckerSoCPredator::check_completion()
 {
-	if (object->HitMemory.get_last_hit_time() > time_state_started) return true;
-	if (object->EnemyMan.get_enemy() && object->EnemyMan.see_enemy_now() && (object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) return true;
+	if (object->HitMemory.get_last_hit_time() > time_state_started)
+		return true;
+
+	if (object->EnemyMan.get_enemy() && object->EnemyMan.see_enemy_now() && 
+		(object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) 
+		return true;
 
 	return false;
 }
@@ -115,23 +124,27 @@ void CStateBloodsuckerSoCPredator::setup_substates()
 {
 	state_ptr state = get_state_current();
 	
-	if (current_substate == eStatePredator_Camp) {
+	if (current_substate == eStatePredator_Camp) 
+	{
 		m_pBloodsucker->predator_freeze	();
 		m_time_start_camp		= time();
 
-	} else {
+	} 
+	else 
+	{
 		m_pBloodsucker->predator_unfreeze();
 	}
 
-	if (current_substate == eStatePredator_MoveToCover) {
+	if (current_substate == eStatePredator_MoveToCover) 
+	{
 		SStateDataMoveToPointEx data;
 
 		data.vertex				= m_target_node;
 		data.point				= ai().level_graph().vertex_position(data.vertex);
 		data.action.action		= ACT_RUN;
-		data.action.time_out	= 0;		// do not use time out
-		data.completion_dist	= 0.f;		// get exactly to the point
-		data.time_to_rebuild	= 0;		// do not rebuild
+		data.action.time_out	= 0;		
+		data.completion_dist	= 0.f;		
+		data.time_to_rebuild	= 0;		
 		data.accelerated		= true;
 		data.braking			= true;
 		data.accel_type 		= eAT_Aggressive;
@@ -142,8 +155,8 @@ void CStateBloodsuckerSoCPredator::setup_substates()
 		return;
 	}
 
-	if (current_substate == eStatePredator_LookOpenPlace) {
-
+	if (current_substate == eStatePredator_LookOpenPlace) 
+	{
 		SStateDataLookToPoint	data;
 
 		Fvector dir;
@@ -160,12 +173,13 @@ void CStateBloodsuckerSoCPredator::setup_substates()
 		return;
 	}
 
-	if (current_substate == eStatePredator_Camp) {
+	if (current_substate == eStatePredator_Camp) 
+	{
 		
 		SStateDataAction data;
 
 		data.action		= ACT_STAND_IDLE;
-		data.time_out	= 0;			// do not use time out
+		data.time_out	= 0;
 		data.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.sound_delay = object->db().m_dwIdleSndDelay;
 
@@ -179,7 +193,8 @@ void CStateBloodsuckerSoCPredator::setup_substates()
 
 void CStateBloodsuckerSoCPredator::check_force_state()
 {
-	if ((current_substate == eStatePredator_Camp) && (m_time_start_camp + TIME_TO_RESELECT_CAMP < time())) {
+	if ((current_substate == eStatePredator_Camp) && (m_time_start_camp + TIME_TO_RESELECT_CAMP < time())) 
+	{
 		if (current_substate != u32(-1)) 
 			get_state_current()->critical_finalize();
 
@@ -196,23 +211,29 @@ void CStateBloodsuckerSoCPredator::check_force_state()
 void CStateBloodsuckerSoCPredator::select_camp_point()
 {
 	m_target_node = u32(-1);
-	if (object->Home->has_home()) {
+
+	if (object->Home->has_home()) 
+	{
 		m_target_node							= object->Home->get_place_in_cover();
-		if (m_target_node == u32(-1)) {
+
+		if (m_target_node == u32(-1)) 
+		{
 			m_target_node						= object->Home->get_place();
 		}
 	} 
 
-	if (m_target_node == u32(-1)) {
+	if (m_target_node == u32(-1)) 
+	{
 		const CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
-		if (point) {
+
+		if (point) 
+		{
 			m_target_node				= point->level_vertex_id	();
 		} 
 	}
 
 	if (m_target_node == u32(-1)) 
 		m_target_node = object->ai_location().level_vertex_id();
-
 
 	CMonsterSquad *squad = monster_squad().get_squad(object);
 	squad->lock_cover(m_target_node);

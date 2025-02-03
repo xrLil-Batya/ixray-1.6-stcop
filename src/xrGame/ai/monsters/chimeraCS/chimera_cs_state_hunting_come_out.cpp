@@ -5,6 +5,12 @@
 
 CStateChimeraCSHuntingComeOut::CStateChimeraCSHuntingComeOut(CChimeraCS*obj) : inherited(obj)
 {
+
+}
+
+CStateChimeraCSHuntingComeOut::~CStateChimeraCSHuntingComeOut()
+{
+
 }
 
 bool CStateChimeraCSHuntingComeOut::check_start_conditions()
@@ -19,7 +25,10 @@ bool CStateChimeraCSHuntingComeOut::check_completion()
 
 void CStateChimeraCSHuntingComeOut::reselect_state()
 {
-	if (prev_substate == u32(-1))					select_state(eStateMoveToCover);
-	else if (prev_substate == eStateMoveToCover)	select_state(eStateComeOut);
-	else											select_state(eStateMoveToCover);
+	if (prev_substate == u32(-1))					
+		select_state(eStateMoveToCover);
+	else if (prev_substate == eStateMoveToCover)	
+		select_state(eStateComeOut);
+	else											
+		select_state(eStateMoveToCover);
 }

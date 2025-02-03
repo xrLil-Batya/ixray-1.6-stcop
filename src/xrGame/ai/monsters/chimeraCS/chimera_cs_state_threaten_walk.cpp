@@ -36,7 +36,6 @@ void CStateChimeraCSThreatenWalk::initialize()
 	data.time_to_rebuild	= 1500;
 }
 
-
 void CStateChimeraCSThreatenWalk::execute()
 {
 	data.point				= object->EnemyMan.get_enemy_position	();
@@ -49,10 +48,13 @@ void CStateChimeraCSThreatenWalk::execute()
 
 bool CStateChimeraCSThreatenWalk::check_completion()
 {	
-	if (inherited::check_completion()) return true;
+	if (inherited::check_completion()) 
+		return true;
 
 	float dist_to_enemy = object->EnemyMan.get_enemy_position().distance_to(object->Position());
-	if (dist_to_enemy < DISTANCE_TO_ENEMY) return true;
+
+	if (dist_to_enemy < DISTANCE_TO_ENEMY) 
+		return true;
 
 	return false;
 }
@@ -62,6 +64,9 @@ bool CStateChimeraCSThreatenWalk::check_completion()
 bool CStateChimeraCSThreatenWalk::check_start_conditions()
 {
 	float dist_to_enemy = object->EnemyMan.get_enemy_position().distance_to(object->Position());
-	if (dist_to_enemy < MAX_DISTANCE_TO_ENEMY) return true;
+
+	if (dist_to_enemy < MAX_DISTANCE_TO_ENEMY) 
+		return true;
+
 	return false;
 }

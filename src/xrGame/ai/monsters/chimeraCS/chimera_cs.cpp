@@ -11,10 +11,12 @@
 #include "../control_movement_base.h"
 #include "../control_path_builder_base.h"
 
-
 CChimeraCS::CChimeraCS()
 {
 	pStateManagerBase = new CStateManagerChimeraCS(this);
+
+	b_upper_state = {};
+
 	com_man().add_ability(ControlCom::eControlJump);
 }
 
@@ -106,17 +108,20 @@ void CChimeraCS::SetTurnAnimation(bool turn_left)
 
 void CChimeraCS::CheckSpecParams(u32 spec_params)
 {
-	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
+	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) 
+	{
 		if (b_upper_state)
 			anim().SetCurAnim(eAnimUpperThreaten);
 		else 
 			anim().SetCurAnim(eAnimThreaten);
 	}
 
-	if (b_upper_state) {
-		switch (anim().GetCurAnim()) {
-			case eAnimAttack:			anim().SetCurAnim(eAnimUpperAttack);			break;
-			case eAnimRun:             // anim().SetCurAnim(eAnimAttackRun); break;
+	if (b_upper_state) 
+	{
+		switch (anim().GetCurAnim()) 
+		{
+			case eAnimAttack:			anim().SetCurAnim(eAnimUpperAttack);		break;
+			case eAnimRun:
 			case eAnimWalkFwd:			anim().SetCurAnim(eAnimUpperWalkFwd);		break;
 			case eAnimStandTurnLeft:	anim().SetCurAnim(eAnimUpperStandTurnLeft);	break;
 			case eAnimStandTurnRight:	anim().SetCurAnim(eAnimUpperStandTurnRight); break;
@@ -128,7 +133,8 @@ void CChimeraCS::CheckSpecParams(u32 spec_params)
 
 EAction CChimeraCS::CustomVelocityIndex2Action(u32 velocity_index)
 {
-	switch (velocity_index) {
+	switch (velocity_index) 
+	{
 		case MonsterMovement::eChimeraCSVelocityParameterUpperWalkFwd: return ACT_WALK_FWD;
 	}
 	
@@ -141,67 +147,84 @@ void CChimeraCS::TranslateActionToPathParams()
 	u32 vel_mask = 0;
 	u32 des_mask = 0;
 
-	switch (anim().m_tAction) {
-	case ACT_STAND_IDLE: 
-	case ACT_SIT_IDLE:	 
-	case ACT_LIE_IDLE:
-	case ACT_EAT:
-	case ACT_SLEEP:
-	case ACT_REST:
-	case ACT_LOOK_AROUND:
-	case ACT_ATTACK:
-		bEnablePath = false;
-		break;
-	case ACT_WALK_FWD:
-		if (b_upper_state) {
-			vel_mask = MonsterMovement::eChimeraCSVelocityParamsUpperWalkFwd;
-			des_mask = MonsterMovement::eChimeraCSVelocityParameterUpperWalkFwd;
-		} else {
-			if (m_bDamaged) {
-				vel_mask = MonsterMovement::eVelocityParamsWalkDamaged;
-				des_mask = MonsterMovement::eVelocityParameterWalkDamaged;
-			} else {
-				vel_mask = MonsterMovement::eVelocityParamsWalk;
-				des_mask = MonsterMovement::eVelocityParameterWalkNormal;
+	switch (anim().m_tAction) 
+	{
+		case ACT_STAND_IDLE: 
+		case ACT_SIT_IDLE:	 
+		case ACT_LIE_IDLE:
+		case ACT_EAT:
+		case ACT_SLEEP:
+		case ACT_REST:
+		case ACT_LOOK_AROUND:
+		case ACT_ATTACK:
+			bEnablePath = false;
+			break;
+		case ACT_WALK_FWD:
+			if (b_upper_state) 
+			{
+				vel_mask = MonsterMovement::eChimeraCSVelocityParamsUpperWalkFwd;
+				des_mask = MonsterMovement::eChimeraCSVelocityParameterUpperWalkFwd;
+			} 
+			else 
+			{
+				if (m_bDamaged) 
+				{
+					vel_mask = MonsterMovement::eVelocityParamsWalkDamaged;
+					des_mask = MonsterMovement::eVelocityParameterWalkDamaged;
+				} 
+				else 
+				{
+					vel_mask = MonsterMovement::eVelocityParamsWalk;
+					des_mask = MonsterMovement::eVelocityParameterWalkNormal;
+				}
 			}
-		}
-		break;
-	case ACT_WALK_BKWD:
-		break;
-	case ACT_RUN:
-		if (b_upper_state) {
-			vel_mask = MonsterMovement::eChimeraCSVelocityParamsUpperWalkFwd;
-			des_mask = MonsterMovement::eChimeraCSVelocityParameterUpperWalkFwd;
-		} else {
-			if (m_bDamaged) {
-				vel_mask = MonsterMovement::eVelocityParamsRunDamaged;
-				des_mask = MonsterMovement::eVelocityParameterRunDamaged;
-			} else {
-				vel_mask = MonsterMovement::eVelocityParamsRun;
-				des_mask = MonsterMovement::eVelocityParameterRunNormal;
+			break;
+		case ACT_WALK_BKWD:
+			break;
+		case ACT_RUN:
+			if (b_upper_state) 
+			{
+				vel_mask = MonsterMovement::eChimeraCSVelocityParamsUpperWalkFwd;
+				des_mask = MonsterMovement::eChimeraCSVelocityParameterUpperWalkFwd;
+			} 
+			else 
+			{
+				if (m_bDamaged) 
+				{
+					vel_mask = MonsterMovement::eVelocityParamsRunDamaged;
+					des_mask = MonsterMovement::eVelocityParameterRunDamaged;
+				} 
+				else 
+				{
+					vel_mask = MonsterMovement::eVelocityParamsRun;
+					des_mask = MonsterMovement::eVelocityParameterRunNormal;
+				}
 			}
-		}
-		break;
-	case ACT_DRAG:
-		vel_mask = MonsterMovement::eVelocityParamsDrag;
-		des_mask = MonsterMovement::eVelocityParameterDrag;
+			break;
+		case ACT_DRAG:
+			vel_mask = MonsterMovement::eVelocityParamsDrag;
+			des_mask = MonsterMovement::eVelocityParameterDrag;
 
-		anim().SetSpecParams(ASP_MOVE_BKWD);
+			anim().SetSpecParams(ASP_MOVE_BKWD);
 
-		break;
-	case ACT_STEAL:
-		vel_mask = MonsterMovement::eVelocityParamsSteal;
-		des_mask = MonsterMovement::eVelocityParameterSteal;
-		break;
+			break;
+		case ACT_STEAL:
+			vel_mask = MonsterMovement::eVelocityParamsSteal;
+			des_mask = MonsterMovement::eVelocityParameterSteal;
+			break;
 	}
 
-	if (m_force_real_speed) vel_mask = des_mask;
+	if (m_force_real_speed) 
+		vel_mask = des_mask;
 
-	if (bEnablePath) {
+	if (bEnablePath) 
+	{
 		path().set_velocity_mask	(vel_mask);
 		path().set_desirable_mask	(des_mask);
 		path().enable_path			();	
-	} else {
+	}
+	else 
+	{
 		path().disable_path			();
 	}
 }

@@ -5,6 +5,16 @@
 
 #include "chimera_cs_state_threaten_roar.h"
 
+CStateChimeraCSThreatenRoar::CStateChimeraCSThreatenRoar(CChimeraCS* obj) : inherited(obj) 
+{
+
+}
+
+CStateChimeraCSThreatenRoar::~CStateChimeraCSThreatenRoar()
+{
+
+}
+
 void CStateChimeraCSThreatenRoar::initialize()
 {
 	inherited::initialize	();
@@ -22,6 +32,8 @@ void CStateChimeraCSThreatenRoar::execute()
 
 bool CStateChimeraCSThreatenRoar::check_completion()
 {	
-	if (time_state_started + STATE_TIME_OUT < Device.dwTimeGlobal) return true;
+	if (time_state_started + STATE_TIME_OUT < Device.dwTimeGlobal) 
+		return true;
+
 	return false;
 }

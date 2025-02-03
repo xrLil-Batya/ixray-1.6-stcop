@@ -183,11 +183,14 @@ void CBloodsuckerSoC::reload(LPCSTR section)
 
 	sound().add(pSettings->r_string(section, "Sound_Vampire_Grasp"), DEFAULT_SAMPLE_COUNT, SOUND_TYPE_MONSTER_ATTACKING,
 		MonsterSound::eHighPriority + 4, MonsterSound::eBaseChannel, eVampireGrasp, "bip01_head");
+
 	sound().add(pSettings->r_string(section, "Sound_Vampire_Sucking"), DEFAULT_SAMPLE_COUNT,
 		SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 3, MonsterSound::eBaseChannel, eVampireSucking,
 		"bip01_head");
+
 	sound().add(pSettings->r_string(section, "Sound_Vampire_Hit"), DEFAULT_SAMPLE_COUNT, SOUND_TYPE_MONSTER_ATTACKING,
 		MonsterSound::eHighPriority + 2, MonsterSound::eBaseChannel, eVampireHit, "bip01_head");
+
 	sound().add(pSettings->r_string(section, "Sound_Vampire_StartHunt"), DEFAULT_SAMPLE_COUNT,
 		SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 5, MonsterSound::eBaseChannel, eVampireStartHunt,
 		"bip01_head");
@@ -206,12 +209,15 @@ void CBloodsuckerSoC::LoadVampirePPEffector(LPCSTR section)
 	pp_vampire_effector.noise.intensity = pSettings->r_float(section, "noise_intensity");
 	pp_vampire_effector.noise.grain = pSettings->r_float(section, "noise_grain");
 	pp_vampire_effector.noise.fps = pSettings->r_float(section, "noise_fps");
+
 	VERIFY(!fis_zero(pp_vampire_effector.noise.fps));
 
 	sscanf(pSettings->r_string(section, "color_base"), "%f,%f,%f", &pp_vampire_effector.color_base.r,
 		&pp_vampire_effector.color_base.g, &pp_vampire_effector.color_base.b);
+
 	sscanf(pSettings->r_string(section, "color_gray"), "%f,%f,%f", &pp_vampire_effector.color_gray.r,
 		&pp_vampire_effector.color_gray.g, &pp_vampire_effector.color_gray.b);
+
 	sscanf(pSettings->r_string(section, "color_add"), "%f,%f,%f", &pp_vampire_effector.color_add.r,
 		&pp_vampire_effector.color_add.g, &pp_vampire_effector.color_add.b);
 }
@@ -224,7 +230,10 @@ void CBloodsuckerSoC::ActivateVampireEffector()
 	Actor()->Cameras().AddPPEffector(new CBloodsukerVampirePPEffector(pp_vampire_effector, 6.0f));
 }
 
-bool CBloodsuckerSoC::WantVampire() { return !!fsimilar(m_vampire_want_value, 1.f); }
+bool CBloodsuckerSoC::WantVampire() 
+{ 
+	return !!fsimilar(m_vampire_want_value, 1.f); 
+}
 
 void CBloodsuckerSoC::SatisfyVampire()
 {
@@ -248,6 +257,7 @@ void CBloodsuckerSoC::vfAssignBones()
 {
 	bone_spine =	&smart_cast<IKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<IKinematics*>(Visual())->LL_BoneID("bip01_spine"));
 	bone_head =		&smart_cast<IKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<IKinematics*>(Visual())->LL_BoneID("bip01_head"));
+
 	if(!PPhysicsShell())
 	{
 		bone_spine->set_callback(bctCustom,BoneCallback,this);
@@ -261,23 +271,26 @@ void CBloodsuckerSoC::vfAssignBones()
 
 void CBloodsuckerSoC::CheckSpecParams(u32 spec_params)
 {
-	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) 
+	{
 		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
 	}
 
-	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
+	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) 
+	{
 		anim().SetCurAnim(eAnimThreaten);
 		return;
 	}
 
-	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
+	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) 
+	{
 		if (Random.randI(100) < 60)
-		anim().SetCurAnim(eAnimLookAround);
+			anim().SetCurAnim(eAnimLookAround);
 		else
-		anim().SetCurAnim(eAnimScared);
+			anim().SetCurAnim(eAnimScared);
+
 		return;
 	}
-
 }
 
 BOOL CBloodsuckerSoC::net_Spawn (CSE_Abstract* DC)
@@ -309,9 +322,11 @@ void CBloodsuckerSoC::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	
-	if (!g_Alive())	setVisible(TRUE);
+	if (!g_Alive())	
+		setVisible(TRUE);
 
-	if (m_alien_control.active())	sound().play(eAlien);
+	if (m_alien_control.active())	
+		sound().play(eAlien);
 }
 
 void CBloodsuckerSoC::Die(CObject* who)
@@ -332,8 +347,10 @@ bool CBloodsuckerSoC::check_start_conditions(ControlCom::EControlType type)
 	if (type == ControlCom::eControlRunAttack)
 		return (!state_invisible);
 
-	if (type == ControlCom::eControlThreaten) {
-		if (!start_threaten) return false;
+	if (type == ControlCom::eControlThreaten) 
+	{
+		if (!start_threaten) 
+			return false;
 		
 		start_threaten = false;
 
@@ -368,7 +385,8 @@ void CBloodsuckerSoC::predator_start()
 
 void CBloodsuckerSoC::predator_stop()
 {
-	if (!m_predator)				return;
+	if (!m_predator)				
+		return;
 	
 	cNameVisual_set					(*m_visual_default);
 	character_physics_support()->in_ChangeVisual();
@@ -377,7 +395,8 @@ void CBloodsuckerSoC::predator_stop()
 
 	control().animation().restart	();
 	
-	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());	
+
 	sound().play					(CBloodsuckerSoC::eChangeVisibility);
 	m_predator						= false;
 }
@@ -395,7 +414,9 @@ void CBloodsuckerSoC::predator_unfreeze()
 void CBloodsuckerSoC::move_actor_cam()
 {
 	float turn_angle = PI_DIV_3;
-	if (Actor()->cam_Active()) {
+
+	if (Actor()->cam_Active()) 
+	{
 		Actor()->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, turn_angle);
 		Actor()->cam_Active()->Move(Random.randI(2) ? kUP	 : kDOWN, turn_angle);
 	}
@@ -434,7 +455,8 @@ void CBloodsuckerSoC::manual_deactivate()
 
 void CBloodsuckerSoC::on_activate_control(ControlCom::EControlType type)
 {
-	if (type == ControlCom::eControlThreaten) {
+	if (type == ControlCom::eControlThreaten) 
+	{
 		sound().play			(MonsterSound::eMonsterSoundThreaten);
 	}
 }

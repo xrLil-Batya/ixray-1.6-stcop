@@ -8,6 +8,9 @@
 
 CStateChimeraCSAttackRun::CStateChimeraCSAttackRun(CChimeraCS* obj) : inherited(obj)
 {
+	m_time_action_change = {};
+	action = {};
+
 	add_state(eStateAttack_MoveToHomePoint,	new CStateMonsterAttackMoveToHomePoint(obj));	
  	add_state(eStateAttack_Run,				new CStateMonsterAttackRun			(obj));
  	add_state(eStateAttack_Melee,			new CStateMonsterAttackMelee			(obj));	
@@ -15,14 +18,20 @@ CStateChimeraCSAttackRun::CStateChimeraCSAttackRun(CChimeraCS* obj) : inherited(
 
 CStateChimeraCSAttackRun::~CStateChimeraCSAttackRun()
 {
+
 }
 
-bool CStateChimeraCSAttackRun::check_home_point_cs()
+bool CStateChimeraCSAttackRun::check_home_point()
 {
-	if (prev_substate != eStateAttack_MoveToHomePoint) {
-		if (get_state(eStateAttack_MoveToHomePoint)->check_start_conditions())	return true;
-	} else {
-		if (!get_state(eStateAttack_MoveToHomePoint)->check_completion())		return true;
+	if (prev_substate != eStateAttack_MoveToHomePoint) 
+	{
+		if (get_state(eStateAttack_MoveToHomePoint)->check_start_conditions())	
+			return true;
+	} 
+	else 
+	{
+		if (!get_state(eStateAttack_MoveToHomePoint)->check_completion())		
+			return true;
 	}
 
 	return false;
@@ -37,7 +46,7 @@ void CStateChimeraCSAttackRun::execute()
 {
 	object->anim().clear_override_animation	();
 	
-	if	( check_home_point_cs() )
+	if(check_home_point())
 	{
 		select_state					(eStateAttack_MoveToHomePoint);
 		get_state_current()->execute	();
@@ -57,7 +66,7 @@ void CStateChimeraCSAttackRun::execute()
 	}
 	else
 	{
-		if ( get_state(eStateAttack_Melee)->check_start_conditions() )
+		if (get_state(eStateAttack_Melee)->check_start_conditions())
 			state_id = eStateAttack_Melee;
 		else
 			state_id = eStateAttack_Run;
@@ -66,19 +75,19 @@ void CStateChimeraCSAttackRun::execute()
 	select_state						(state_id);
 	get_state_current()->execute		();
 	prev_substate					=	current_substate;	
-	
 }
 
 void CStateChimeraCSAttackRun::choose_action()
 {
+
 }
 
-void CStateChimeraCSAttackRun::finalize_cs()
+void CStateChimeraCSAttackRun::finalize()
 {
 	inherited::finalize();
 }
 
-void CStateChimeraCSAttackRun::critical_finalize_cs()
+void CStateChimeraCSAttackRun::critical_finalize()
 {
 	inherited::critical_finalize();
 }

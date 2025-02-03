@@ -74,28 +74,28 @@ void CStateBloodsuckerSoCVampireExecute::execute()
 
     switch (m_action)
     {
-    case eActionPrepare:
-        execute_vampire_prepare();
-        m_action = eActionContinue;
-        break;
+        case eActionPrepare:
+            execute_vampire_prepare();
+            m_action = eActionContinue;
+            break;
 
-    case eActionContinue: 
-        execute_vampire_continue();
-        break;
+        case eActionContinue: 
+            execute_vampire_continue();
+            break;
 
-    case eActionFire:
-        execute_vampire_hit();
-        m_action = eActionWaitTripleEnd;
-        break;
+        case eActionFire:
+            execute_vampire_hit();
+            m_action = eActionWaitTripleEnd;
+            break;
 
-    case eActionWaitTripleEnd:
-        if (!object->com_man().ta_is_active())
-        {
-            m_action = eActionCompleted;
-        }
+        case eActionWaitTripleEnd:
+            if (!object->com_man().ta_is_active())
+            {
+                m_action = eActionCompleted;
+            }
 
-    case eActionCompleted:
-        break;
+        case eActionCompleted:
+            break;
     }
 
     object->dir().face_target(object->EnemyMan.get_enemy());
@@ -202,7 +202,10 @@ bool CStateBloodsuckerSoCVampireExecute::check_start_conditions()
     return true;
 }
 
-bool CStateBloodsuckerSoCVampireExecute::check_completion() { return (m_action == eActionCompleted); }
+bool CStateBloodsuckerSoCVampireExecute::check_completion() 
+{ 
+    return (m_action == eActionCompleted); 
+}
 
 void CStateBloodsuckerSoCVampireExecute::execute_vampire_prepare()
 {

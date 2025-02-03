@@ -6,6 +6,11 @@ CStateChimeraCSHuntingMoveToCover::CStateChimeraCSHuntingMoveToCover(CChimeraCS 
 {
 }
 
+CStateChimeraCSHuntingMoveToCover::~CStateChimeraCSHuntingMoveToCover()
+{
+
+}
+
 void CStateChimeraCSHuntingMoveToCover::initialize()
 {
 	inherited::initialize();

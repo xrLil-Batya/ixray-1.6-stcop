@@ -3,7 +3,7 @@
 
 class CStateBloodsuckerSoCVampireExecute : public CState
 {
-    typedef CState inherited;
+    using inherited = CState;
 
     enum
     {

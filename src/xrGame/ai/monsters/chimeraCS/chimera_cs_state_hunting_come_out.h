@@ -2,21 +2,24 @@
 
 #include "../state.h"
 
-class	CStateChimeraCSHuntingComeOut : public CState {
+class	CStateChimeraCSHuntingComeOut : public CState 
+{
 protected:
-	typedef CState inherited;
+	using inherited = CState;
 
-	enum {
+	enum 
+	{
 		eStateMoveToCover,
 		eStateComeOut
 	};
 
 public:
 	CStateChimeraCSHuntingComeOut(CChimeraCS *obj);
+	virtual ~CStateChimeraCSHuntingComeOut() override;
 
-	virtual	void		reselect_state				();
-	virtual bool 		check_start_conditions		();	
-	virtual bool 		check_completion			();	
+	virtual	void		reselect_state				() override;
+	virtual bool 		check_start_conditions		() override;
+	virtual bool 		check_completion			() override;
 
 	virtual void		remove_links(CObject* object) override { inherited::remove_links(object); }
 };

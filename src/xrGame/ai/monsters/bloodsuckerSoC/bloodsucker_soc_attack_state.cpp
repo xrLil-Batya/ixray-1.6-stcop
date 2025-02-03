@@ -21,12 +21,16 @@ CBloodsuckerSoCStateAttack::CBloodsuckerSoCStateAttack(CBloodsuckerSoC* obj) : i
 {
 	m_pBloodsucker = smart_cast<CBloodsuckerSoC*>(object);
 
+	m_time_stop_invis = {};
+	m_dir_point = {};
+
 	add_state	(eStateVampire_Execute, new CStateBloodsuckerSoCVampireExecute(obj));
 	add_state	(eStateAttack_Hide, new CStateMonsterMoveToPointEx(obj));
 }
 
 CBloodsuckerSoCStateAttack::~CBloodsuckerSoCStateAttack()
 {
+
 }
 
 void CBloodsuckerSoCStateAttack::initialize()
@@ -90,43 +94,46 @@ void CBloodsuckerSoCStateAttack::execute()
 		selected		= true;
 	}
 
-	if (!selected) {
-		// определить тип атаки
+	if (!selected) 
+	{
 		bool b_melee = false; 
 
-		if (prev_substate == eStateAttack_Melee) {
-			if (!get_state_current()->check_completion()) {
+		if (prev_substate == eStateAttack_Melee) 
+		{
+			if (!get_state_current()->check_completion()) 
+			{
 				b_melee = true;
 			}
-		} else if (get_state(eStateAttack_Melee)->check_start_conditions()) {
+		} 
+		else if (get_state(eStateAttack_Melee)->check_start_conditions()) 
+		{
 			b_melee = true;
 		}
 		
-		if (!b_melee && (prev_substate == eStateAttack_Melee)) {
+		if (!b_melee && (prev_substate == eStateAttack_Melee)) 
+		{
 			select_state	(eStateAttack_Hide);
-		} else
-		// установить целевое состояние
-		if (b_melee) {  
-			// check if enemy is behind me for a long time
-			// [TODO] make specific state and replace run_away state (to avoid ratation jumps)
-			//if (check_behinder()) 
-			//	select_state(eStateAttack_RunAway);
-			//else 
-				select_state(eStateAttack_Melee);
+		} 
+		else if (b_melee) 
+		{  
+			select_state(eStateAttack_Melee);
 		}
-		else select_state(eStateAttack_Run);
+		else 
+			select_state(eStateAttack_Run);
 	}
 
-	// clear behinder var if not melee state selected
-	if (current_substate != eStateAttack_Melee) m_time_start_check_behinder = 0;
+	if (current_substate != eStateAttack_Melee) 
+		m_time_start_check_behinder = 0;
+
 	update_invisibility				();
 	
 	get_state_current()->execute	();
 	prev_substate = current_substate;
 
-	// Notify squad	
 	CMonsterSquad *squad	= monster_squad().get_squad(object);
-	if (squad) {
+
+	if (squad) 
+	{
 		SMemberGoal			goal;
 
 		goal.type			= MG_AttackEnemy;
@@ -134,7 +141,6 @@ void CBloodsuckerSoCStateAttack::execute()
 
 		squad->UpdateGoal	(object, goal);
 	}
-	//////////////////////////////////////////////////////////////////////////
 }
 
 bool CBloodsuckerSoCStateAttack::check_vampire()
@@ -149,6 +155,7 @@ bool CBloodsuckerSoCStateAttack::check_vampire()
 		if (!get_state(eStateVampire_Execute)->check_completion())
 			return true;
 	}
+
 	return false;
 }
 
@@ -160,16 +167,23 @@ void CBloodsuckerSoCStateAttack::update_invisibility()
 		return;
 	}
 
-	if (object->state_invisible) {
-		if (current_substate == eStateAttack_Melee) {
+	if (object->state_invisible) 
+	{
+		if (current_substate == eStateAttack_Melee) 
+		{
 			m_pBloodsucker->stop_invisible_predator	();
 			m_time_stop_invis				= time();		
 		}
-	} else {
-		if (current_substate == eStateAttack_Hide) {
+	} 
+	else 
+	{
+		if (current_substate == eStateAttack_Hide) 
+		{
 			m_pBloodsucker->start_invisible_predator();
-		} else 
-		if ((current_substate == eStateAttack_Run) && (object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) > INVIS_DIST_TO_ENEMY)) {
+		} 
+		else if ((current_substate == eStateAttack_Run) && 
+			(object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) > INVIS_DIST_TO_ENEMY)) 
+		{
 			if (m_time_stop_invis + INVIS_ACTIVATE_DELAY < time()) 
 				m_pBloodsucker->start_invisible_predator();
 		}
@@ -178,12 +192,16 @@ void CBloodsuckerSoCStateAttack::update_invisibility()
 
 bool CBloodsuckerSoCStateAttack::check_hiding()
 {
-	if (current_substate == eStateAttack_Hide) 
-		if (!get_state(eStateAttack_Melee)->check_start_conditions()) 
-			if (!get_state_current()->check_completion()) {
-
+	if (current_substate == eStateAttack_Hide)
+	{
+		if (!get_state(eStateAttack_Melee)->check_start_conditions())
+		{
+			if (!get_state_current()->check_completion()) 
+			{
 				return true;
 			}
+		}
+	}
 
 	return false;
 }
@@ -192,9 +210,9 @@ void CBloodsuckerSoCStateAttack::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateAttack_Hide) {
-
-		SStateDataMoveToPointEx data;
+	if (current_substate == eStateAttack_Hide) 
+	{
+		SStateDataMoveToPointEx data = {};
 
 		Fvector target_dir		= Random.randI(2) ? object->XFORM().i : Fvector().set(object->XFORM().i).invert();
 		m_dir_point				= Fvector().mad(object->Position(), target_dir, 2.5f);
@@ -202,8 +220,8 @@ void CBloodsuckerSoCStateAttack::setup_substates()
 		data.vertex				= 0;
 		data.point				= m_dir_point;
 		data.action.action		= ACT_RUN;
-		data.action.time_out	= 1500;		// do not use time out
-		data.completion_dist	= 1.f;		// get exactly to the point
+		data.action.time_out	= 1500;
+		data.completion_dist	= 1.f;
 		data.time_to_rebuild	= object->get_attack_rebuild_time();		
 		data.accelerated		= true;
 		data.braking			= false;

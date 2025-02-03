@@ -2,14 +2,16 @@
 
 #include "../state.h"
 
-class CStateChimeraCSThreatenRoar : public CState {
-	typedef CState		inherited;
+class CStateChimeraCSThreatenRoar : public CState 
+{
+	using inherited = CState;
 
 public:
-	IC					CStateChimeraCSThreatenRoar(CChimeraCS *obj) : inherited(obj){}
-	
-	virtual	void		initialize					();	
-	virtual	void		execute						();
-	virtual bool		check_completion			();
+	CStateChimeraCSThreatenRoar(CChimeraCS* obj);
+	virtual ~CStateChimeraCSThreatenRoar() override;
+
+	virtual	void		initialize					() override;
+	virtual	void		execute						() override;
+	virtual bool		check_completion			() override;
 	virtual void		remove_links				(CObject* object) { inherited::remove_links(object);}
 };

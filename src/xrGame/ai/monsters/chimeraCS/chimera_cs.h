@@ -2,8 +2,9 @@
 
 #include "../BaseMonster/base_monster.h"
 
-class CChimeraCS : public CBaseMonster {
-	typedef		CBaseMonster	inherited;
+class CChimeraCS : public CBaseMonster 
+{
+	using		inherited = CBaseMonster;
 
 	bool		b_upper_state;
 
@@ -13,21 +14,21 @@ class CChimeraCS : public CBaseMonster {
 
 public:
 	CChimeraCS();
-	virtual			~CChimeraCS();
+	virtual			~CChimeraCS() override;
 
-	virtual void	Load				(LPCSTR section);
-	virtual void	reinit				();
-	virtual	void	UpdateCL			();
+	virtual void	Load				(LPCSTR section) override;
+	virtual void	reinit				() override;
+	virtual	void	UpdateCL			() override;
 
-	virtual	void	SetTurnAnimation			(bool turn_left);
-	virtual void	CheckSpecParams				(u32 spec_params);
-	virtual	EAction	CustomVelocityIndex2Action	(u32 velocity_index);
-	virtual	void	TranslateActionToPathParams ();
-	virtual void	HitEntityInJump				(const CEntity *pEntity);
+	virtual	void	SetTurnAnimation			(bool turn_left) override;
+	virtual void	CheckSpecParams				(u32 spec_params) override;
+	virtual	EAction	CustomVelocityIndex2Action	(u32 velocity_index) override;
+	virtual	void	TranslateActionToPathParams () override;
+	virtual void	HitEntityInJump				(const CEntity *pEntity) override;
 
-	virtual	char* get_monster_class_name()		{ return const_cast<char*>("chimera_cs"); }
+	virtual	char* get_monster_class_name()		override { return const_cast<char*>("chimera_cs"); }
 
-	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
+	inline		void	SetUpperState				(bool state = true) { b_upper_state = state; }
 	
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

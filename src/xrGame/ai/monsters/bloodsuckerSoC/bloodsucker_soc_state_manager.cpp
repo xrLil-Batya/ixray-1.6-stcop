@@ -55,6 +55,7 @@ bool CStateManagerBloodsuckerSoC::check_vampire()
 		if (!get_state(eStateVampire_Execute)->check_completion())
 			return true;
 	}
+
 	return false;
 }
 

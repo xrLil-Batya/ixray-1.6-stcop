@@ -2,12 +2,14 @@
 
 #include "../state.h"
 
-class	CStateChimeraCSHunting : public CState {
+class	CStateChimeraCSHunting : public CState 
+{
 protected:
-	typedef CState inherited;
-	typedef CState* state_ptr;
+	using inherited = CState;
+	using state_ptr = CState*;
 
-	enum {
+	enum 
+	{
 		eStateMoveToCover,
 		eStateComeOut
 	};
@@ -15,8 +17,7 @@ protected:
 public:
 	CStateChimeraCSHunting(CChimeraCS*obj);
 
-	virtual	void		reselect_state			();
-	virtual bool 		check_start_conditions	();	
-	virtual bool 		check_completion		();	
-
+	virtual	void		reselect_state			() override;
+	virtual bool 		check_start_conditions	() override;
+	virtual bool 		check_completion		() override;
 };
