@@ -157,7 +157,7 @@ bool CEatableItem::UseBy (CEntityAlive* entity_alive)
 		CHUDAnimItem::PlayHudAnim(m_section_id.c_str(), "anm_use", true);
 	}
 
-	CurrentGameUI()->ActorMenu().RefreshConsumableCells();
+	CurrentGameUI()->ActorMenu().RefreshCurrentItemCell();
 
 	return true;
 }
