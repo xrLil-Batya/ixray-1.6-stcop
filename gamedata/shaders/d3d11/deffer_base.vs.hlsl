@@ -25,8 +25,6 @@ void main(in v_in I, out p_bumped_new O)
         T.y, B.y, N.y,
         T.z, B.z, N.z)
 	);
-	
-    O.snow_mask = normalize(mul(m_W, N)).y;
 
     O.M1 = xform[0];
     O.M2 = xform[1];
@@ -38,6 +36,8 @@ void main(in v_in I, out p_bumped_new O)
     O.M2 = N.yyy;
     O.M3 = N.zzz;
 #endif
+	
+    O.snow_mask = normalize(mul((float3x3)m_W, N)).y;
 
 #ifdef USE_LM_HEMI
     O.tcdh.zw = unpack_tc_lmap(I.lmh);

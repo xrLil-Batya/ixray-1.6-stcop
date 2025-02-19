@@ -337,13 +337,14 @@ struct p_bumped_new
 
     float4 hpos_curr : TEXCOORD5;
     float4 hpos_old : TEXCOORD6;
+
+	float snow_mask : TEXCOORD7;
 	
 #ifndef USE_LM_HEMI
 #ifdef USE_LENGTH_BUFFER
-	float3 lmap : TEXCOORD7;
+	float3 lmap : TEXCOORD8;
 #endif
 #endif
-	float snow_mask : TEXCOORD7;
 };
 
 struct p_bilbord

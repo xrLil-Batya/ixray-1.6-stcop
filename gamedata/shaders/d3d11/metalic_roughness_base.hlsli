@@ -58,23 +58,32 @@ struct IXrayGbuffer
 	float SnowMask;
 };
 
-float3 NormalEncode(float3 Normal)
+float2 NormalEncode(float3 Normal)
 {
-    Normal.z = -Normal.z;
-    return Normal.xyz * 0.5f + 0.5f;
+    Normal *= rcp(abs(Normal.x) + abs(Normal.y) + abs(Normal.z));
+    float Shift = saturate(-Normal.z);
+    Normal.xy += Normal.xy > 0.0f ? Shift : -Shift;
+
+    return Normal.xy * 0.5f + 0.5f;
 }
 
-float3 NormalDecode(float3 Normal)
+float3 NormalDecode(float2 InNormal)
 {
-    Normal -= 0.5f;
-    Normal.z = -Normal.z;
+    InNormal = InNormal * 2.0f - 1.0f;
+
+    float3 Normal = float3(InNormal, 1.0f - abs(InNormal.x) - abs(InNormal.y));
+    float Shift = saturate(-Normal.z);
+
+    Normal.xy -= Normal.xy > 0.0f ? Shift : -Shift;
+
     return normalize(Normal);
 }
 
 void GbufferPack(inout IXrayGbufferPack O, inout IXrayMaterial M)
 {
-    O.Normal.xyz = NormalEncode(M.Normal.xyz); 
-    O.Normal.w = smoothstep(0.2f, 0.25f, M.Hemi) * smoothstep(0.7f, 0.8f, M.SnowMask);
+    O.Normal.xy = NormalEncode(M.Normal.xyz);
+    O.Normal.z = M.Roughness;
+    O.Normal.w = M.SnowMask;
 
     O.Color.xyz = M.Color.xyz;
     O.Color.w = M.SSS;
@@ -84,6 +93,8 @@ void GbufferPack(inout IXrayGbufferPack O, inout IXrayMaterial M)
 #endif
 
     O.Material.x = M.Metalness;
+    O.Material.y = M.Hemi;
+
     O.Material.z = M.AO;
 	
 #ifndef USE_PBR
@@ -91,8 +102,6 @@ void GbufferPack(inout IXrayGbufferPack O, inout IXrayMaterial M)
 #else
     O.Material.w = 1.0f;
 #endif
-
-    O.Material.zw = M.Hemi;
 }
 
 float4 GbufferGetPoint(in float2 HPos)
@@ -133,7 +142,7 @@ void GbufferUnpack(in float2 TexCoord, in float2 HPos, inout IXrayGbuffer O)
     float4 ColorSSS = s_diffuse.Load(int3(HPos, 0));
 
     O.Depth = s_position.Load(int3(HPos, 0)).x;
-	
+    
     HPos = HPos - m_taa_jitter.xy * float2(0.5f, -0.5f) * pos_decompression_params2.xy;
 
     float3 P = float3(HPos * pos_decompression_params.zw - pos_decompression_params.xy, 1.0f);
@@ -147,14 +156,14 @@ void GbufferUnpack(in float2 TexCoord, in float2 HPos, inout IXrayGbuffer O)
 	O.ViewDist = length(O.PointReal);
 	O.View = O.PointReal * rcp(O.ViewDist);
 
-    O.Normal.xyz = NormalDecode(NormalHemi.xyz);
-    O.Hemi = Material.w;
+    O.Normal.xyz = NormalDecode(NormalHemi.xy);
+    O.Hemi = Material.y;
 
     O.Color.xyz = PushGamma(ColorSSS.xyz);
-    O.SSS = ColorSSS.y;
+    O.SSS = ColorSSS.w;
 
     O.Metalness = Material.x;
-    O.Roughness = Material.y;
+    O.Roughness = NormalHemi.z;
 	
 	O.AO = PushGamma(Material.z);
 	O.F0 = 0.002f + 0.018f * Material.w;
@@ -186,17 +195,19 @@ void GbufferUnpack(in float2 TexCoord, inout IXrayGbuffer O)
 	O.ViewDist = length(O.PointReal);
 	O.View = O.PointReal * rcp(O.ViewDist);
 
-    O.Normal.xyz = NormalDecode(NormalHemi.xyz);
-    O.Hemi = NormalHemi.w;
+    O.Normal.xyz = NormalDecode(NormalHemi.xy);
+    O.Hemi = Material.y;
 
     O.Color.xyz = PushGamma(ColorSSS.xyz);
-    O.SSS = Material.y;
+    O.SSS = ColorSSS.w;
 
     O.Metalness = Material.x;
-    O.Roughness = ColorSSS.w;
+    O.Roughness = NormalHemi.z;
 	
 	O.AO = PushGamma(Material.z);
 	O.F0 = 0.002f + 0.018f * Material.w;
+
+	O.SnowMask = NormalHemi.w;
 }
 
 #endif

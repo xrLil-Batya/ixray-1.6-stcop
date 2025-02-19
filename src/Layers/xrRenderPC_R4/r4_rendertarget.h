@@ -64,6 +64,7 @@ public:
 	ref_rt						rt_NormalTemp;		// 64bit,	fat	(x,y,z,hemi)			(eye-space)
 	ref_rt						rt_Color;			// 64/32bit,fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
 	ref_rt						rt_Surface;
+	ref_rt						rt_SurfaceTemp;
 	ref_rt						rt_Velocity;
 
 	ref_rtc						rt_Reflection;

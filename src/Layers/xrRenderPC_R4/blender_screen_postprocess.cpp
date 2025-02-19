@@ -13,7 +13,7 @@ void CBlender_SPP::Compile(CBlender_Compile& C)
     if (C.iElement == ScreenPostProcessType::Winter) {
         static auto texture_name = pSettings->section_exist("custom_textures")
             && pSettings->line_exist("custom_textures", "snow_texture")
-            ? pSettings->r_string("custom_textures", "snow_texture") : "detail\\ground_earth_01";
+            ? pSettings->r_string("custom_textures", "snow_texture") : "mtl\\mtl_pod_green";
 
         C.L_textures.resize(std::max(C.L_textures.size(), (size_t)1));
         C.L_textures[0]._set(texture_name);
@@ -25,8 +25,8 @@ void CBlender_SPP::Compile(CBlender_Compile& C)
 
         C.r_dx10Texture("s_position", r2_RT_P);
         C.r_dx10Texture("s_normal", r2_RT_N"_temp");
+        C.r_dx10Texture("s_surface", r2_RT_S"_temp");
         C.r_dx10Texture("s_diffuse", r2_RT_albedo);
-        C.r_dx10Texture("s_surface", r2_RT_S);
 
         C.r_dx10Sampler("smp_nofilter");
         C.r_dx10Sampler("smp_rtlinear");
