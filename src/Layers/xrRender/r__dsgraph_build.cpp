@@ -82,6 +82,15 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(dxRender_Visual *pVisual, Fv
 			N->val.pVisual			= pVisual;
 			N->val.Matrix			= *RI.val_pTransform;
 			N->val.se				= sh;
+			if (sh->flags.bScopeMask)
+			{
+				mapSorted_Node* N_ = mapHUDScopeMask.insertInAnyWay(distSQ);
+				N_->val.ssa = SSA;
+				N_->val.pObject = RI.val_pObject;
+				N_->val.pVisual = pVisual;
+				N_->val.Matrix = *RI.val_pTransform;
+				N_->val.se = &*pVisual->shader->E[4];		// 4=L_special
+			}
 			return;
 		} 
 		else 

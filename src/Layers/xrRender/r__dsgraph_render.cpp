@@ -584,6 +584,19 @@ void	R_dsgraph_structure::r_dsgraph_render_emissive	()
 	rmNormal();
 #endif
 }
+// strict-sorted render
+void	R_dsgraph_structure::r_dsgraph_render_scope	()
+{
+#if	RENDER!=R_R1
+	RImplementation.Target->u_setrt(NULL, NULL, NULL, NULL, RDepth);
+	CHudInitializer initalizer(true);
+
+	rmNear();
+	mapHUDScopeMask.traverseLR(sorted_L1);
+	mapHUDScopeMask.clear();
+	rmNormal();
+#endif
+}
 
 //////////////////////////////////////////////////////////////////////////
 // strict-sorted render

@@ -625,7 +625,7 @@ void CRender::Render()
 	Device.Statistic->RenderCALC.End			();
 
 	BOOL	split_the_scene_to_minimize_wait		= FALSE;
-	if (ps_r2_ls_flags.test(R2FLAG_EXP_SPLIT_SCENE))	split_the_scene_to_minimize_wait=TRUE;
+	//if (ps_r2_ls_flags.test(R2FLAG_EXP_SPLIT_SCENE))	split_the_scene_to_minimize_wait=TRUE;
 
 	rmNormal();
 
@@ -640,6 +640,8 @@ void CRender::Render()
 		// level, DO NOT SPLIT
 		Target->phase_scene_begin				();
 		r_dsgraph_render_hud					();
+		r_dsgraph_render_scope					();
+		Target->phase_scene_begin				();
 		r_dsgraph_render_graph					(0);
 		r_dsgraph_render_lods					(true,true);
 		if(Details)	Details->Render				();

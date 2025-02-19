@@ -49,6 +49,7 @@ public:
 	R_dsgraph::mapSorted_T										mapWmark;			// sorted
 	R_dsgraph::mapSorted_T										mapEmissive;
 	R_dsgraph::mapSorted_T										mapHUDEmissive;
+	R_dsgraph::mapHUD_T											mapHUDScopeMask;
 #endif
 
 	// Runtime structures 
@@ -169,6 +170,7 @@ public:
 	void		r_dsgraph_render_lods							(bool	_setup_zb,	bool _clear);
 	void		r_dsgraph_render_sorted							();
 	void		r_dsgraph_render_emissive						();
+	void		r_dsgraph_render_scope							();
 	void		r_dsgraph_render_wmarks							();
 	void		r_dsgraph_render_distort						();
 	void		r_dsgraph_render_subspace						(IRender_Sector* _sector, CFrustum* _frustum, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic, BOOL _precise_portals=FALSE, CObject*O=nullptr );
