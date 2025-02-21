@@ -221,6 +221,9 @@ public:
 void COLLIDER::ray_query(const MODEL* m_def, const Fvector& r_start, const Fvector& r_dir, float r_range)
 {
 	PROF_EVENT("COLLIDER::ray_query")
+	if (!m_def)
+		return;
+
 	m_def->syncronize();
 
 	// Get nodes
@@ -230,11 +233,7 @@ void COLLIDER::ray_query(const MODEL* m_def, const Fvector& r_start, const Fvect
 
 	// SSE
 	// Binary dispatcher
-	const bool OptCull    = ray_mode & OPT_CULL;
-	const bool OptFirst   = ray_mode & OPT_ONLYFIRST;
-	const bool OptNearest = ray_mode & OPT_ONLYNEAREST;
-
-	cform_ray_collider RC(CPU::ID.hasFeature(CPUFeature::SSE), OptCull, OptFirst, OptNearest);
+	cform_ray_collider RC(CPU::ID.hasFeature(CPUFeature::SSE), !!(ray_mode&OPT_CULL), !!(ray_mode&OPT_ONLYFIRST), !!(ray_mode&OPT_ONLYNEAREST));
 	RC._init(this, m_def->verts, m_def->tris, r_start, r_dir, r_range);
 	RC._stab(N);
 }

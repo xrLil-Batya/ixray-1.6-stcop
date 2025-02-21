@@ -61,6 +61,9 @@ void ISpatial_DB::q_box(xr_vector<ISpatialShared>& R, u32 _o, u32 _mask, const F
 {
 	PROF_EVENT("ISpatial_DB::q_frustum");
 	xrSRWLockGuard guard(&db_lock, true);
+	if (!m_root)
+		return;
+
 	R.resize(0);
 
 	spatial_box_walker W(this, _mask, _center, _size);

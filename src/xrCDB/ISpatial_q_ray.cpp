@@ -93,6 +93,9 @@ void ISpatial_DB::q_ray(xr_vector<ISpatialShared>& R, u32 _o, u32 _mask_and, con
 {
 	PROF_EVENT("ISpatial_DB::q_ray")
 	xrSRWLockGuard guard(&db_lock, true);
+	if (!m_root)
+		return;
+
 	R.resize(0);
 
 	spatial_ray_walker W(CPU::ID.hasFeature(CPUFeature::SSE), !!(_o&O_ONLYFIRST), !!(_o&O_ONLYNEAREST));
