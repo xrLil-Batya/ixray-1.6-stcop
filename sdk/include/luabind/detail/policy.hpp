@@ -878,13 +878,9 @@ namespace luabind { namespace detail
 	template<Direction Dir = Direction::cpp_to_lua>
 	struct enum_converter
 	{
-		template<typename T>
-		void apply(lua_State* L, T val)
+		void apply(lua_State* L, int val)
 		{
-			if constexpr (std::is_enum_v<T>)
-				lua_pushnumber(L, static_cast<lua_Number>(static_cast<std::underlying_type_t<T>>(val)));
-			else
-				lua_pushnumber(L, static_cast<lua_Number>(val));
+			lua_pushnumber(L, (lua_Number)val);
 		}
 	};
 
@@ -892,15 +888,16 @@ namespace luabind { namespace detail
 	struct enum_converter<Direction::lua_to_cpp>
 	{
 		template<class T>
-		T apply(lua_State* L, by_value<T>, std::underlying_type_t<T> index)
+		T apply(lua_State* L, by_value<T>, int index)
 		{
-			return static_cast<T>(static_cast<int>(lua_tonumber(L, static_cast<int>(index))));
+//			std::cerr << "enum_converter\n";
+			return static_cast<T>(static_cast<int>(lua_tonumber(L, index)));
 		}
-
+		
 		template<class T>
-		static int match(lua_State* L, by_value<T>, std::underlying_type_t<T> index)
+		static int match(lua_State* L, by_value<T>, int index)
 		{
-			if (lua_isnumber(L, static_cast<int>(index))) return 0; else return -1;
+			if (lua_isnumber(L, index)) return 0; else return -1;
 		}
 
 		template<class T>
