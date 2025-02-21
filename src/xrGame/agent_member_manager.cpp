@@ -90,7 +90,7 @@ void CAgentMemberManager::remove_links			(CObject *object)
 		if ((*I)->grenade_reaction().m_grenade)
 		{
 			CGameObject	*explosiveGO  =const_cast<CExplosive*>((*I)->grenade_reaction().m_grenade)->cast_game_object();
-			VERIFY				(explosive);
+			VERIFY				(explosiveGO);
 			if (explosiveGO->ID() == object->ID())
 				(*I)->grenade_reaction().clear();
 			else
