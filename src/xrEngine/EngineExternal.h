@@ -45,11 +45,29 @@ enum class EEngineExternalEnvironment
 	None
 };
 
+enum class EEngineExternalPlatform
+{
+	ShadowOfChernobyl,
+	ClearSky,
+	CallOfPripyat,
+	EnumSize,
+	Unknown = -1
+};
+
+constexpr const char* kPlatformNameCOP = "cop";
+constexpr const char* kPlatformNameCS = "cs";
+constexpr const char* kPlatformNameSOC = "soc";
+
+constexpr const char* g_PlatformNames[] = {kPlatformNameSOC, kPlatformNameCS, kPlatformNameCOP};
+constexpr EEngineExternalPlatform g_Platforms[] = {EEngineExternalPlatform::ShadowOfChernobyl, EEngineExternalPlatform::ClearSky, EEngineExternalPlatform::CallOfPripyat};
+
+
+static_assert((sizeof(g_PlatformNames) / sizeof(g_PlatformNames[0])) == static_cast<size_t>(EEngineExternalPlatform::EnumSize), "you must register names that will be equal to EEngineExternalPlatform, you forgot to add a new platform to g_PlatformNames");
+static_assert((sizeof(g_Platforms) / sizeof(g_Platforms[0])) == (sizeof(g_PlatformNames) / sizeof(g_PlatformNames[0])), "must be equal!");
+
 
 class ENGINE_API CEngineExternal final
 {
-	CInifile* pOptions = nullptr;
-
 public:
 	CEngineExternal();
 	~CEngineExternal();
@@ -73,6 +91,15 @@ public:
 	bool operator[](const EEngineExternalEnvironment& ID) const;
 
 	xr_string_map<xr_string, xr_string> ShadersOptions;
+
+private:
+	void InitPlatform(const char* pPlatformName);
+
+private:
+	EEngineExternalPlatform m_platform_type;
+	CInifile* pOptions;
 };
+
+const char* Translate_EEngineExternalPlatform(EEngineExternalPlatform);
 
 ENGINE_API CEngineExternal& EngineExternal();
