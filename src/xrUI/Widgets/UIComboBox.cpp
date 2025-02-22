@@ -6,8 +6,6 @@
 #include "UIXmlInit.h"
 #include "../../xrEngine/string_table.h"
 
-float CB_HEIGHT = EngineExternal().ClearSkyMode() ? 23.0f : 20.0f;
-
 CUIComboBox::CUIComboBox()
 {
 	AttachChild			(&m_frameLine);
@@ -54,8 +52,8 @@ void CUIComboBox::InitComboBox(Fvector2 pos, float width)
 
 	m_frameLine.InitIB					(Fvector2().set(0,0), Fvector2().set(width, comboBoxHeight));
 
-	m_frameLine.InitState(S_Enabled, EngineExternal().ClearSkyMode() ? "ui_cb_linetext_e" : "ui_inGame2_combobox_linetext");
-    m_frameLine.InitState(S_Highlighted, EngineExternal().ClearSkyMode() ? "ui_cb_linetext_h" : "ui_inGame2_combobox_linetext");
+    m_frameLine.InitState(S_Highlighted, frameLineHighlighted);
+	m_frameLine.InitState(S_Enabled, frameLineDefault);
 
 	// Edit Box on left side of frame line
 	m_text.SetWndPos					(Fvector2().set(lb_text_offset,0.0f));
@@ -66,7 +64,7 @@ void CUIComboBox::InitComboBox(Fvector2 pos, float width)
 	m_text.Enable						(false);
 
 	// height of list equal to height of ONE element
-    float item_height = CUITextureMaster::GetTextureHeight(EngineExternal().ClearSkyMode() ? "ui_cb_listline_b" :"ui_inGame2_combobox_line_b");
+    float item_height = CUITextureMaster::GetTextureHeight(listBoxTextureHeight);
 
 	m_list_box.SetWndPos				(Fvector2().set(lb_text_offset,0.0f));
 	m_list_box.SetWndSize				(Fvector2().set(width-lb_text_offset, item_height*m_iListHeight));
@@ -74,10 +72,10 @@ void CUIComboBox::InitComboBox(Fvector2 pos, float width)
 	m_list_box.SetTextColor				(m_textColor[0]);
 	m_list_box.SetItemHeight(item_height);
 
-	m_list_box.SetSelectionTexture(EngineExternal().ClearSkyMode() ? "ui_cb_listline" : "ui_inGame2_combobox_line");
+	m_list_box.SetSelectionTexture(listBoxTexture);
 
 	// frame(texture) for list
-	m_list_frame.InitTexture(EngineExternal().ClearSkyMode() ? "ui_cb_listbox" : "ui_inGame2_combobox");
+	m_list_frame.InitTexture(listFrameTexture);
 
 	m_list_frame.SetWndSize				(Fvector2().set(width, m_list_box.GetItemHeight()*m_iListHeight) );
 	m_list_frame.SetWndPos				(Fvector2().set(0.0f, comboBoxHeight));
