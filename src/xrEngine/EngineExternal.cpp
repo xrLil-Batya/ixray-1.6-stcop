@@ -96,6 +96,13 @@ bool CEngineExternal::operator[](const EEngineExternalEnvironment& ID) const {
 	return READ_IF_EXISTS(pOptions, r_bool, "environment", magic_enum::enum_name(ID).data(), false);
 }
 
+bool CEngineExternal::operator[](const EEngineExternalPlatform& ID) const {
+	if (static_cast<unsigned char>(ID) > (static_cast<unsigned char>(sizeof(g_Platforms) / sizeof(g_Platforms[0])) - 1))
+		return false;
+
+	return g_Platforms[static_cast<unsigned char>(ID)] == m_platform_type;
+}
+
 void CEngineExternal::InitPlatform(const char* pPlatformName)
 {
 	if (!pPlatformName)
