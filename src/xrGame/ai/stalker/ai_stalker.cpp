@@ -1397,3 +1397,8 @@ bool CAI_Stalker::unlimited_ammo()
 {
 	return infinite_ammo() && g_Alive();
 }
+
+bool CAI_Stalker::infinite_fire()
+{
+	return false;
+}

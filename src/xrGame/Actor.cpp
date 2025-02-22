@@ -2444,3 +2444,8 @@ bool CActor::unlimited_ammo()
 {
 	return !!psActorFlags.test(AF_UNLIMITEDAMMO);
 }
+
+bool CActor::infinite_fire()
+{
+	return !!psActorFlags.test(AF_INFINITEFIRE);
+}

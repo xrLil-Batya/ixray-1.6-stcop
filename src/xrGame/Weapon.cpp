@@ -2591,7 +2591,20 @@ bool CWeapon::unlimited_ammo()
 			m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited));
 	}
 			
-};
+}
+bool CWeapon::infinite_fire()
+{
+	if (IsGameTypeSingle())
+	{
+		if (m_pInventory)
+		{
+			return inventory_owner().infinite_fire();
+		}
+		else
+			return false;
+	}
+}
+;
 
 float CWeapon::GetMagazineWeight(const decltype(CWeapon::m_magazine)& mag) const {
 	float res = 0;
