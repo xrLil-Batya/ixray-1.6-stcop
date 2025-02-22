@@ -35,14 +35,10 @@ CALifeStorageManager::~CALifeStorageManager	()
 
 void CALifeStorageManager::save	(LPCSTR save_name_no_check, bool update_name)
 {
-	pcstr gameSaveExtension = SAVE_EXTENSION;
-	if (EngineExternal().ClearSkyMode())
-		gameSaveExtension = SAVE_EXTENSION_LEGACY;
-
 	LPCSTR game_saves_path		= FS.get_path("$game_saves$")->m_Path;
 
 	string_path					save_name;
-	strncpy_s					(save_name, sizeof(save_name), save_name_no_check, sizeof(save_name)-5-xr_strlen(gameSaveExtension)-xr_strlen(game_saves_path));
+	strncpy_s					(save_name, sizeof(save_name), save_name_no_check, sizeof(save_name)-5-xr_strlen(m_pSaveExtensionName)-xr_strlen(game_saves_path));
 
 	xr_strcpy					(g_last_saved_game, save_name);
 
@@ -50,7 +46,7 @@ void CALifeStorageManager::save	(LPCSTR save_name_no_check, bool update_name)
 	xr_strcpy					(saveBackup,m_save_name);
 	if (save_name[0])
 	{
-		xr_strconcat(m_save_name, save_name, gameSaveExtension);
+		xr_strconcat(m_save_name, save_name, m_pSaveExtensionName);
 	}
 	else {
 		if (!xr_strlen(m_save_name)) {
@@ -137,10 +133,6 @@ void CALifeStorageManager::load	(void *buffer, const u32 &buffer_size, LPCSTR fi
 
 bool CALifeStorageManager::load	(LPCSTR save_name_no_check)
 {
-	pcstr gameSaveExtension = SAVE_EXTENSION;
-	if (EngineExternal().ClearSkyMode())
-		gameSaveExtension = SAVE_EXTENSION_LEGACY;
-
 	LPCSTR game_saves_path		= FS.get_path("$game_saves$")->m_Path;
 
 	string_path					save_name;
@@ -160,7 +152,7 @@ bool CALifeStorageManager::load	(LPCSTR save_name_no_check)
 	}
 	else
 	{
-		xr_strconcat(m_save_name, save_name, gameSaveExtension);
+		xr_strconcat(m_save_name, save_name, m_pSaveExtensionName);
 	}
 
 	luabind::functor<void> funct;
@@ -194,7 +186,7 @@ bool CALifeStorageManager::load	(LPCSTR save_name_no_check)
 	}
 
 	string512					temp;
-	xr_strconcat(temp, g_pStringTable->translate("st_loading_saved_game").c_str(), " \"", save_name, gameSaveExtension, "\"");
+	xr_strconcat(temp, g_pStringTable->translate("st_loading_saved_game").c_str(), " \"", save_name, m_pSaveExtensionName, "\"");
 	g_pGamePersistent->SetLoadStageTitle(temp);
 	g_pGamePersistent->LoadTitle();
 
