@@ -198,17 +198,12 @@ void CUIWpnParams::SetInfo(CInventoryItem* slot_wpn, CInventoryItem& cur_wpn)
 			xr_sprintf(str, sizeof(str), "%s", pSettings->r_string(ammo_types[0].c_str(), "inv_name_short"));
 			m_textAmmoUsedType->SetTextST(str);
 		}
-		Frect tex_rect = {};
 
-		if (m_stAmmoType1 != nullptr)
+		if (m_stAmmoType1)
 		{
-			if (isHQIcons)
-				m_stAmmoType1->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx() / 2, (tex_rect.y2 - tex_rect.y1) / 2));
-			else
-				m_stAmmoType1->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx(), tex_rect.y2 - tex_rect.y1));
-
 			const char* icons_texture = READ_IF_EXISTS(pSettings, r_string, ammo_types[0].c_str(), "icons_texture", nullptr);
 			m_stAmmoType1->SetShader(InventoryUtilities::GetEquipmentIconsShader(icons_texture));
+			Frect tex_rect = {};
 			tex_rect.x1 = pSettings->r_float(ammo_types[0].c_str(), "inv_grid_x") * INV_GRID_WIDTH(isHQIcons);
 			tex_rect.y1 = pSettings->r_float(ammo_types[0].c_str(), "inv_grid_y") * INV_GRID_HEIGHT(isHQIcons);
 			tex_rect.x2 = pSettings->r_float(ammo_types[0].c_str(), "inv_grid_width") * INV_GRID_WIDTH(isHQIcons);
@@ -217,16 +212,20 @@ void CUIWpnParams::SetInfo(CInventoryItem* slot_wpn, CInventoryItem& cur_wpn)
 			m_stAmmoType1->SetTextureRect(tex_rect);
 			m_stAmmoType1->TextureOn();
 			m_stAmmoType1->SetStretchTexture(true);
+			if (isHQIcons)
+				m_stAmmoType1->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx() / 2, (tex_rect.y2 - tex_rect.y1) / 2));
+			else
+				m_stAmmoType1->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx(), tex_rect.y2 - tex_rect.y1));
 		}
 
-		if (m_stAmmoType2 != nullptr)
+		if (m_stAmmoType2)
 		{
-			if (isHQIcons)
-				m_stAmmoType2->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx() / 2, (tex_rect.y2 - tex_rect.y1) / 2));
-			else
-				m_stAmmoType2->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx(), tex_rect.y2 - tex_rect.y1));
+			Frect tex_rect = {};
 
-			const char* icons_texture1 = READ_IF_EXISTS(pSettings, r_string, ammo_types[1].c_str(), "icons_texture", nullptr);
+			const char* icons_texture1 = nullptr; // St4lker0k765: small hack for weapons with only 1 ammo type (like BM-16 in vanilla CoP)
+			if (ammo_types.size() >= 2)
+				icons_texture1 = READ_IF_EXISTS(pSettings, r_string, ammo_types[1].c_str(), "icons_texture", nullptr);
+
 			m_stAmmoType2->SetShader(InventoryUtilities::GetEquipmentIconsShader(icons_texture1));
 			if (ammo_types.size() == 1)
 			{
@@ -243,6 +242,11 @@ void CUIWpnParams::SetInfo(CInventoryItem* slot_wpn, CInventoryItem& cur_wpn)
 			m_stAmmoType2->SetTextureRect(tex_rect);
 			m_stAmmoType2->TextureOn();
 			m_stAmmoType2->SetStretchTexture(true);
+
+			if (isHQIcons)
+				m_stAmmoType2->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx() / 2, (tex_rect.y2 - tex_rect.y1) / 2));
+			else
+				m_stAmmoType2->SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx(), tex_rect.y2 - tex_rect.y1));
 		}
 	}
 }
