@@ -22,7 +22,7 @@ CEngineExternal::CEngineExternal() : m_platform_type(EEngineExternalPlatform::Un
 		InitPlatform(READ_IF_EXISTS(pOptions, r_string, "general", "Platform", "cop"));
 	}
 
-	if (!ClearSkyMode() && !CallOfPripyatMode())
+	if (!ClearSkyMode() && !CallOfPripyatMode() && !ShadowOfChernobylMode())
 	{
 		R_ASSERT2(false, "Unknown platform mode specified. Please check your engine_external.ltx.");
 	}
