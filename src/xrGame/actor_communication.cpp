@@ -126,11 +126,12 @@ void CActor::RunTalkDialog(CInventoryOwner* talk_partner, bool disable_break)
 	{	
 		StartTalk(talk_partner);
 
-		if(CurrentGameUI()->TopInputReceiver())
+		if (CurrentGameUI()->TopInputReceiver())
+		{
 			CurrentGameUI()->TopInputReceiver()->HideDialog();
-
-//		smart_cast<CUIGameSP*>(CurrentGameUI())->StartTalk(disable_break);
-		smart_cast<CUIGameSP*>(CurrentGameUI())->StartTalk(talk_partner->bDisableBreakDialog);
+		}
+		bool disableBreakDialog = EngineExternal().ClearSkyMode() ? disable_break : talk_partner->bDisableBreakDialog;
+		smart_cast<CUIGameSP*>(CurrentGameUI())->StartTalk(disableBreakDialog);
 	}
 }
 
