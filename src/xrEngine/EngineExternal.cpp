@@ -170,6 +170,11 @@ bool CEngineExternal::CallOfPripyatMode() const
 	return m_platform_type == EEngineExternalPlatform::CallOfPripyat;
 }
 
+bool CEngineExternal::ShadowOfChernobylMode() const
+{
+	return m_platform_type == EEngineExternalPlatform::ShadowOfChernobyl;
+}
+
 u32 CEngineExternal::GetFontAltasSize() const
 {
 	return READ_IF_EXISTS(pOptions, r_u32, "render", "FontAtlasSize", 4096);

@@ -82,7 +82,7 @@ public:
 	const char* PlatformMode() const;
 	bool ClearSkyMode() const;
 	bool CallOfPripyatMode() const;
-
+	bool ShadowOfChernobylMode() const;
 	u32 GetFontAltasSize() const;
 
 	bool operator[](const EEngineExternalUI& ID) const;
