@@ -65,14 +65,14 @@ void CUICustomSpin::InitSpin(Fvector2 pos, Fvector2 size)
 	m_pFrameLine->SetWndSize	(Fvector2().set(size.x, spinHeight));
 	m_pFrameLine->InitTexture	(frameLine,"hud\\default");
 
-	m_pBtnUp->InitButton		(Fvector2().set(size.x- buttonSizeX - buttonOffset, (-1.f + buttonOffset)),Fvector2().set(buttonSizeX, buttonSizeY));
+	m_pBtnUp->InitButton		(Fvector2().set(size.x- (buttonSizeX - buttonOffset) * UI().get_current_kx(), (-1.f + buttonOffset)), Fvector2().set(buttonSizeX * UI().get_current_kx(), buttonSizeY));
 	m_pBtnUp->InitTexture		(buttonUp);
 
-	m_pBtnDown->InitButton		(Fvector2().set(size.x- buttonSizeX - buttonOffset, buttonSizeY + buttonOffset),Fvector2().set(buttonSizeX, buttonSizeY));
+	m_pBtnDown->InitButton		(Fvector2().set(size.x- (buttonSizeX - buttonOffset) * UI().get_current_kx(), buttonSizeY + buttonOffset), Fvector2().set(buttonSizeX * UI().get_current_kx(), buttonSizeY));
 	m_pBtnDown->InitTexture		(buttonDown);
 
 	m_pLines->m_wndPos.set		(Fvector2().set(0,0));
-	m_pLines->m_wndSize.set		(Fvector2().set(size.x- buttonSizeX -10.0f, spinHeight));
+	m_pLines->m_wndSize.set		(Fvector2().set(size.x- (buttonSizeX -10.0f) * UI().get_current_kx(), spinHeight));
 }
 
 void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
