@@ -113,6 +113,7 @@ void CEngineExternal::InitPlatform(const char* pPlatformName)
 		if (!xr_strcmp(pPlatformName, g_PlatformNames[i]))
 		{
 			m_platform_type = g_Platforms[i];
+			break;
 		}
 	}
 }
