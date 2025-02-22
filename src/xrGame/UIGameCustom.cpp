@@ -131,7 +131,7 @@ void CUIGameCustom::Render()
 	DoRenderDialogs();
 }
 
-SDrawStaticStruct* CUIGameCustom::AddCustomStatic(LPCSTR id, bool bSingleInstance, float ttlDefault)
+SDrawStaticStruct* CUIGameCustom::AddCustomStatic(LPCSTR id, bool bSingleInstance)
 {
 	if(bSingleInstance)
 	{
@@ -147,7 +147,7 @@ SDrawStaticStruct* CUIGameCustom::AddCustomStatic(LPCSTR id, bool bSingleInstanc
 	sss->m_static					= new CUIStatic();
 	sss->m_name						= id;
 	xml_init.InitStatic				(*m_msgs_xml, id, 0, sss->m_static);
-	float ttl						= m_msgs_xml->ReadAttribFlt(id, 0, "ttl", ttlDefault);
+	float ttl						= m_msgs_xml->ReadAttribFlt(id, 0, "ttl", 3.0f);
 	if(ttl>0.0f)
 		sss->m_endTime				= Device.fTimeGlobal + ttl;
 

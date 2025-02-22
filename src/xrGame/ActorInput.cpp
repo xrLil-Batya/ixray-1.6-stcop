@@ -172,7 +172,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			if (itm)
 			{
 				inventory().Eat(itm);
-				SDrawStaticStruct* _s = CurrentGameUI()->AddCustomStatic("item_used", true, 3.0f);
+				SDrawStaticStruct* _s = CurrentGameUI()->AddCustomStatic("item_used", true);
 				string1024					str;
 				xr_strconcat(str, *CStringTable().translate("st_item_used"), ": ", itm->NameItem());
 				_s->wnd()->TextItemControl()->SetText(str);
