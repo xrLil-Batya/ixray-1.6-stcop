@@ -19,6 +19,7 @@
 #define REGISTRY_CHUNK_DATA			0x0009
 #define SECTION_HEADER				"location_"
 
+// TODO: export this constant to lua and replace hardcoded definition in ui_save_dialog.script
 #define IXRAY_DEF_SAVE_EXTENSION ".scop"
 
 #define SPAWN_NAME					"game.spawn"
