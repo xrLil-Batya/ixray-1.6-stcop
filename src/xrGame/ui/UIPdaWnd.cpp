@@ -105,7 +105,8 @@ void CUIPdaWnd::Init()
 	UINoice->SetAutoDelete	( true );
 	CUIXmlInit::InitStatic	( uiXml, "noice_static", 0, UINoice );
 
-//	RearrangeTabButtons		(UITabControl);
+	if (EngineExternal().ClearSkyMode())
+		RearrangeTabButtons		(UITabControl);
 }
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
