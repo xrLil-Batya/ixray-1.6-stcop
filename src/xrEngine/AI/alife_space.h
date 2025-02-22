@@ -18,12 +18,8 @@
 #define GAME_TIME_CHUNK_DATA		0x0005
 #define REGISTRY_CHUNK_DATA			0x0009
 #define SECTION_HEADER				"location_"
-#define SAVE_EXTENSION				".scop"
-#define SAVE_EXTENSION_LEGACY		".sav"
 
-#define COP_DEF_SAVE_EXTENSION ".scop"
-#define SOC_DEF_SAVE_EXTENSION ".sav"
-#define CS_DEF_SAVE_EXTENSION SOC_DEF_SAVE_EXTENSION
+#define IXRAY_DEF_SAVE_EXTENSION ".scop"
 
 #define SPAWN_NAME					"game.spawn"
 // inventory rukzak size
