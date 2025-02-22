@@ -105,7 +105,8 @@ void CUIPdaWnd::Init()
 	UINoice->SetAutoDelete	( true );
 	CUIXmlInit::InitStatic	( uiXml, "noice_static", 0, UINoice );
 
-	if (EngineExternal().ClearSkyMode())
+	const static bool rearrangeButtons = EngineExternal()[EEngineExternalUI::PdaRearrangeTabButtons];
+	if (rearrangeButtons)
 		RearrangeTabButtons		(UITabControl);
 }
 
