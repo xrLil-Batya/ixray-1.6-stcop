@@ -215,7 +215,8 @@ void CUIMotionIcon::SetLuminosity(float newPos)
 
 void CUIMotionIcon::Draw()
 {
-    if (EngineExternal().CallOfPripyatMode())
+    const static bool disableMotionIcon = EngineExternal()[EEngineExternalUI::DisableMotionIcon];
+    if (!disableMotionIcon)
 	    inherited::Draw();
 }
 
