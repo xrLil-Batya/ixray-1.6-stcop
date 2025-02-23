@@ -843,6 +843,12 @@ void CEntityAlive::fill_hit_bone_surface_areas		( ) const
 				surface_area			= 2.f * PI * shape.cylinder.m_radius*( shape.cylinder.m_radius + shape.cylinder.m_height );
 				break;
 			}
+			// clear sky - red forest trader (forester) 
+			case 62:
+			{
+				surface_area = 100.0f;
+				break;
+			}
 			default :					NODEFAULT;
 		}
 
@@ -960,6 +966,12 @@ Fvector	CEntityAlive::get_new_local_point_on_mesh	( u16& bone_id ) const
 			result.mul					( shape.cylinder.m_direction, height );
 			result.add					( normal );
 			result.add					( shape.cylinder.m_center );
+			break;
+		}
+		// clear sky - red forest trader (forester)
+		case 62:
+		{
+			result.random_dir().mul(5.0f).add(10.0f);
 			break;
 		}
 		default :						NODEFAULT;
