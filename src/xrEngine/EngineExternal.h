@@ -93,7 +93,7 @@ public:
 	bool operator[](const EEngineExternalPlatform& ID) const;
 
 	xr_string_map<xr_string, xr_string> ShadersOptions;
-
+	Ivector2 gamesaveSize;
 private:
 	void InitPlatform(const char* pPlatformName);
 
