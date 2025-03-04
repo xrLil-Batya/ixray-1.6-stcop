@@ -17,6 +17,7 @@
 #include "UIImageEditorForm.h"
 #include "UISoundEditorForm.h"
 #include "UIMinimapEditorForm.h"
+#include "UIWeatherPropForm.h"
 #include "../utils/ETools/ETools.h"
 #include "UILogForm.h"
 #include "../xrEngine/gamefont.h"
@@ -867,6 +868,7 @@ void TUI::OnDrawUI()
 	UIImageEditorForm::Update();
 	UISoundEditorForm::Update();
 	UIMinimapEditorForm::Update();
+    UIWeatherPropForm::Update();
 	UIIconPicker::Update();
 	UILogForm::Update();
 	EDevice->seqDrawUI.Process(rp_DrawUI);
