@@ -27,6 +27,7 @@
 #include "game_cl_base_weapon_usage_statistic.h"
 #include "Grenade.h"
 #include "Torch.h"
+#include "ActorNightVision.h"
 
 // breakpoints
 #include "../xrEngine/xr_input.h"
@@ -200,6 +201,10 @@ CActor::CActor() : CEntityAlive(),current_ik_cam_shift(0)
 	// Alex ADD: for smooth crouch
 	CurrentHeight = -1.f;
 	bBlockSprint = false;
+
+	m_night_vision			= nullptr;
+	m_bNightVisionAllow		= true;
+	m_bNightVisionOn		= false;
 }
 
 
@@ -225,6 +230,7 @@ CActor::~CActor()
 	xr_delete				(m_anims);
 	xr_delete				(pPickup);
 	xr_delete				(m_vehicle_anims);
+	xr_delete				(m_night_vision);
 }
 
 void CActor::reinit	()
@@ -2045,9 +2051,8 @@ void CActor::OnItemDrop(CInventoryItem *inventory_item, bool just_before_destroy
 	CHelmet* helmet = smart_cast<CHelmet*>(inventory_item);
 	if (helmet && inventory_item->m_ItemCurrPlace.type == eItemPlaceSlot)
 	{
-		CTorch* torch = smart_cast<CTorch*>(inventory().ItemFromSlot(TORCH_SLOT));
-		if (torch && torch->GetNightVisionStatus())
-			torch->SwitchNightVision(false);
+		if (GetNightVisionStatus())
+			SwitchNightVision(false);
 	}
 
 	CWeapon* weapon	= smart_cast<CWeapon*>(inventory_item);
@@ -2154,10 +2159,9 @@ void CActor::UpdateArtefactsOnBeltAndOutfit()
 		CHelmet* pHelmet				= smart_cast<CHelmet*>(inventory().ItemFromSlot(HELMET_SLOT));
 		if(!pHelmet)
 		{
-			CTorch* pTorch = smart_cast<CTorch*>( inventory().ItemFromSlot(TORCH_SLOT) );
-			if ( pTorch && pTorch->GetNightVisionStatus() )
+			if ( GetNightVisionStatus() )
 			{
-				pTorch->SwitchNightVision(false);
+				SwitchNightVision(false);
 			}
 		}
 	}
@@ -2523,4 +2527,67 @@ CCustomDetector* CActor::GetDetector(bool in_slot)
 bool CActor::infinite_fire()
 {
 	return !!psActorFlags.test(AF_INFINITEFIRE);
+}
+
+void CActor::SwitchNightVision(bool vision_on, bool use_sounds, bool send_event)
+{
+	m_bNightVisionOn = vision_on;
+
+	if (!m_night_vision)
+		m_night_vision = new CNightVisionEffector(cNameSect());
+
+	bool bIsActiveNow = m_night_vision->IsActive();
+
+	CHelmet* pHelmet = smart_cast<CHelmet*>(inventory().ItemFromSlot(HELMET_SLOT));
+	if (pHelmet && pHelmet->m_NightVisionSect.size())
+	{
+		if (m_bNightVisionAllow)
+		{
+			if (m_bNightVisionOn && !bIsActiveNow)
+			{
+				m_night_vision->Start(pHelmet->m_NightVisionSect, this, use_sounds);
+			}
+		}
+		else
+		{
+			m_night_vision->OnDisabled(this, use_sounds);
+			m_bNightVisionOn = false;
+		}
+	}
+	else
+	{
+		CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(inventory().ItemFromSlot(OUTFIT_SLOT));
+		if (pOutfit && pOutfit->m_NightVisionSect.size())
+		{
+			if (m_bNightVisionAllow)
+			{
+				if (m_bNightVisionOn && !bIsActiveNow)
+				{
+					m_night_vision->Start(pOutfit->m_NightVisionSect, this, use_sounds);
+				}
+			}
+			else
+			{
+				m_night_vision->OnDisabled(this, use_sounds);
+				m_bNightVisionOn = false;
+			}
+		}
+	}
+
+	if (!m_bNightVisionOn && bIsActiveNow)
+	{
+		m_night_vision->Stop(100000.0f, use_sounds);
+	}
+
+	//Alun: Update flags and send message they were changed
+	if (send_event)
+	{
+		m_trader_flags.set(CSE_ALifeTraderAbstract::eTraderFlagNightVisionActive, m_bNightVisionOn);
+		CGameObject *object = smart_cast<CGameObject*>(this);
+		NET_Packet packet;
+		object->u_EventGen(packet, GE_TRADER_FLAGS, object->ID());
+		packet.w_u32(m_trader_flags.get());
+		object->u_EventSend(packet);
+		//Msg("GE_TRADER_FLAGS event sent %d", m_trader_flags.get());
+	}
 }

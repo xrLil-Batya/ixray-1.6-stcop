@@ -61,6 +61,7 @@ class CActorMemory;
 class CActorStatisticMgr;
 
 class CLocationManager;
+class CNightVisionEffector;
 class CPickUpManager;
 class CCustomDetector;
 
@@ -773,7 +774,18 @@ private:
 private:
 	bool					m_disabled_hitmarks;
 	bool					m_inventory_disabled;
-//static CPhysicsShell		*actor_camera_shell;
+
+public:
+			void			SwitchNightVision					(bool light_on, bool use_sounds = true, bool send_event = true);
+
+			bool			GetNightVisionStatus				() {return m_bNightVisionOn;}
+			void			SetNightVisionAllowed				(bool bAllow) {m_bNightVisionAllow = bAllow;}
+	CNightVisionEffector*	GetNightVision						() {return m_night_vision;}
+protected:
+	bool					m_bNightVisionOn;
+	bool					m_bNightVisionAllow;
+public:
+	CNightVisionEffector*	m_night_vision;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 

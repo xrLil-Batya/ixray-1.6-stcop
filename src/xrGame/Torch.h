@@ -24,8 +24,13 @@ protected:
 	ref_light		light_render;
 	ref_light		light_omni;
 	ref_glow		glow_render;
-	Fvector			m_focus;
 	ref_sound 		m_switch_sound;
+	Fvector			m_focus;
+	shared_str		m_light_section;
+	Fvector			m_torch_offset;
+	Fvector			m_omni_offset;
+	float			m_torch_inertion_speed_max;
+	float			m_torch_inertion_speed_min;
 private:
 	inline	bool	can_use_dynamic_lights	();
 
@@ -42,6 +47,8 @@ public:
 	virtual void	OnH_A_Chield			();
 	virtual void	OnH_B_Independent		(bool just_before_destroy);
 
+	virtual void	OnMoveToSlot			(const SInvItemPlace& prev);
+	virtual void	OnMoveToRuck			(const SInvItemPlace& prev);
 	virtual void	UpdateCL				();
 
 			void	Switch					();
@@ -53,17 +60,7 @@ public:
 	//CAttachableItem
 	virtual	void	enable					(bool value);
  
-public:
-			void	SwitchNightVision		();
-			void	SwitchNightVision		(bool light_on, bool use_sounds=true);
-
-			bool	GetNightVisionStatus	() { return m_bNightVisionOn; }
-CNightVisionEffector* GetNightVision		() { return m_night_vision; }
 protected:
-	bool					m_bNightVisionEnabled;
-	bool					m_bNightVisionOn;
-
-	CNightVisionEffector*	m_night_vision;
 	HUD_SOUND_COLLECTION	m_sounds;
 
 	enum EStats{
@@ -86,23 +83,4 @@ public:
 	virtual void	renderable_Render		();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
-};
-
-class CNightVisionEffector
-{
-	CActor*					m_pActor;
-	HUD_SOUND_COLLECTION	m_sounds;
-public:
-	enum EPlaySounds{
-		eStartSound	= 0,
-		eStopSound,
-		eIdleSound,
-		eBrokeSound
-	};
-				CNightVisionEffector(const shared_str& sect);
-	void		Start		(const shared_str& sect, CActor* pA, bool play_sound=true);
-	void		Stop		(const float factor, bool play_sound=true);
-	bool		IsActive	();
-	void		OnDisabled	(CActor* pA, bool play_sound=true);
-	void		PlaySounds	(EPlaySounds which);
 };
