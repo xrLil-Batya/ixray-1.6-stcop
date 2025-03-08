@@ -21,6 +21,7 @@ UITopBarForm::UITopBarForm()
     m_tReloadConfigs         = EDevice->Resources->_CreateTexture("ed\\bar\\reload_configs");
     m_tOpenGameData          = EDevice->Resources->_CreateTexture("ed\\bar\\open_gamedata");
     m_VerifySpaceRestrictors = false;
+    m_Simulate               = false;
 
 	m_PreferencesIcon = EDevice->Resources->_CreateTexture("ed\\bar\\win_preferences");
 }
@@ -163,8 +164,27 @@ void UITopBarForm::Draw()
 			{
 				IMGUI_HINT_BUTTON("Preferences", m_PreferencesIcon, "Preferences", ClickPreferences);
 			}
-
-		}
+        }
+        ImGui::SameLine(0, 50);
+        if (ImGui::Checkbox("Physics simulation", &m_Simulate))
+        {
+            ExecCommand(COMMAND_SIMULATE, true);
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+            ImGui::SetTooltip("Activates the physics simulation of the selected object(s).");
+        }
+        ImGui::SameLine(0, 15);
+        if (ImGui::Button("Use position"))
+        {
+            ExecCommand(COMMAND_USE_SIMULATE_POSITIONS, true);
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+            ImGui::SetTooltip("Use the position of the selected object when physics simulation is active. The position of the object will be applied when simulating physics.");
+        }
 		ImGui::EndTable();
 	}
 
