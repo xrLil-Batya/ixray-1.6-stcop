@@ -246,6 +246,7 @@ void CRenderTarget::accum_spot(light* L)
 //---------------------------------------------------------------------------
 CRender::CRender()
 {
+	val_bUI = FALSE;
 	val_bInvisible = FALSE;
 	::Render = &RImplementation;
 	Engine.External.SetSkinningMode();
@@ -469,6 +470,10 @@ void	CRender::rmNormal()
 	CHK_DX(REDevice->SetViewport(&VP));
 }
 
+void CRender::RenderUI() 
+{
+}
+
 void 	CRender::set_Transform(Fmatrix* M)
 {
 	current_matrix.set(*M);
@@ -531,6 +536,11 @@ void CRender::set_HUD(BOOL V)
 
 BOOL CRender::get_HUD() {
 	return false;
+}
+
+void CRender::set_UI(BOOL V)
+{
+	val_bUI = V;
 }
 
 void CRender::set_Invisible(BOOL V)
