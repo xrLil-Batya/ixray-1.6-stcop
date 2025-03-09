@@ -117,12 +117,14 @@ public:
 		mapUI.destroy			();
 		mapLOD.destroy			();
 		mapDistort.destroy		();
-		mapHUDSorted.destroy();
+		mapHUDSorted.destroy	();
+		mapUISorted.destroy		();
 
 #if RENDER!=R_R1
 		mapWmark.destroy		();
 		mapEmissive.destroy		();
 		mapHUDEmissive.destroy	();
+		mapUIEmissive.destroy	();
 #endif
 	}
 
