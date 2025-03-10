@@ -526,7 +526,10 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 
 		zone->m_artefact_position_offset= (u32)m_level_points.size();
 		m_level_points.resize			(zone->m_artefact_position_offset + zone->m_artefact_spawn_count);
-
+		if (l_tpaStack.size() < m_level_points.size())
+		{
+			l_tpaStack.resize(m_level_points.size());
+		}
 //		Msg								("%s  %f [%f][%f][%f] : artefact spawn positions",zone->name_replace(),zone->m_fRadius,VPUSH(zone->o_Position));
 
 		LEVEL_POINT_STORAGE::iterator	I_ = m_level_points.begin() + zone->m_artefact_position_offset;
