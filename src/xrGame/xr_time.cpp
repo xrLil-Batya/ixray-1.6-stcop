@@ -12,6 +12,8 @@
 #define hour2ms		60*min2ms
 #define day2ms		24*hour2ms
 
+xr_vector<size_t> debugTime;
+
 ALife::_TIME_ID __game_time()
 {
 	return	(ai().get_alife() ? ai().alife().time().game_time() : Level().GetGameTime());
@@ -70,6 +72,30 @@ void xrTime::get(u32& y, u32& mo, u32& d, u32& h, u32& mi, u32& s, u32& ms)
 	split_time(m_time, y, mo, d, h, mi, s, ms);
 }
 
+void xrTime::Save(IWriter& writer)
+{
+	u32 y;
+	u32 mo;
+	u32 d;
+	u32 h;
+	u32 mi;
+	u32 s;
+	u32 ms;
+
+	get(y, mo, d, h, mi, s, ms);
+
+	TimePacked Tm = {};
+	Tm.Years = y - 2000;
+	Tm.Month = mo;
+	Tm.Days = d;
+
+	Tm.Hours = h;
+	Tm.Min = mi;
+	Tm.Sec = s;
+	debugTime.push_back(writer.tell());
+	writer.w_u32(Tm.TimeTotal);
+}
+
 void xrTime::Save(NET_Packet& Packet)
 {
 	u32 y;
@@ -90,17 +116,47 @@ void xrTime::Save(NET_Packet& Packet)
 	Tm.Hours = h;
 	Tm.Min = mi;
 	Tm.Sec = s;
-
+	debugTime.push_back(Packet.w_tell());
 	Packet.w_u32(Tm.TimeTotal);
+}
+
+
+void xrTime::Load(IReader& reader)
+{
+	TimePacked Tm = {};
+	auto iter = std::find(debugTime.begin(), debugTime.end(), reader.tell());
+	if (iter == debugTime.end())
+	{
+		__debugbreak();
+	}
+	else
+	{
+		debugTime.erase(iter);
+	}
+
+
+	Tm.TimeTotal = reader.r_u32();
+	set(Tm.Years + 2000, Tm.Month, Tm.Days, Tm.Hours, Tm.Min, Tm.Sec, 0);
 }
 
 void xrTime::Load(NET_Packet& Packet)
 {
 	TimePacked Tm = {};
+	auto iter = std::find(debugTime.begin(), debugTime.end(), Packet.r_tell());
+	if (iter == debugTime.end())
+	{
+		__debugbreak();
+	}
+	else
+	{
+		debugTime.erase(iter);
+	}
+
 	Packet.r_u32(Tm.TimeTotal);
 
 	set(Tm.Years + 2000, Tm.Month, Tm.Days, Tm.Hours, Tm.Min, Tm.Sec, 0);
 }
+
 
 float	xrTime::diffSec(const xrTime& other)
 {

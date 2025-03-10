@@ -584,16 +584,7 @@ function w_CTime( p, t )
 	end
 
 	if (CTime == nil) or (t ~= CTime_0) then
-		local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-		Y, M, D, h, m, s, ms = t:get( Y, M, D, h, m, s, ms )
-
-		p:w_u8 ( Y - 2000 )
-		p:w_u8 ( M )
-		p:w_u8 ( D )
-		p:w_u8 ( h )
-		p:w_u8 ( m )
-		p:w_u8 ( s )
-		p:w_u16( ms )
+        t:save(p)
 	else
 		p:w_u8 ( 0 )
 	end
@@ -610,9 +601,9 @@ function r_CTime( p )
 	end
 
 	if Y ~= 0 then
-		local t = game.CTime()
-		local M, D, h, m, s, ms = p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u16()
-		t:set( Y + 2000,  M, D, h, m, s, ms)
+        local t = game.CTime()
+        p:r_seek(p:r_tell() - 8)
+        t = t:load(p)
 		--set_save_marker(p, "load", true, "CTIME")
 		return t
 	else
